@@ -60,16 +60,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlyludo.activities.MainActivity" />
         </activity>
-        <activity
-            android:name="org.secuso.privacyfriendlyludo.activities.GameActivity"
-            android:label="@string/title_activity_game"
-            android:parentActivityName="org.secuso.privacyfriendlyludo.activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.secuso.privacyfriendlyludo.activities.MainActivity" />
-        </activity>
     </application>
 
 </manifest>
