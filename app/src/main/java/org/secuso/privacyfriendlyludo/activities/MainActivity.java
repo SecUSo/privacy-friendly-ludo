@@ -101,6 +101,10 @@ public class MainActivity extends BaseActivity {
             case R.id.arrow_right:
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
                 break;
+            case R.id.game_button_start:
+                Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             default:
         }
     }

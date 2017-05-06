@@ -69,15 +69,6 @@
             android:baselineAligned="false"
             android:gravity="center_horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:text="@string/game_desc"/>
-
             <Button
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_width="match_parent"
