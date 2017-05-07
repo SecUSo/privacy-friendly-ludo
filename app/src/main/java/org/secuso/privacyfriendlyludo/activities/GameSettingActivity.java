@@ -18,7 +18,7 @@ public class GameSettingActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_game:
-                Intent intent = new Intent(GameSettingActivity.this, GameSettingActivity.class);
+                Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             default:
