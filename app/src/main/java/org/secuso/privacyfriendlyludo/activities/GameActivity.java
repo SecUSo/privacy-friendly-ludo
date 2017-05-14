@@ -44,31 +44,10 @@ public class GameActivity extends AppCompatActivity {
     private Sensor accelerometer;
     private ShakeListener shakeListener;
 
-    // MyView myview = new MyView(this);
-    // setContentView(myview);
-
-  /*  //Draw the gamefield
-    public class MyView extends View {
-
-        Paint paint;
-
-        public MyView(Context context) {
-            super(context);
-            paint = new Paint();
-            paint.setColor(Color.BLACK);
-            paint.setStyle(Paint.Style.STROKE);
-        }
-
-        @Override
-        public void onDraw(Canvas canvas) {
-            canvas.drawCircle(0, 0, 80.0f, paint);
-        }
-    }
-    */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_game);
 
         doFirstRun();

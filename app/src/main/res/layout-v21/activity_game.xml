@@ -18,12 +18,12 @@
         android:id="@+id/rollButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:text="Button"
-        android:layout_marginStart="16dp"
-        android:layout_below="@+id/tableLayout"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/tableLayout"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:gravity="bottom"
+        android:text="@string/roll_dice" />
 
     <ImageView
         android:id="@+id/resultOne"
@@ -33,7 +33,8 @@
         android:layout_alignTop="@+id/rollButton"
         android:layout_toEndOf="@+id/rollButton"
         android:layout_marginStart="74dp"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        tools:ignore="ContentDescription" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -50,7 +51,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -60,7 +61,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -70,7 +71,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
@@ -79,7 +80,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
@@ -88,7 +89,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:scaleType="centerInside"
@@ -97,7 +98,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:scaleType="centerInside"
@@ -106,7 +107,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/colorAccent"
@@ -116,7 +117,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
@@ -125,7 +126,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
@@ -159,7 +160,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -170,7 +171,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -181,7 +182,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -191,7 +192,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -201,7 +202,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -211,53 +212,43 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
+
                 android:adjustViewBounds="true"
-                android:background="@drawable/field"
-                android:backgroundTint="@color/colorAccent"
-
-                android:scaleType="centerInside"
-                tools:layout_width="@dimen/dots_height" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dots_height"
-                
-                android:adjustViewBounds="true"
-                android:background="@drawable/field"
-
-                android:scaleType="centerInside"
-                tools:layout_width="@dimen/dots_height" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dots_height"
-                
-                
-                android:adjustViewBounds="true"
-                android:background="@color/transparent"
-
-                android:scaleType="centerInside"
-                tools:layout_width="@dimen/dots_height" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dots_height"
-                
-                
-                android:adjustViewBounds="true"
-                android:background="@color/transparent"
-
-                android:scaleType="centerInside"
-                tools:layout_width="@dimen/dots_height" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dots_height"
-                android:adjustViewBounds="false"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/colorAccent"
-                android:elevation="0dp"
+
+                android:scaleType="centerInside"
+                tools:layout_width="@dimen/dots_height" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dots_height"
+
+                android:adjustViewBounds="true"
+                android:background="@drawable/field"
+
+                android:scaleType="centerInside"
+                tools:layout_width="@dimen/dots_height" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dots_height"
+
+
+                android:adjustViewBounds="true"
+                android:background="@color/transparent"
+
+                android:scaleType="centerInside"
+                tools:layout_width="@dimen/dots_height" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dots_height"
+
+
+                android:adjustViewBounds="true"
+                android:background="@color/transparent"
+
                 android:scaleType="centerInside"
                 tools:layout_width="@dimen/dots_height" />
 
@@ -271,6 +262,16 @@
                 android:scaleType="centerInside"
                 tools:layout_width="@dimen/dots_height" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dots_height"
+                android:adjustViewBounds="false"
+                android:background="@drawable/field"
+                android:backgroundTint="@color/colorAccent"
+                android:elevation="0dp"
+                android:scaleType="centerInside"
+                tools:layout_width="@dimen/dots_height" />
+
 
         </TableRow>
 
@@ -281,8 +282,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -292,8 +293,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -303,8 +304,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -314,8 +315,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -325,8 +326,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -336,8 +337,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/colorAccent"
@@ -348,8 +349,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -359,8 +360,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -370,8 +371,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -381,8 +382,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -392,8 +393,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -410,8 +411,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -421,8 +422,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -432,8 +433,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -443,8 +444,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -454,8 +455,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -465,8 +466,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/colorAccent"
@@ -477,8 +478,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -488,8 +489,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -499,8 +500,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -510,8 +511,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -521,8 +522,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -539,8 +540,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -551,8 +552,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -562,8 +563,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -573,8 +574,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -584,8 +585,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -595,8 +596,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/colorAccent"
@@ -607,8 +608,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -618,8 +619,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -629,8 +630,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -640,8 +641,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -651,8 +652,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -669,8 +670,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -680,8 +681,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -692,8 +693,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -704,8 +705,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -716,8 +717,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/red"
@@ -728,8 +729,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -738,20 +739,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
-                android:adjustViewBounds="true"
-                android:background="@drawable/field"
-                android:backgroundTint="@color/green"
 
-                android:scaleType="centerInside"
-                tools:layout_width="@dimen/dots_height" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dots_height"
-                
-                
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"
@@ -762,8 +751,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"
@@ -774,8 +763,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"
@@ -786,8 +775,20 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
+                android:adjustViewBounds="true"
+                android:background="@drawable/field"
+                android:backgroundTint="@color/green"
+
+                android:scaleType="centerInside"
+                tools:layout_width="@dimen/dots_height" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dots_height"
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -804,8 +805,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -815,8 +816,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -826,8 +827,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -837,8 +838,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -848,8 +849,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -859,8 +860,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -871,8 +872,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -882,8 +883,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -893,8 +894,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -904,8 +905,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -915,8 +916,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"
@@ -934,8 +935,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -944,8 +945,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -954,8 +955,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -964,8 +965,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -974,8 +975,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -985,8 +986,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -997,8 +998,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -1008,8 +1009,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1019,8 +1020,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1030,8 +1031,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1041,8 +1042,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1059,8 +1060,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1069,8 +1070,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1079,8 +1080,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1089,8 +1090,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1099,8 +1100,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -1110,8 +1111,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -1122,8 +1123,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -1133,8 +1134,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1144,8 +1145,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1155,8 +1156,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1166,8 +1167,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
 
@@ -1184,8 +1185,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -1196,8 +1197,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -1208,8 +1209,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1218,8 +1219,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1228,8 +1229,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -1239,8 +1240,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -1251,8 +1252,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -1262,8 +1263,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1272,8 +1273,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1282,8 +1283,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"
@@ -1294,8 +1295,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"
@@ -1313,8 +1314,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -1325,8 +1326,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -1337,8 +1338,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1347,8 +1348,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1357,8 +1358,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/yellow"
@@ -1369,8 +1370,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -1380,8 +1381,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
 
@@ -1391,8 +1392,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1401,8 +1402,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
 
                 android:scaleType="centerInside"
@@ -1411,8 +1412,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"
@@ -1423,8 +1424,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dots_height"
-                
-                
+
+
                 android:adjustViewBounds="true"
                 android:background="@drawable/field"
                 android:backgroundTint="@color/green"

@@ -61,7 +61,7 @@
         </activity>
         <activity android:name=".activities.GameSettingActivity" />
         <activity android:name="org.secuso.ludo.GameActivity" />
-        <activity android:name=".activities.GameActivity"></activity>
+        <activity android:name=".activities.GameActivity" />
     </application>
 
 </manifest>
