@@ -22,13 +22,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import org.secuso.privacyfriendlyludo.activities.ShakeListener;
+import android.widget.GridView;
 
 import org.secuso.privacyfriendlyludo.R;
 
@@ -44,11 +47,18 @@ public class GameActivity extends AppCompatActivity {
     private Sensor accelerometer;
     private ShakeListener shakeListener;
 
+    GridView mygrid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_game);
+
+        mygrid= (GridView) findViewById(R.id.myGrid);
+
+        mygrid.setAdapter(new ImageAdapter(this));
+
 
         doFirstRun();
 
@@ -82,6 +92,44 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    class ImageAdapter extends BaseAdapter
+    {
+        int[] images = new int[121];
+
+        private Context mContext;
+        ImageAdapter(Context c)
+        {
+            mContext=c;
+            for(int count=0; count < images.length; count++)
+            {
+               images[count] = R.drawable.field;
+            };
+
+        }
+        @Override
+        public int getCount() {
+            return images.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            ImageView imageView = new ImageView(mContext);
+            imageView.setImageResource(images[i]);
+
+            return imageView;
+        }
     }
 
     public void evaluate(Vibrator vibrator) {
