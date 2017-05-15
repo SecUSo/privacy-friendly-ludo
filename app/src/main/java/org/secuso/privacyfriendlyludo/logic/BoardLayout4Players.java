@@ -3,6 +3,8 @@ package org.secuso.privacyfriendlyludo.logic;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -32,6 +34,7 @@ public class BoardLayout4Players extends GridLayout {
         this.attrs = attrs;
         this.layoutDone=false;
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void createBoard()
     {
         Colors color0 = new Colors(Color.WHITE);
@@ -171,8 +174,15 @@ public class BoardLayout4Players extends GridLayout {
                 for (int j = 0; j < 11; j++)
                 {
                     ViewGroup.LayoutParams params = board[i][j].getLayoutParams();
-                        params.width = (int) ((right-left))/ this.getColumnCount();
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        params.width = (int) ((right-left)) / this.getColumnCount();
                         params.height = (int) ((right-left)) / this.getRowCount();
+
+                    }
+                    else {
+                        params.width = (int) ((bottom-top)) / this.getColumnCount();
+                        params.height = (int) ((bottom-top))/ this.getRowCount();
+                    }
                     board[i][j].setLayoutParams(params);
                 }
             }
