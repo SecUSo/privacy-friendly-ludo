@@ -164,6 +164,9 @@ public class BoardLayout4Players extends GridLayout {
                 addView(board[i][j]);
             }
         }
+
+        //add player
+        board[0][0].addPlayer(Color.GREEN);
     }
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {

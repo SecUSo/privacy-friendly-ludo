@@ -17,7 +17,15 @@
     tools:context="org.secuso.privacyfriendlyludo.activities.GameSettingActivity"
     android:orientation="horizontal">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/playerList">
+
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <!-- <TextView
         android:id="@+id/textView1"
         android:layout_gravity="fill_horizontal"
         android:layout_column="2"
@@ -73,7 +81,7 @@
         android:backgroundTintMode="add"
         android:background="@drawable/ic_person"
         android:onClick="onClick" />
-
+    -->
     <Button
         android:id="@+id/add_player"
         android:layout_column="0"
@@ -82,7 +90,7 @@
         android:backgroundTint="@color/colorAccent"
         android:backgroundTintMode="add"
         android:onClick="onClick" />
-
+    <!--
     <Button
         android:id="@+id/choose_playertype1"
         android:layout_column="0"
@@ -111,7 +119,7 @@
         android:layout_gravity="fill_vertical"
         android:backgroundTintMode="add"
         android:onClick="onClick" />
-
+     -->
     <Button
         android:id="@+id/start_game"
         android:layout_column="0"

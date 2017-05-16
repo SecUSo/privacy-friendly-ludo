@@ -12,13 +12,13 @@ Further development requires Android Studio, we recommend to use at least versio
  
 ### API Reference
 
-Mininum SDK: 17
+Mininum SDK: 21
 Target SDK: 24 
 
 ## License
 
 Privacy Friendly App Example is licensed under the GPLv3.
-Copyright (C) 2016  Karola Marky
+Copyright (C) 2017  Julia Schneider
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
