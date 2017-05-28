@@ -12,13 +12,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.secuso.privacyfriendlyludo.activities.GameActivity">
 
-    <org.secuso.privacyfriendlyludo.logic.BoardLayout4Players
+    <org.secuso.privacyfriendlyludo.logic.BoardView
         android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@color/middlegrey"
-        android:clickable="true"></org.secuso.privacyfriendlyludo.logic.BoardLayout4Players>
+        android:clickable="true"></org.secuso.privacyfriendlyludo.logic.BoardView>
 
     <Button
         android:id="@+id/rollButton"

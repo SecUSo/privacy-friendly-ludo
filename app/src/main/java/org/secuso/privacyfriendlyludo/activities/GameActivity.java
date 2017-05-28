@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.secuso.privacyfriendlyludo.R;
-import org.secuso.privacyfriendlyludo.logic.BoardLayout4Players;
+import org.secuso.privacyfriendlyludo.logic.BoardView;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class GameActivity extends AppCompatActivity {
     private Sensor accelerometer;
     private ShakeListener shakeListener;
 
-    BoardLayout4Players board;
+    BoardView boardView;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -40,8 +40,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_game);
-        board = (BoardLayout4Players) findViewById(R.id.board);
-        board.createBoard();
+        boardView = (BoardView) findViewById(R.id.board);
+        boardView.createBoard();
         doFirstRun();
 
 

@@ -1,16 +1,10 @@
 package org.secuso.privacyfriendlyludo.logic;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
@@ -20,7 +14,7 @@ import org.secuso.privacyfriendlyludo.R;
  * Created by Julchen on 15.05.2017.
  */
 
-public class BoardImageView extends AppCompatImageView {
+public class Field extends AppCompatImageView {
     boolean filled;
     int xIndex;
     int yIndex;
@@ -33,14 +27,14 @@ public class BoardImageView extends AppCompatImageView {
         return xIndex;
     }
 
-    public BoardImageView(Context context, AttributeSet attrs, Colors myColor, boolean filled)
+    public Field(Context context, AttributeSet attrs, Colors myColor, boolean filled)
     {
         super(context, attrs);
         this.filled = filled;
         this.myColor = myColor;
         if(filled)
         {
-            Drawable d = getResources().getDrawable(R.drawable.field2);
+            Drawable d = ContextCompat.getDrawable(context, R.drawable.field2);
             this.setBackground(d);
             this.setBackgroundTintList(ColorStateList.valueOf(myColor.getColor()));
             this.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
@@ -51,13 +45,13 @@ public class BoardImageView extends AppCompatImageView {
     }
 
     // set color and figure of player to the field
-    public void addPlayer(int playerColor)
+    public void addPlayer(int playerColor, Context context)
     {
-        Drawable drawable = getResources().getDrawable(R.drawable.figure);
-        this.setForeground(drawable);
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.figure);
+       // this.setForeground(drawable);
         //this.setForegroundTintList(ColorStateList.valueOf(playerColor));
-        this.setForegroundTintList(ColorStateList.valueOf(Color.GREEN));
-        this.setForegroundTintMode(PorterDuff.Mode.MULTIPLY);
+        //this.setForegroundTintList(ColorStateList.valueOf(Color.GREEN));
+        //this.setForegroundTintMode(PorterDuff.Mode.MULTIPLY);
 
     }
 }

@@ -3,38 +3,31 @@ package org.secuso.privacyfriendlyludo.logic;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 
-import org.secuso.privacyfriendlyludo.R;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Julchen on 15.05.2017.
  */
 
-public class BoardLayout4Players extends GridLayout {
+public class BoardView extends GridLayout {
 
-    private BoardImageView[][] board;
+    private Field[][] board;
     private AttributeSet attrs;
     private boolean layoutDone;
 
 
-    public BoardLayout4Players(Context context, AttributeSet attrs)
+    public BoardView(Context context, AttributeSet attrs)
     {
 
         super(context, attrs);
         this.attrs = attrs;
         this.layoutDone=false;
     }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     public void createBoard()
     {
         Colors color0 = new Colors(Color.WHITE);
@@ -130,7 +123,7 @@ public class BoardLayout4Players extends GridLayout {
 
         boolean filled = false;
         //create Array of size of the board
-        this.board = new BoardImageView[11][11];
+        this.board = new Field[11][11];
         this.setRowCount(11);
         this.setColumnCount(11);
 
@@ -138,23 +131,23 @@ public class BoardLayout4Players extends GridLayout {
         for(int i=0; i<11; i++) {
             for (int j = 0; j < 11; j++) {
                 filled = false;
-                board[i][j] = new BoardImageView(getContext(), this.attrs, color1, filled);
+                board[i][j] = new Field(getContext(), this.attrs, color1, filled);
             }
         }
         //change Imageviews for colors
         for(int k=0; k<color1.getCoordinates().size(); k++)
         {
             filled=true;
-            board[color1.getCoordinates().get(k).getX()][color1.getCoordinates().get(k).getY()] = new BoardImageView(getContext(), this.attrs, color1, filled);
-            board[color2.getCoordinates().get(k).getX()][color2.getCoordinates().get(k).getY()] = new BoardImageView(getContext(), this.attrs, color2, filled);
-            board[color3.getCoordinates().get(k).getX()][color3.getCoordinates().get(k).getY()] = new BoardImageView(getContext(), this.attrs, color3, filled);
-            board[color4.getCoordinates().get(k).getX()][color4.getCoordinates().get(k).getY()] = new BoardImageView(getContext(), this.attrs, color4, filled);
+            board[color1.getCoordinates().get(k).getX()][color1.getCoordinates().get(k).getY()] = new Field(getContext(), this.attrs, color1, filled);
+            board[color2.getCoordinates().get(k).getX()][color2.getCoordinates().get(k).getY()] = new Field(getContext(), this.attrs, color2, filled);
+            board[color3.getCoordinates().get(k).getX()][color3.getCoordinates().get(k).getY()] = new Field(getContext(), this.attrs, color3, filled);
+            board[color4.getCoordinates().get(k).getX()][color4.getCoordinates().get(k).getY()] = new Field(getContext(), this.attrs, color4, filled);
         }
         //change Imageviews for rest of the fields
         for (int l=0; l<color0.getCoordinates().size(); l++)
         {
             filled=true;
-            board[color0.getCoordinates().get(l).getX()][color0.getCoordinates().get(l).getY()] = new BoardImageView(getContext(), this.attrs, color0, filled);
+            board[color0.getCoordinates().get(l).getX()][color0.getCoordinates().get(l).getY()] = new Field(getContext(), this.attrs, color0, filled);
         }
         //add design of imageviews to the board
         // add it after all colors are set
@@ -166,7 +159,7 @@ public class BoardLayout4Players extends GridLayout {
         }
 
         //add player
-        board[0][0].addPlayer(Color.GREEN);
+        board[0][0].addPlayer(Color.GREEN, getContext());
     }
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
