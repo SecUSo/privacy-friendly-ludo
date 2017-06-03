@@ -14,6 +14,9 @@
     <color name="red">#b71c1c</color>
     <color name="green">#388E3C</color>
 
+    <!-- lighter colors -->
+    <color name="lightred">#D23B3B</color>
+
     <!-- dots inactive colors -->
     <color name="dot_dark_screen">#026499</color>
 

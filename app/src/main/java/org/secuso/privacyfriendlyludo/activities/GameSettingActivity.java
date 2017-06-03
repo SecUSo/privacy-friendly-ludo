@@ -14,17 +14,18 @@ import java.util.List;
 
 public class GameSettingActivity extends AppCompatActivity {
 
-    RecyclerView mPlayerList;
+  //  RecyclerView mPlayerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_setting);
-
+/*
         mPlayerList = (RecyclerView) findViewById(R.id.playerList);
         List<String> playerList = new LinkedList<>();
         playerList.add("Hallo");
         mPlayerList.setAdapter(new PlayerListAdapter(playerList, new LinkedList<String>()));
+        */
     }
 
     public void onClick(View view) {

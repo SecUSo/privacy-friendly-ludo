@@ -1,4 +1,4 @@
-package org.secuso.privacyfriendlyludo.activities;
+package org.secuso.privacyfriendlyludo.logic;
 
 import android.util.Log;
 

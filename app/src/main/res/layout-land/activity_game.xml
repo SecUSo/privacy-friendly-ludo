@@ -11,32 +11,23 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="org.secuso.privacyfriendlyludo.activities.GameActivity">
 
-        <org.secuso.privacyfriendlyludo.logic.BoardView
+        <org.secuso.privacyfriendlyludo.activities.BoardView
             android:id="@+id/board"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:background="@color/middlegrey"
-            android:clickable="true"></org.secuso.privacyfriendlyludo.logic.BoardView>
-
-        <Button
-            android:id="@+id/rollButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:text="@string/roll_dice"
-            android:layout_alignParentEnd="true" />
+            android:clickable="true"></org.secuso.privacyfriendlyludo.activities.BoardView>
 
         <ImageView
             android:id="@+id/resultOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rollButton"
             android:layout_marginLeft="@dimen/dots_height"
             android:layout_marginTop="@dimen/slide_actions"
-            android:background="@color/darkblue"
+            android:background="@drawable/d4"
+            android:layout_toRightOf="@+id/board"
             android:gravity="right|center_horizontal"
-            tools:ignore="ContentDescription"
-            android:layout_toRightOf="@+id/board" />
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
