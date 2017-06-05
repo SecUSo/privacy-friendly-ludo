@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.secuso.privacyfriendlyludo.Map.GameFieldPosition;
 import org.secuso.privacyfriendlyludo.Map.StartGameFieldPosition;
+import org.secuso.privacyfriendlyludo.R;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 public class BoardModel {
     ArrayList all_player_observer = new ArrayList();
+    boolean dice =true;
 
     public ArrayList<Player> getPlayers() {
         return players;
@@ -27,7 +29,6 @@ public class BoardModel {
     ArrayList<String> state = new ArrayList<String>();
     boolean possible_figure_moved = false;
     int dice_number;
-    Player opponent = new Player();
 
     boolean inHouse = false;
 
@@ -61,6 +62,16 @@ public class BoardModel {
 
     // which player has the control
     Player recent_player = new Player();
+
+    public void setOpponent_player(Player opponent) {
+        this.opponent_player = opponent;
+    }
+
+    public Player getOpponent_player() {
+        return opponent_player;
+    }
+
+    Player opponent_player = new Player();
     ArrayList<Figure> figure = new ArrayList<Figure>();
 
     public GameFieldPosition getMy_game_field() {
@@ -79,14 +90,14 @@ public class BoardModel {
 
     StartGameFieldPosition start_player_map;
 
-    public BoardModel() {
-        players.add(new Player(1, Color.RED, "Max"));
-        players.add(new Player(2, Color.BLUE, "Mickey"));
-        players.add(new Player(3, Color.GREEN, "Mini"));
-        players.add(new Player(4, Color.YELLOW, "Lisa"));
+    public BoardModel(){//ArrayList <Player> players) {
+        players.add(new Player(1, R.color.red, "Max"));
+        players.add(new Player(2, R.color.darkblue, "Mickey"));
+        players.add(new Player(3, R.color.green, "Mini"));
+        players.add(new Player(4, R.color.yellow, "Lisa"));
         recent_player = players.get(0);
-        start_player_map = new StartGameFieldPosition();
-        my_game_field = new GameFieldPosition();
+        start_player_map = new StartGameFieldPosition(players);
+        my_game_field = new GameFieldPosition(players);
         start_player_map.fill_with_players(this);
     }
 
@@ -211,15 +222,15 @@ public class BoardModel {
     }
 
     public void updatePlayer(int player_id, int figure_id, int dice_result, int new_position, boolean kickedOut) {
-        opponent = players.get(player_id-1);
-        Figure moved_figure = opponent.getFigures().get(figure_id - 1);
+        opponent_player = players.get(player_id-1);
+        Figure moved_figure = opponent_player.getFigures().get(figure_id - 1);
         int count_steps;
         if (kickedOut)
         {
           count_steps = 0;
         }
         else {
-            count_steps = opponent.getFigures().get(figure_id - 1).getCount_steps() + dice_result;
+            count_steps = opponent_player.getFigures().get(figure_id - 1).getCount_steps() + dice_result;
         }
         moved_figure.setCount_steps(count_steps);
         moved_figure.setField_position_index(new_position);
@@ -230,20 +241,20 @@ public class BoardModel {
     public void updateBoard(int player_id, int figure_id, int old_position, int new_position) {
         GameField field_position_old;
         GameField field_position_new;
-        opponent = players.get(player_id-1);
+        opponent_player = players.get(player_id-1);
         if (old_position >= 100) {
-            field_position_old = getStart_player_map().getMyGamefield().get((old_position - 1) %100);
+            field_position_old = getStart_player_map().getMyGamefield().get(old_position %100);
         } else {
             field_position_old = getMy_game_field().getMyGamefield().get(old_position - 1);
         }
         field_position_old.setFigure_id(0);
         field_position_old.setPlayer_id(0);
         if (new_position >= 100) {
-            field_position_new = getStart_player_map().getMyGamefield().get((new_position - 1) %100);
+            field_position_new = getStart_player_map().getMyGamefield().get(new_position %100);
         } else {
             field_position_new = getMy_game_field().getMyGamefield().get(new_position - 1);
         }
-        field_position_new.setPlayer_id(opponent.getId());
+        field_position_new.setPlayer_id(opponent_player.getId());
         field_position_new.setFigure_id(figure_id);
     }
 
@@ -263,7 +274,8 @@ public class BoardModel {
         // check if Dice Roll is allowed
         //roll Dice
         Dicer dicer = new Dicer();
-        dice_number = dicer.rollDice();
+        dice = !dice;
+        dice_number = dicer.rollDice(dice);
         //ask model what to do next --> for game rules
         // return all movable figures
         movable_figures = checkMovableFigures(recent_player.getId());

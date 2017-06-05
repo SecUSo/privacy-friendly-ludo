@@ -37,14 +37,19 @@ public class Figure {
         {
             this.state="inGame";
         }
+        else if (field_position_index >100)
+        {
+            this.state="start";
+        }
         else if (field_position_index>40 && field_position_index<56)
         {
             this.state="end";
         }
         else
         {
-            this.state="finished";
+            this.state = "finished";
         }
+
 
     }
 

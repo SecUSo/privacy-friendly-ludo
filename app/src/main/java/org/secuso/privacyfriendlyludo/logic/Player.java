@@ -25,11 +25,11 @@ public class Player {
         this.id = id;
         this.color = playercolor;
         //create 4 figures
-        for (int i=1; i<5; i++)
+        for (int i=0; i<4; i++)
         {
             int index = 100 + i + (4*(id-1));
          //   int index = i + 4*(id-1);
-            figures.add(new Figure(i, index));
+            figures.add(new Figure(i+1, index));
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
@@ -69,6 +70,24 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
             layersDrawable.getDrawable(0).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
             layersDrawable.getDrawable(1).setAlpha(0);
             layersDrawable.getDrawable(2).setAlpha(0);
+            //calculate opposite color
+            float[] myhsv = new float[3];
+            int new_color;
+            new_color = myColor;
+            Color.colorToHSV(new_color, myhsv);
+            float hue = myhsv[0];
+            if (myhsv[2] == 1)
+            {
+                myhsv[2] = 0;
+            }
+            else
+            {
+                hue = (hue + 180) % 360;
+                myhsv[0] = hue;
+            }
+            new_color = Color.HSVToColor(myhsv);
+           // new_color = getResources().getColor(new_color);
+            layersDrawable.getDrawable(2).setColorFilter(new_color, PorterDuff.Mode.MULTIPLY);
         }
         this.add_player = add_player;
         if (add_player == true) {
@@ -80,16 +99,8 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
 
     public void markPossibleFigures(int color) {
 
-        this.myColor = color;
-
-        float[] myhsv = new float[3];
-        Color.colorToHSV(myColor, myhsv);
-        float hue = myhsv[0];
-        hue = (hue + 180) % 360;
-        myhsv[0] = hue;
-        myColor = Color.HSVToColor(myhsv);
+       // this.myColor = color;
         layersDrawable.getDrawable(2).setAlpha(255);
-        layersDrawable.getDrawable(2).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
     }
 
     public void hidePossibleFigure() {

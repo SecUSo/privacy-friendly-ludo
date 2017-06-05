@@ -100,6 +100,7 @@ public class BoardView extends GridLayout{
             int y = model.getStart_player_map().getMyGamefield().get(i).getY();
             int field_index = model.getStart_player_map().getMyGamefield().get(i).getIndex();
             int mycolor = getResources().getColor(model.getStart_player_map().getMyGamefield().get(i).getMyColor());
+            //int mycolor = model.getStart_player_map().getMyGamefield().get(i).getMyColor();
             int player_id = model.getStart_player_map().getMyGamefield().get(i).getPlayer_id();
             boolean addplayer = false;
             if (player_id != 0)
@@ -136,8 +137,8 @@ public class BoardView extends GridLayout{
         {
             case "start":
                 // depending on player
-                x=model.getStart_player_map().getMyGamefield().get((index-1) % 100).getX();
-                y=model.getStart_player_map().getMyGamefield().get((index-1) % 100).getY();
+                x=model.getStart_player_map().getMyGamefield().get((index) % 100).getX();
+                y=model.getStart_player_map().getMyGamefield().get((index) % 100).getY();
                 break;
             case "inGame":
                 x=model.getMy_game_field().getMyGamefield().get(index-1).getX();
@@ -157,7 +158,7 @@ public class BoardView extends GridLayout{
     {
         this.model = mymodel;
         int color = model.getRecent_player().getColor();
-        Log.i("tag", model.getRecent_player().getName());
+        //Log.i("tag", model.getRecent_player().getName());
         int x = (getFigurePositionOnBoard(mymodel, figure_id)).get(0);
         int y = (getFigurePositionOnBoard(mymodel, figure_id)).get(1);
         board[x][y].markPossibleFigures(color);
@@ -213,17 +214,20 @@ public void removeOldFigure(BoardModel mymodel, int old_position)
         {
             x=model.getStart_player_map().getMyGamefield().get((new_position) % 100).getX();
             y=model.getStart_player_map().getMyGamefield().get((new_position) % 100).getY();
-            color = model.getStart_player_map().getMyGamefield().get((new_position) % 100).getMyColor();
         }
-        else {
+        else
+        {
             x = model.getMy_game_field().getMyGamefield().get(new_position - 1).getX();
             y = model.getMy_game_field().getMyGamefield().get(new_position - 1).getY();
-            color = model.getMy_game_field().getMyGamefield().get(new_position - 1).getMyColor();
         }
 
         if (knocked_out == false)
         {
-            color = model.getRecent_player().getColor();
+            color = getResources().getColor(model.getRecent_player().getColor());
+        }
+        else
+        {
+            color = getResources().getColor(model.getOpponent_player().getColor());
         }
 
         //add figure layer

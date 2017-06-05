@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlyludo.logic;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 /**
  * Created by Julchen on 31.05.2017.
@@ -16,6 +17,7 @@ public class GameField {
 
     public void setFigure_id(int figure_id) {
         this.figure_id = figure_id;
+        Log.i("tag", "Index: " + this.getIndex() + " Figure_id: " + this.figure_id);
     }
 
     int figure_id;
@@ -26,6 +28,7 @@ public class GameField {
 
     public void setPlayer_id(int player_id) {
         this.player_id = player_id;
+        Log.i("tag", "Index: " + this.getIndex() + " Player_id: " + this.player_id);
     }
 
     int player_id = 0;

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.GameField;
+import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.util.ArrayList;
 
@@ -26,12 +27,13 @@ public class GameFieldPosition {
 
     //40 fields
 
-    public GameFieldPosition() {
+    public GameFieldPosition(ArrayList<Player> players) {
         int main_color = R.color.white;
-        int color1 = R.color.red;
-        int color2 = R.color.darkblue;
-        int color3 = R.color.green;
-        int color4 = R.color.yellow;
+        int color1, color2, color3, color4;
+        color1 = players.get(0).getColor();
+        color2 = players.get(1).getColor();
+        color3 = players.get(2).getColor();
+        color4 = players.get(3).getColor();
         //start field p1
         myGamefield.add(new GameField(1 ,0,4,0,0, color1));
 

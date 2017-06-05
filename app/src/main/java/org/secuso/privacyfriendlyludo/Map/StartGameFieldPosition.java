@@ -5,6 +5,7 @@ import android.graphics.Color;
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.GameField;
+import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.util.ArrayList;
 
@@ -24,13 +25,13 @@ public class StartGameFieldPosition {
 
     private ArrayList<GameField> myGamefield = new ArrayList<GameField>();
 
-    //40 fields
+    public StartGameFieldPosition(ArrayList <Player> players) {
+        int color1, color2, color3, color4;
+        color1 = players.get(0).getColor();
+        color2 = players.get(1).getColor();
+        color3 = players.get(2).getColor();
+        color4 = players.get(3).getColor();
 
-    public StartGameFieldPosition() {
-        int color1 = R.color.red;
-        int color2 = R.color.darkblue;
-        int color3 = R.color.green;
-        int color4 = R.color.yellow;
         //final fields player 1 with figure 1 to 4
         myGamefield.add(new GameField(100, 0, 0, 0, 1,  color1));
         myGamefield.add(new GameField(101, 0, 1, 0, 2, color1));
@@ -55,13 +56,13 @@ public class StartGameFieldPosition {
     }
     public void fill_with_players(BoardModel model)
     {
-        for (int i=1; i< model.getPlayers().size()+1; i++)
+        for (int i=0; i< model.getPlayers().size(); i++)
         {
-            for (int j=1; j< model.getPlayers().get(i-1).getFigures().size()+1; j++)
+            for (int j=0; j< model.getPlayers().get(i).getFigures().size(); j++)
             {
-                int index = model.getPlayers().get(i-1).getFigures().get(j-1).getField_position_index();
-                myGamefield.get((index-1) %100).setFigure_id(j);
-                myGamefield.get((index-1) % 100).setPlayer_id(i);
+                int index = model.getPlayers().get(i).getFigures().get(j).getField_position_index();
+                myGamefield.get((index) %100).setFigure_id(j+1);
+                myGamefield.get((index) % 100).setPlayer_id(i+1);
             }
         }
     }

@@ -78,7 +78,7 @@ public class GameActivity extends AppCompatActivity {
                     dice_number = movable_figures.get(0);
                     initResultDiceViews(dice_number, rollDice);
                     flashDiceResult(rollDice);
-                    Log.i("tag", "es ist: " + model.getRecent_player().getName() + " dran.");
+                   // Log.i("tag", "es ist: " + model.getRecent_player().getName() + " dran.");
 
                     if(movable_figures.size()==1)
                     {
@@ -97,6 +97,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                     else
                     {
+                        int test = 0;
                         // i = 1 because of dice_result
                         for(int i=1; i<movable_figures.size(); i++)
                         {
@@ -113,7 +114,7 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                int old_figure_index = v.getId();
-                Log.i("tag", "old Pos: " + old_figure_index);
+                //Log.i("tag", "old Pos: " + old_figure_index);
                 int marked_figures =0;
                 // i=1 because of dice_result
                 for (int i=1; i<model.getMovable_figures().size(); i++)
@@ -125,25 +126,29 @@ public class GameActivity extends AppCompatActivity {
                 boolean isEmpty=false;
                 int new_opponent_index=0;
                 int figure_id;
-                if (old_figure_index <=100)
+                int player_id;
+                if (old_figure_index <100)
                 {
                     figure_id = model.getMy_game_field().getMyGamefield().get(old_figure_index-1).getFigure_id();
+                    player_id = model.getMy_game_field().getMyGamefield().get(old_figure_index-1).getPlayer_id();
                 }
                 else
                 {
-                    figure_id = model.getStart_player_map().getMyGamefield().get((old_figure_index-1)%100).getFigure_id();
+                    figure_id = model.getStart_player_map().getMyGamefield().get(old_figure_index%100).getFigure_id();
+                    player_id = model.getStart_player_map().getMyGamefield().get(old_figure_index%100).getPlayer_id();
                 }
 
                 int old_opponent_index =  model.getNewPosition(figure_id, dice_number);
                 isEmpty = model.recent_player_on_field(old_opponent_index);
                 if (isEmpty == false)
                 {
+                    model.setOpponent_player(model.getPlayers().get(player_id-1));
                     new_opponent_index = model.moveFigure(old_opponent_index, true);
                     boardView.setFigureToNewPosition(model,old_opponent_index, new_opponent_index, true);
                 }
 
                 int new_figure_index = model.moveFigure(old_figure_index, false);
-                Log.i("tag", "new Pos: " + new_figure_index);
+                //Log.i("tag", "new Pos: " + new_figure_index);
                 // set Figure to new Position
                 boardView.setFigureToNewPosition(model, old_figure_index, new_figure_index, false);
                 player_changed = model.playerChanged(countRollDice);
