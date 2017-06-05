@@ -88,7 +88,7 @@ public class GameActivity extends AppCompatActivity {
                         {
                             // show a message for player changed
                             playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
-                            playermessage.setTextColor(model.getRecent_player().getColor());
+                            playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
                             countRollDice = 0;
                         }
                         // show message for player change
@@ -113,38 +113,33 @@ public class GameActivity extends AppCompatActivity {
         myOnlyhandler = new View.OnClickListener() {
             public void onClick(View v) {
 
-               int old_figure_index = v.getId();
+                int old_figure_index = v.getId();
                 //Log.i("tag", "old Pos: " + old_figure_index);
-                int marked_figures =0;
+                int marked_figures = 0;
                 // i=1 because of dice_result
-                for (int i=1; i<model.getMovable_figures().size(); i++)
-                {
+                for (int i = 1; i < model.getMovable_figures().size(); i++) {
                     marked_figures = model.getMovable_figures().get(i);
                     boardView.HidePossiblePlayers(model, marked_figures);
                 }
                 // check if allready another figure is on the new calculated field
-                boolean isEmpty=false;
-                int new_opponent_index=0;
+                boolean isEmpty = false;
+                int new_opponent_index = 0;
                 int figure_id;
                 int player_id;
-                if (old_figure_index <100)
-                {
-                    figure_id = model.getMy_game_field().getMyGamefield().get(old_figure_index-1).getFigure_id();
-                    player_id = model.getMy_game_field().getMyGamefield().get(old_figure_index-1).getPlayer_id();
-                }
-                else
-                {
-                    figure_id = model.getStart_player_map().getMyGamefield().get(old_figure_index%100).getFigure_id();
-                    player_id = model.getStart_player_map().getMyGamefield().get(old_figure_index%100).getPlayer_id();
+                if (old_figure_index < 100) {
+                    figure_id = model.getMy_game_field().getMyGamefield().get(old_figure_index - 1).getFigure_id();
+                    player_id = model.getMy_game_field().getMyGamefield().get(old_figure_index - 1).getPlayer_id();
+                } else {
+                    figure_id = model.getStart_player_map().getMyGamefield().get(old_figure_index % 100).getFigure_id();
+                    player_id = model.getStart_player_map().getMyGamefield().get(old_figure_index % 100).getPlayer_id();
                 }
 
-                int old_opponent_index =  model.getNewPosition(figure_id, dice_number);
+                int old_opponent_index = model.getNewPosition(figure_id, dice_number);
                 isEmpty = model.recent_player_on_field(old_opponent_index);
-                if (isEmpty == false)
-                {
-                    model.setOpponent_player(model.getPlayers().get(player_id-1));
+                if (isEmpty == false) {
+                    model.setOpponent_player(model.getPlayers().get(player_id - 1));
                     new_opponent_index = model.moveFigure(old_opponent_index, true);
-                    boardView.setFigureToNewPosition(model,old_opponent_index, new_opponent_index, true);
+                    boardView.setFigureToNewPosition(model, old_opponent_index, new_opponent_index, true);
                 }
 
                 int new_figure_index = model.moveFigure(old_figure_index, false);
@@ -152,17 +147,20 @@ public class GameActivity extends AppCompatActivity {
                 // set Figure to new Position
                 boardView.setFigureToNewPosition(model, old_figure_index, new_figure_index, false);
                 player_changed = model.playerChanged(countRollDice);
-                if (player_changed)
-                {
+                if (player_changed) {
                     // show a message for player changed
                     playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
                     playermessage.setTextColor(model.getRecent_player().getColor());
                     countRollDice = 0;
                 }
                 rollDice.setClickable(true);
+                if (model.isGame_finished() == true) {
+                    playermessage.setText("Game is finished.");
+                }
+
                 }
             };
-    }
+        }
 
         private void doFirstRun() {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

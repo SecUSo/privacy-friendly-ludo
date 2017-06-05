@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlyludo.logic;
 
+import android.util.Log;
+
 /**
  * Created by Julchen on 28.05.2017.
  */
@@ -47,7 +49,7 @@ public class Figure {
         }
         else
         {
-            this.state = "finished";
+            Log.i("tag", "error");
         }
 
 
@@ -55,13 +57,22 @@ public class Figure {
 
     private String state;
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    private boolean finished;
+
     public Figure(int id, int field_position_index) {
         this.field_position_index = field_position_index;
         this.state = "start";
-       // this.state="inGame";
-       // this.count_steps = field_position_index;
         this.count_steps = 0;
-                this.id = id;
+        this.id = id;
+        this.finished = false;
     }
 
     public int getField_position_index() {

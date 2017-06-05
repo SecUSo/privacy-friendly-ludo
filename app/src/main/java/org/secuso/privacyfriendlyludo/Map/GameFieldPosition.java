@@ -90,20 +90,20 @@ public class GameFieldPosition {
         myGamefield.add(new GameField(43, 3, 5, 0, 0, color1));
         myGamefield.add(new GameField(44, 4, 5, 0, 0, color1));
         //player2
-        myGamefield.add(new GameField(49, 5, 1, 0, 0, color2));
-        myGamefield.add(new GameField(50, 5, 2, 0, 0, color2));
-        myGamefield.add(new GameField(51, 5, 3, 0, 0, color2));
-        myGamefield.add(new GameField(52, 5, 4, 0, 0, color2));
+        myGamefield.add(new GameField(45, 5, 1, 0, 0, color2));
+        myGamefield.add(new GameField(46, 5, 2, 0, 0, color2));
+        myGamefield.add(new GameField(47, 5, 3, 0, 0, color2));
+        myGamefield.add(new GameField(48, 5, 4, 0, 0, color2));
         //player3
-        myGamefield.add(new GameField(45, 6, 5, 0, 0, color3));
-        myGamefield.add(new GameField(46, 7, 5, 0, 0, color3));
-        myGamefield.add(new GameField(47, 8, 5, 0, 0, color3));
-        myGamefield.add(new GameField(48, 9, 5, 0, 0, color3));
+        myGamefield.add(new GameField(49, 9, 5, 0, 0, color3));
+        myGamefield.add(new GameField(50, 8, 5, 0, 0, color3));
+        myGamefield.add(new GameField(51, 7, 5, 0, 0, color3));
+        myGamefield.add(new GameField(52, 6, 5, 0, 0, color3));
         //player 4
-        myGamefield.add(new GameField(53, 5, 6, 0, 0, color4));
-        myGamefield.add(new GameField(54, 5, 7, 0, 0, color4));
-        myGamefield.add(new GameField(55, 5, 8, 0, 0, color4));
-        myGamefield.add(new GameField(56, 5, 9, 0, 0, color4));
+        myGamefield.add(new GameField(53, 5, 9, 0, 0, color4));
+        myGamefield.add(new GameField(54, 5, 8, 0, 0, color4));
+        myGamefield.add(new GameField(55, 5, 7, 0, 0, color4));
+        myGamefield.add(new GameField(56, 5, 6, 0, 0, color4));
     }
 
 }

@@ -38,18 +38,10 @@ public class GameField {
         return myColor;
     }
 
-    public void setMyColor(int myColor) {
-        this.myColor = myColor;
-    }
-
     private int myColor;
 
     public int getIndex() {
         return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public GameField(int index, int y, int x, int playerId, int figure_id, int myColor) {
@@ -65,16 +57,8 @@ public class GameField {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
 

@@ -9,7 +9,7 @@ public class Dicer {
 
     public int rollDice(boolean mydice){
         int dice = 0;
-        if (mydice)
+       /* if (mydice )
         {
             dice = 6;
         }
@@ -17,10 +17,11 @@ public class Dicer {
         {
             dice = 5;
         }
+        */
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[6];
         random.nextBytes(bytes);
-       // dice = random.nextInt(6) +1;
+        //dice = random.nextInt(6) +1;
 
         return dice;
     }

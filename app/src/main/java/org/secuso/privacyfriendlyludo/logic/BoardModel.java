@@ -17,6 +17,12 @@ public class BoardModel {
     ArrayList all_player_observer = new ArrayList();
     boolean dice =true;
 
+    public boolean isGame_finished() {
+        return game_finished;
+    }
+
+    boolean game_finished = false;
+
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -95,7 +101,7 @@ public class BoardModel {
         players.add(new Player(2, R.color.darkblue, "Mickey"));
         players.add(new Player(3, R.color.green, "Mini"));
         players.add(new Player(4, R.color.yellow, "Lisa"));
-        recent_player = players.get(0);
+        recent_player = players.get(1);
         start_player_map = new StartGameFieldPosition(players);
         my_game_field = new GameFieldPosition(players);
         start_player_map.fill_with_players(this);
@@ -134,12 +140,20 @@ public class BoardModel {
 
     public int getNewPosition(int figure_id, int dice_result)
     {
-        String figureState = recent_player.getFigures().get(figure_id - 1).getState();
-        inHouse = false;
-        //check if figureState is allowed to move
-        int recent_index = recent_player.getFigures().get(figure_id - 1).getField_position_index();
-        int new_index = 0;
-        switch (figureState) {
+        // figure is finished
+
+        if (recent_player.getFigures().get(figure_id - 1).isFinished())
+        {
+            return 0;
+        }
+        else
+        {
+            String figureState = recent_player.getFigures().get(figure_id - 1).getState();
+            inHouse = false;
+            //check if figureState is allowed to move
+            int recent_index = recent_player.getFigures().get(figure_id - 1).getField_position_index();
+            int new_index = 0;
+            switch (figureState) {
             case "start":
                 switch (recent_player.getId()) {
                     case 1:
@@ -156,13 +170,18 @@ public class BoardModel {
             case "inGame":
                 // check count steps
                 int count_steps = recent_player.getFigures().get(figure_id - 1).getCount_steps();
+                // because field 40 has to be included
                 if ((count_steps + dice_result) <= 40) {
                     new_index = (recent_index + dice_result) % 40;
+                    if (new_index == 0)
+                    {
+                        new_index = 40;
+                    }
                 } else if (count_steps + dice_result > 44) {
                     // new position not possible because end of field
                     return 0;
                 } else {
-                    new_index = 40 + (((count_steps + dice_result) - 40) * (recent_player.getId() - 1));
+                    new_index = 40 + (((count_steps + dice_result) - 40) + (4 * (recent_player.getId()-1)));
                     inHouse = true;
                     return new_index;
                 }
@@ -171,15 +190,14 @@ public class BoardModel {
             case "end":
                 new_index = (recent_index + dice_result);
                 inHouse = true;
-                if (new_index <= 44 + (recent_player.getId() - 1) * 4) {
+                if (new_index < 44 + (recent_player.getId() - 1) * 4) {
                     return new_index;
                 } else {
                     return 0;
                 }
-
-
             default:
                 return 0;
+            }
         }
     }
 
@@ -229,8 +247,14 @@ public class BoardModel {
         {
           count_steps = 0;
         }
-        else {
-            count_steps = opponent_player.getFigures().get(figure_id - 1).getCount_steps() + dice_result;
+        // if figure comes out to the gamefield
+        else if (moved_figure.getState() == "start")
+        {
+            count_steps = 1;
+        }
+        else
+        {
+            count_steps = (recent_player.getFigures().get(figure_id - 1).getCount_steps()) + dice_result;
         }
         moved_figure.setCount_steps(count_steps);
         moved_figure.setField_position_index(new_position);
@@ -285,14 +309,34 @@ public class BoardModel {
     }
 
     public boolean playerChanged(int count_Calls) {
+
+        boolean notfinished = false;
+        for (int i=0; i<recent_player.getFigures().size(); i++)
+        {
+            String state = recent_player.getFigures().get(i).getState();
+            boolean isfinished = recent_player.getFigures().get(i).isFinished();
+            if (state == "end" && !isfinished)
+            {
+                notfinished = true;
+            }
+            else
+            {
+            }
+
+        }
         // no movable figures, 3 times roll dice done, move is finished
         if (dice_number != 6 && count_Calls>=3 && movable_figures.size()==1)
         {
             recent_player = players.get((recent_player.getId()) % 4);
             return true;
         }
-        // figure was moved, move is finished
-        else if (dice_number != 6 && movable_figures.size()>1)
+        // figure was moved, move is finished or not finished but in house
+        else if ((dice_number != 6 && movable_figures.size()>1))
+        {
+            recent_player = players.get((recent_player.getId()) % 4);
+            return true;
+        }
+        else if (dice_number != 6 && notfinished && count_Calls >= 1)
         {
             recent_player = players.get((recent_player.getId()) % 4);
             return true;
@@ -328,10 +372,58 @@ public class BoardModel {
         {
             new_position = getNewPosition(figure_id ,dice_number);
         }
-        updatePlayer(player_id, figure_id, dice_number, new_position, true);
+        updatePlayer(player_id, figure_id, dice_number, new_position, kicked_out);
         updateBoard(player_id, figure_id,figure_index, new_position);
+        updateFinishFlag(player_id, figure_id,new_position);
 
         return new_position;
+    }
+
+    private void updateFinishFlag(int player_id, int figure_id, int new_position)
+    {
+        if (players.get(player_id-1).getFigures().get(figure_id-1).getCount_steps() > 40)
+        {
+            int max_possible_fieldindex = 44 + 4* (player_id-1);
+            int count_not_empty_fields = 0;
+            int count_fields = max_possible_fieldindex - new_position;
+            for (int i=1; i<(count_fields+1);i++)
+            {
+                if (isEmptyofSamePlayer(new_position+i) == true)
+                {
+                }
+                else
+                {
+                    count_not_empty_fields = count_not_empty_fields + 1;
+                }
+            }
+            // no fields are empty, figure is finished
+            if (count_not_empty_fields == 0)
+            {
+                players.get(player_id-1).getFigures().get(figure_id-1).setFinished(true);
+                int count_figures_finished = 0;
+                for (int i=0; i<players.size(); i++)
+                {
+                    for(int j=0; j<players.get(player_id-1).getFigures().size(); j++)
+                    {
+                        if (players.get(i).getFigures().get(j).isFinished())
+                        {
+                            count_figures_finished = count_figures_finished + 1 ;
+                        }
+                    }
+                }
+
+                if (count_figures_finished == 16)
+                {
+                    // all figures are in the house
+                    game_finished = true;
+                }
+
+            }
+        }
+        else
+        {
+
+        }
     }
 
 

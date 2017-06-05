@@ -148,6 +148,11 @@ public class BoardView extends GridLayout{
                 x=model.getMy_game_field().getMyGamefield().get(index-1).getX();
                 y=model.getMy_game_field().getMyGamefield().get(index-1).getY();
                 break;
+            case "finished":
+                x=model.getMy_game_field().getMyGamefield().get(index-1).getX();
+                y=model.getMy_game_field().getMyGamefield().get(index-1).getY();
+                break;
+
         }
         coordinates.add(x);
         coordinates.add(y);
