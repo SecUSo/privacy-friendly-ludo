@@ -1,6 +1,8 @@
 package org.secuso.privacyfriendlyludo.activities;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +11,11 @@ import android.view.View;
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.adapter.PlayerListAdapter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GameSettingActivity extends AppCompatActivity {
+public class GameSettingActivity extends AppCompatActivity{
 
   //  RecyclerView mPlayerList;
 
@@ -32,6 +35,7 @@ public class GameSettingActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.start_game:
                 Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
+                intent.putExtra("PlayerNames", "Anna");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             default:

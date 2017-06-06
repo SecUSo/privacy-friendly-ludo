@@ -12,16 +12,4 @@
 
     <include layout="@layout/content_main" />
 
-    <Button
-        android:id="@+id/button_welcomedialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:layout_gravity="bottom|start"
-        android:background="@drawable/button_normal"
-        android:text="@string/main_button_welcomedialog"
-        android:textColor="@color/white"
-        android:layout_margin="@dimen/fab_margin"/>
-
 </android.support.design.widget.CoordinatorLayout>

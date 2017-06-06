@@ -1,8 +1,10 @@
 package org.secuso.privacyfriendlyludo.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +47,8 @@ public class GameActivity extends AppCompatActivity {
         Context context = null;
         setContentView(R.layout.activity_game);
         model = new BoardModel();
+        Intent intent = getIntent();
+        String textzeile = intent.getStringExtra("PlayerNames");
         boardView = (BoardView) findViewById(R.id.board);
         //boardView = (GridLayout) findViewById(R.id.board);
          boardView.setColumnCount(11);
@@ -60,7 +64,7 @@ public class GameActivity extends AppCompatActivity {
             //Button
             display = getWindowManager().getDefaultDisplay();
             playermessage = (TextView) findViewById(R.id.changePlayerMessage);
-            playermessage.setTextColor(model.getRecent_player().getColor());
+            playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
             playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
 
         rollDice = (ImageView) findViewById(R.id.resultOne);
@@ -150,7 +154,7 @@ public class GameActivity extends AppCompatActivity {
                 if (player_changed) {
                     // show a message for player changed
                     playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
-                    playermessage.setTextColor(model.getRecent_player().getColor());
+                    playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
                     countRollDice = 0;
                 }
                 rollDice.setClickable(true);

@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         // Use the a button to display the welcome screen
-        Button b = (Button) findViewById(R.id.button_welcomedialog);
+      /*  Button b = (Button) findViewById(R.id.button_welcomedialog);
         if (b != null) {
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
+        */
 
         overridePendingTransition(0, 0);
 

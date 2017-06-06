@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 
 public class BoardModel {
-    ArrayList all_player_observer = new ArrayList();
+
     boolean dice =true;
 
     public boolean isGame_finished() {
@@ -27,40 +27,8 @@ public class BoardModel {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     ArrayList<Player> players = new ArrayList<Player>();
-    ArrayList<String> state = new ArrayList<String>();
-    boolean possible_figure_moved = false;
     int dice_number;
-
-    boolean inHouse = false;
-
-    public Boolean getRollDiceAgain() {
-        return rollDiceAgain;
-    }
-
-    public void setRollDiceAgain(Boolean rollDiceAgain) {
-        this.rollDiceAgain = rollDiceAgain;
-    }
-
-    public Boolean getThreeTimesRollAllowed() {
-        return threeTimesRollAllowed;
-    }
-
-    public void setThreeTimesRollAllowed(Boolean threeTimesRollAllowed) {
-        this.threeTimesRollAllowed = threeTimesRollAllowed;
-    }
-
-
-    public void setStart_player_map(StartGameFieldPosition start_player_map) {
-        this.start_player_map = start_player_map;
-    }
-
-    Boolean rollDiceAgain = true;
-    Boolean threeTimesRollAllowed = false;
 
     public Player getRecent_player() {
         return recent_player;
@@ -78,14 +46,9 @@ public class BoardModel {
     }
 
     Player opponent_player = new Player();
-    ArrayList<Figure> figure = new ArrayList<Figure>();
 
     public GameFieldPosition getMy_game_field() {
         return my_game_field;
-    }
-
-    public void setMy_game_field(GameFieldPosition my_game_field) {
-        this.my_game_field = my_game_field;
     }
 
     private GameFieldPosition my_game_field;
@@ -97,11 +60,11 @@ public class BoardModel {
     StartGameFieldPosition start_player_map;
 
     public BoardModel(){//ArrayList <Player> players) {
-        players.add(new Player(1, R.color.red, "Max"));
+        players.add(new Player(1, R.color.red, ""));
         players.add(new Player(2, R.color.darkblue, "Mickey"));
         players.add(new Player(3, R.color.green, "Mini"));
         players.add(new Player(4, R.color.yellow, "Lisa"));
-        recent_player = players.get(1);
+        recent_player = players.get(0);
         start_player_map = new StartGameFieldPosition(players);
         my_game_field = new GameFieldPosition(players);
         start_player_map.fill_with_players(this);
@@ -114,28 +77,76 @@ public class BoardModel {
         boolean moveOfFigureAllowed = false;
         ArrayList<Integer> figure_ids = new ArrayList<Integer>();
 
-        //check each figure
-        for (int i = 0; i < recent_player.getFigures().size(); i++) {
-            int figure_id = recent_player.getFigures().get(i).getId();
-            moveOfFigureAllowed = figureIsAllowedToMove(dice_number, figure_id);
-            if (moveOfFigureAllowed == true) {
-                new_position = getNewPosition(figure_id, dice_number);
-                if (new_position == 0) {
-                    movePossible = false;
-                } else {
-                    movePossible = isEmptyofSamePlayer(new_position);
-                }
-            }
+        // make first field free if still players are in the house
+        boolean freeHouse;
+        boolean freeFirstField;
+        freeFirstField = checkFirstFieldFree();
+        freeHouse = checkHouseisFree();
 
-            //move allowed and possible
-            if (moveOfFigureAllowed == true && movePossible == true) {
+        if (!freeHouse && !freeFirstField)
+        {
+            // move figure on free first field
+            int position = 1 + (recent_player.getId()-1)*10;
+            int figure_id = getMy_game_field().getMyGamefield().get(position-1).getFigure_id();
+            new_position = getNewPosition(figure_id, dice_number);
+            if (isEmptyofSamePlayer(new_position))
+            {
                 figure_ids.add(figure_id);
-                // markfigures
             }
-
+            else
+            {
+                figure_id = getMy_game_field().getMyGamefield().get(new_position-1).getFigure_id();
+                figure_ids.add(figure_id);
+            }
         }
+        else
+        {
+            //check each figure
+            for (int i = 0; i < recent_player.getFigures().size(); i++) {
+                int figure_id = recent_player.getFigures().get(i).getId();
+
+                moveOfFigureAllowed = figureIsAllowedToMove(dice_number, figure_id, freeHouse);
+                if (moveOfFigureAllowed == true) {
+                    new_position = getNewPosition(figure_id, dice_number);
+                    if (new_position == 0) {
+                        movePossible = false;
+                    } else {
+                        movePossible = isEmptyofSamePlayer(new_position);
+                    }
+                }
+
+                //move allowed and possible
+                if (moveOfFigureAllowed == true && movePossible == true) {
+                    figure_ids.add(figure_id);
+                    // markfigures
+                }
+
+            }
+        }
+
         return figure_ids;
 
+    }
+
+    public boolean checkFirstFieldFree()
+    {
+        boolean freeField;
+        int position = 1 + (recent_player.getId()-1)*10;
+        freeField = isEmptyofSamePlayer(position);
+        return freeField;
+    }
+
+    public boolean checkHouseisFree ()
+    {
+        boolean freeHouse = true;
+        for(int i=0; i<recent_player.getFigures().size(); i++)
+        {
+           if (recent_player.getFigures().get(i).getState() == "start")
+           {
+               freeHouse = false;
+           }
+        }
+        return freeHouse;
     }
 
     public int getNewPosition(int figure_id, int dice_result)
@@ -149,7 +160,6 @@ public class BoardModel {
         else
         {
             String figureState = recent_player.getFigures().get(figure_id - 1).getState();
-            inHouse = false;
             //check if figureState is allowed to move
             int recent_index = recent_player.getFigures().get(figure_id - 1).getField_position_index();
             int new_index = 0;
@@ -182,14 +192,12 @@ public class BoardModel {
                     return 0;
                 } else {
                     new_index = 40 + (((count_steps + dice_result) - 40) + (4 * (recent_player.getId()-1)));
-                    inHouse = true;
                     return new_index;
                 }
 
                 return new_index;
             case "end":
                 new_index = (recent_index + dice_result);
-                inHouse = true;
                 if (new_index < 44 + (recent_player.getId() - 1) * 4) {
                     return new_index;
                 } else {
@@ -201,16 +209,24 @@ public class BoardModel {
         }
     }
 
-    public boolean figureIsAllowedToMove(int dice_result, int figure_id) {
+    public boolean figureIsAllowedToMove(int dice_result, int figure_id, boolean freeHouse) {
         String figureState = recent_player.getFigures().get(figure_id - 1).getState();
-        //all FigureTypes can move
-        if (dice_result == 6) {
+        if (dice_result == 6 && freeHouse) {
             return true;
         }
-        // no Figure is movable
+        else if (dice_result == 6 && !freeHouse && figureState == "start")
+        {
+            return true;
+        }
+        else if (dice_result == 6 && !freeHouse && figureState != "start")
+        {
+            return false;
+        }
         else if (dice_result != 6 && figureState != "start") {
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -227,7 +243,7 @@ public class BoardModel {
 
     }
 
-    //checks if already a figure of this player is there
+    //checks if already a figure is there
     public Boolean recent_player_on_field(int fieldindex) {
         if (my_game_field.getMyGamefield().get(fieldindex - 1).getPlayer_id() == 0) {
             return true;
