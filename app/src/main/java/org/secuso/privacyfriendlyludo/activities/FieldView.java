@@ -60,41 +60,42 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
         layersDrawable.setLayerInset(2, 400, 130, 400, 670);
         this.setImageDrawable(layersDrawable);
 
-        if (d == null) {
-           // this.setBackground(d);
-            layersDrawable.getDrawable(0).setAlpha(0);
-            layersDrawable.getDrawable(1).setAlpha(0);
-            layersDrawable.getDrawable(2).setAlpha(0);
-        }
-        if (myColor != 0) {
-            layersDrawable.getDrawable(0).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
-            layersDrawable.getDrawable(1).setAlpha(0);
-            layersDrawable.getDrawable(2).setAlpha(0);
-            //calculate opposite color
-            float[] myhsv = new float[3];
-            int new_color;
-            new_color = myColor;
-            Color.colorToHSV(new_color, myhsv);
-            float hue = myhsv[0];
-            if (myhsv[2] == 1)
-            {
-                myhsv[2] = 0;
+            if (d == null) {
+                // this.setBackground(d);
+                layersDrawable.getDrawable(0).setAlpha(0);
+                layersDrawable.getDrawable(1).setAlpha(0);
+                layersDrawable.getDrawable(2).setAlpha(0);
             }
-            else
-            {
-                hue = (hue + 180) % 360;
-                myhsv[0] = hue;
+            if (myColor != 0) {
+                layersDrawable.getDrawable(0).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
+                layersDrawable.getDrawable(1).setAlpha(0);
+                layersDrawable.getDrawable(2).setAlpha(0);
+                //calculate opposite color
+                float[] myhsv = new float[3];
+                int new_color;
+                new_color = myColor;
+                Color.colorToHSV(new_color, myhsv);
+                float hue = myhsv[0];
+                if (myhsv[2] == 1)
+                {
+                    myhsv[2] = 0;
+                }
+                else
+                {
+                    hue = (hue + 180) % 360;
+                    myhsv[0] = hue;
+                }
+                new_color = Color.HSVToColor(myhsv);
+                // new_color = getResources().getColor(new_color);
+                layersDrawable.getDrawable(2).setColorFilter(new_color, PorterDuff.Mode.MULTIPLY);
             }
-            new_color = Color.HSVToColor(myhsv);
-           // new_color = getResources().getColor(new_color);
-            layersDrawable.getDrawable(2).setColorFilter(new_color, PorterDuff.Mode.MULTIPLY);
-        }
-        this.add_player = add_player;
-        if (add_player == true) {
+            this.add_player = add_player;
+            if (add_player == true) {
             layersDrawable.getDrawable(1).setAlpha(255);
             layersDrawable.getDrawable(2).setAlpha(0);
-            layersDrawable.getDrawable(1).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
-        }
+           // layersDrawable.getDrawable(1).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
+            }
+
     }
 
     public void markPossibleFigures(int color) {

@@ -3,36 +3,31 @@ package org.secuso.privacyfriendlyludo.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
-import org.secuso.privacyfriendlyludo.logic.Figure;
-import org.secuso.privacyfriendlyludo.logic.Player;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity { // implements Parcelable
 
     private ImageView rollDice;
     private TextView playermessage;
     SharedPreferences sharedPreferences;
-    private Display display;
     private int countRollDice;
+    Bundle mybundle;
 
     private BoardView boardView;
     BoardModel model;
@@ -43,12 +38,35 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Context context = null;
+
         setContentView(R.layout.activity_game);
-        model = new BoardModel();
         Intent intent = getIntent();
-        String textzeile = intent.getStringExtra("PlayerNames");
+        mybundle = intent.getExtras();
+          if (mybundle != null) {
+              // there is a resumeable game
+              model = mybundle.getParcelable("BoardModel");
+              savedInstanceState = mybundle;
+              mybundle = null;
+          }
+        super.onCreate(savedInstanceState);
+
+        // check if instancestate is empty
+        // important for display orientation changes
+            if (savedInstanceState != null) {
+                model = savedInstanceState.getParcelable("BoardModel");
+            }
+            else
+            {
+                model = new BoardModel();
+            }
+       /* }
+            else
+            {
+            model = mybundle.getParcelable("MODEL");
+        } */
+
+
+        //String textzeile = intent.getStringExtra("PlayerNames");
         boardView = (BoardView) findViewById(R.id.board);
         //boardView = (GridLayout) findViewById(R.id.board);
          boardView.setColumnCount(11);
@@ -62,7 +80,7 @@ public class GameActivity extends AppCompatActivity {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
             //Button
-            display = getWindowManager().getDefaultDisplay();
+        Display display = getWindowManager().getDefaultDisplay();
             playermessage = (TextView) findViewById(R.id.changePlayerMessage);
             playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
             playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
@@ -91,7 +109,10 @@ public class GameActivity extends AppCompatActivity {
                         if (player_changed)
                         {
                             // show a message for player changed
-                            playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
+                            String playername = model.getRecent_player().getName();
+                            String playerMessageString = getString(R.string.player_name);
+                            playerMessageString = playerMessageString.replace("%p", playername);
+                            playermessage.setText(playerMessageString);  //" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran."
                             playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
                             countRollDice = 0;
                         }
@@ -101,7 +122,6 @@ public class GameActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        int test = 0;
                         // i = 1 because of dice_result
                         for(int i=1; i<movable_figures.size(); i++)
                         {
@@ -119,15 +139,15 @@ public class GameActivity extends AppCompatActivity {
 
                 int old_figure_index = v.getId();
                 //Log.i("tag", "old Pos: " + old_figure_index);
-                int marked_figures = 0;
+                int marked_figures;
                 // i=1 because of dice_result
                 for (int i = 1; i < model.getMovable_figures().size(); i++) {
                     marked_figures = model.getMovable_figures().get(i);
                     boardView.HidePossiblePlayers(model, marked_figures);
                 }
                 // check if allready another figure is on the new calculated field
-                boolean isEmpty = false;
-                int new_opponent_index = 0;
+                boolean isEmpty;
+                int new_opponent_index;
                 int figure_id;
                 int player_id;
                 if (old_figure_index < 100) {
@@ -140,7 +160,7 @@ public class GameActivity extends AppCompatActivity {
 
                 int old_opponent_index = model.getNewPosition(figure_id, dice_number);
                 isEmpty = model.recent_player_on_field(old_opponent_index);
-                if (isEmpty == false) {
+                if (!isEmpty) {
                     model.setOpponent_player(model.getPlayers().get(player_id - 1));
                     new_opponent_index = model.moveFigure(old_opponent_index, true);
                     boardView.setFigureToNewPosition(model, old_opponent_index, new_opponent_index, true);
@@ -158,20 +178,21 @@ public class GameActivity extends AppCompatActivity {
                     countRollDice = 0;
                 }
                 rollDice.setClickable(true);
-                if (model.isGame_finished() == true) {
+                if (model.isGame_finished()) {
                     playermessage.setText("Game is finished.");
+
                 }
 
                 }
             };
         }
 
-        private void doFirstRun() {
+      /*  private void doFirstRun() {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPreferences.edit().putString("firstShow", "").commit();
             SharedPreferences settings = getSharedPreferences("firstShow", getBaseContext().MODE_PRIVATE);
         }
-
+*/
 
 
     public void initResultDiceViews(int dice, ImageView myImageview) {
@@ -214,6 +235,32 @@ public class GameActivity extends AppCompatActivity {
         myImageview.startAnimation(animation);
     }
 
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putParcelable("BoardModel", model);
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // app will be closed, state will be saved in a file
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            fos = this.openFileOutput("savedata", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(model);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (oos != null) try { oos.close(); } catch (IOException ignored) {}
+            if (fos != null) try { fos.close(); } catch (IOException ignored) {}
+        }
+
+    }
 }
 

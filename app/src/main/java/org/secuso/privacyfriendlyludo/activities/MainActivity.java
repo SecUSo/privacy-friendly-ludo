@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlyludo.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,35 +16,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
+import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.tutorial.PrefManager;
 import org.secuso.privacyfriendlyludo.tutorial.TutorialActivity;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+
+import static android.R.attr.id;
 
 public class MainActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private ImageView mArrowLeft;
     private ImageView mArrowRight;
+    private Button game_continue;
+    private BoardModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Use the a button to display the welcome screen
-      /*  Button b = (Button) findViewById(R.id.button_welcomedialog);
-        if (b != null) {
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PrefManager prefManager = new PrefManager(getBaseContext());
-                    prefManager.setFirstTimeLaunch(true);
-                    Intent intent = new Intent(MainActivity.this, TutorialActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            });
-        }
-        */
 
         overridePendingTransition(0, 0);
 
@@ -87,6 +82,19 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        model = loadFile();
+        game_continue = (Button) findViewById(R.id.game_button_continue);
+        if (model == null || model.isGame_finished())
+        {
+            // no saved game available
+            game_continue.setClickable(false);
+            game_continue.setBackgroundColor(getResources().getColor(R.color.middlegrey));
+        }
+        else
+        {
+            game_continue.setClickable(true);
+            game_continue.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
     }
 
     @Override
@@ -106,8 +114,39 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.game_button_continue:
+                Intent myintent = new Intent(MainActivity.this, GameActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("BoardModel", model);
+                myintent.putExtras(bundle);
+                myintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myintent);
+                break;
             default:
         }
+    }
+
+    private BoardModel loadFile() {
+        ObjectInputStream ois = null;
+        FileInputStream fis = null;
+        try {
+            fis = this.openFileInput("savedata");
+            ois = new ObjectInputStream(fis);
+            BoardModel model = (BoardModel) ois.readObject();
+            return model;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (ois != null) try { ois.close(); } catch (IOException e) {}
+            if (fis != null) try { fis.close(); } catch (IOException e) {}
+        }
+        return null;
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

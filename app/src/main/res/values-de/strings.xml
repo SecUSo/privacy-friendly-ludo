@@ -77,5 +77,6 @@
 
     <string name="next">Weiter</string>
     <string name="skip">Überspringen</string>
+    <string name="player_name">Player %p ist dran.</string>
 
 </resources>

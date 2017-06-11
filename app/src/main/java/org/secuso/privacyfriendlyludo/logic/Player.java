@@ -1,12 +1,16 @@
 package org.secuso.privacyfriendlyludo.logic;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Julchen on 28.05.2017.
  */
 
-public class Player {
+public class Player implements Parcelable, Serializable{
 
     ArrayList <Figure> figures = new ArrayList<Figure>();
 
@@ -66,4 +70,36 @@ public class Player {
         this.name = name;
     }
 
+
+    protected Player(Parcel in) {
+        id = in.readInt();
+        color = in.readInt();
+        name = in.readString();
+        figures = in.createTypedArrayList(Figure.CREATOR);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(color);
+        dest.writeString(name);
+        dest.writeTypedList(figures);
+    }
+
+    public static final Parcelable.Creator<Player> CREATOR = new Parcelable.Creator<Player>() {
+        @Override
+        public Player createFromParcel(Parcel in) {
+            return new Player(in);
+        }
+
+        @Override
+        public Player[] newArray(int size) {
+            return new Player[size];
+        }
+    };
 }

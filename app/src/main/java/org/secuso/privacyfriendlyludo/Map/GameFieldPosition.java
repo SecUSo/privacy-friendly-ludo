@@ -1,19 +1,22 @@
 package org.secuso.privacyfriendlyludo.Map;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.GameField;
 import org.secuso.privacyfriendlyludo.logic.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Julchen on 31.05.2017.
  */
 
-public class GameFieldPosition {
+public class GameFieldPosition implements  Parcelable, Serializable{
 
     public ArrayList<GameField> getMyGamefield() {
         return myGamefield;
@@ -32,8 +35,10 @@ public class GameFieldPosition {
         int color1, color2, color3, color4;
         color1 = players.get(0).getColor();
         color2 = players.get(1).getColor();
-        color3 = players.get(2).getColor();
-        color4 = players.get(3).getColor();
+        //color3 = players.get(2).getColor();
+        //color4 = players.get(3).getColor();
+        color3 = R.color.green;
+        color4 = R.color.yellow;
         //start field p1
         myGamefield.add(new GameField(1 ,0,4,0,0, color1));
 
@@ -105,5 +110,41 @@ public class GameFieldPosition {
         myGamefield.add(new GameField(55, 5, 7, 0, 0, color4));
         myGamefield.add(new GameField(56, 5, 6, 0, 0, color4));
     }
+
+    protected GameFieldPosition(Parcel in) {
+        if (in.readByte() == 0x01) {
+            myGamefield = new ArrayList<GameField>();
+            in.readList(myGamefield, GameField.class.getClassLoader());
+        } else {
+            myGamefield = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (myGamefield == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(myGamefield);
+        }
+    }
+
+    public static final Parcelable.Creator<GameFieldPosition> CREATOR = new Parcelable.Creator<GameFieldPosition>() {
+        @Override
+        public GameFieldPosition createFromParcel(Parcel in) {
+            return new GameFieldPosition(in);
+        }
+
+        @Override
+        public GameFieldPosition[] newArray(int size) {
+            return new GameFieldPosition[size];
+        }
+    };
 
 }

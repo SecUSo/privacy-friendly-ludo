@@ -89,5 +89,6 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="add_player">Add Player</string>
     <string name="start_game">Start Game</string>
     <string name="roll_dice">roll dice</string>
+    <string name="player_name">It´s your turn. %p</string>
 
 </resources>

@@ -79,18 +79,22 @@ public class BoardView extends GridLayout{
             int x = model.getMy_game_field().getMyGamefield().get(i).getX();
             int y = model.getMy_game_field().getMyGamefield().get(i).getY();
             int field_index = model.getMy_game_field().getMyGamefield().get(i).getIndex();
+            //TODO ContextCompat.getColor(getContext(), model.getMy_game_field().getMyGamefield().get(i).getMyColor()  );
             int mycolor = getResources().getColor(model.getMy_game_field().getMyGamefield().get(i).getMyColor());
             int player_id = model.getMy_game_field().getMyGamefield().get(i).getPlayer_id();
-            boolean addplayer = false;
             if (player_id != 0)
             {
-                addplayer = true;
+                // add player
+                int player_color = getResources().getColor(model.getPlayers().get(player_id-1).getColor());
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), true);
+                board[x][y].getLayersDrawable().getDrawable(1).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
             }
             else
             {
-                addplayer = false;
+                // build normal field
+                // no player on this field
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), false);
             }
-            board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), addplayer);
             board[x][y].setId(field_index);
         }
         //add figures and start fields
@@ -102,16 +106,20 @@ public class BoardView extends GridLayout{
             int mycolor = getResources().getColor(model.getStart_player_map().getMyGamefield().get(i).getMyColor());
             //int mycolor = model.getStart_player_map().getMyGamefield().get(i).getMyColor();
             int player_id = model.getStart_player_map().getMyGamefield().get(i).getPlayer_id();
-            boolean addplayer = false;
             if (player_id != 0)
             {
-                addplayer = true;
+                // add player
+                int player_color = getResources().getColor(model.getPlayers().get(player_id-1).getColor());
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), true);
+                board[x][y].getLayersDrawable().getDrawable(1).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
             }
             else
             {
-                addplayer = false;
+                // build normal field
+                // no player on this field
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), false);
             }
-            board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), addplayer);
+
             board[x][y].setId(field_index);
         }
 

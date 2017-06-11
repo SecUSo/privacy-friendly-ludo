@@ -1,12 +1,16 @@
 package org.secuso.privacyfriendlyludo.logic;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+
+import java.io.Serializable;
 
 /**
  * Created by Julchen on 28.05.2017.
  */
 
-public class Figure {
+public class Figure implements Parcelable, Serializable{
 
     private int field_position_index;
 
@@ -82,5 +86,39 @@ public class Figure {
     public void setField_position_index(int field_position_index) {
         this.field_position_index = field_position_index;
     }
+
+    protected Figure(Parcel in) {
+        field_position_index = in.readInt();
+        id = in.readInt();
+        count_steps = in.readInt();
+        state = in.readString();
+        finished = in.readByte() != 0x00;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(field_position_index);
+        dest.writeInt(id);
+        dest.writeInt(count_steps);
+        dest.writeString(state);
+        dest.writeByte((byte) (finished ? 0x01 : 0x00));
+    }
+
+    public static final Parcelable.Creator<Figure> CREATOR = new Parcelable.Creator<Figure>() {
+        @Override
+        public Figure createFromParcel(Parcel in) {
+            return new Figure(in);
+        }
+
+        @Override
+        public Figure[] newArray(int size) {
+            return new Figure[size];
+        }
+    };
 
 }
