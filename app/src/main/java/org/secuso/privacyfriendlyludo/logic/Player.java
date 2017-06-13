@@ -13,21 +13,31 @@ import java.util.ArrayList;
 public class Player implements Parcelable, Serializable{
 
     ArrayList <Figure> figures = new ArrayList<Figure>();
-
     int id;
     int color;
     String name;
+
+    public boolean isAI() {
+        return isAI;
+    }
+
+    boolean isAI;
 
     public Player()
     {
 
     }
 
-    public Player(int id, int playercolor, String name)
+    public void setAI(boolean AI) {
+        isAI = AI;
+    }
+
+    public Player(int id, int playercolor, String name, boolean isAI)
     {
         this.name = name;
         this.id = id;
         this.color = playercolor;
+        this.isAI = isAI;
         //create 4 figures
         for (int i=0; i<4; i++)
         {
@@ -75,6 +85,7 @@ public class Player implements Parcelable, Serializable{
         id = in.readInt();
         color = in.readInt();
         name = in.readString();
+        isAI = in.readByte() != 0;
         figures = in.createTypedArrayList(Figure.CREATOR);
     }
 
@@ -88,6 +99,7 @@ public class Player implements Parcelable, Serializable{
         dest.writeInt(id);
         dest.writeInt(color);
         dest.writeString(name);
+        dest.writeByte((byte) (isAI ? 1 : 0));
         dest.writeTypedList(figures);
     }
 

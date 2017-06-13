@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.os.ParcelableCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
+import org.secuso.privacyfriendlyludo.logic.Player;
 import org.secuso.privacyfriendlyludo.tutorial.PrefManager;
 import org.secuso.privacyfriendlyludo.tutorial.TutorialActivity;
 
@@ -24,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import static android.R.attr.id;
 
@@ -111,7 +115,12 @@ public class MainActivity extends BaseActivity {
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
                 break;
             case R.id.game_button_start:
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
+                ArrayList<Player> last_players = loadSettings();
+                if (last_players != null)
+                {
+                    intent.putParcelableArrayListExtra("Players", last_players);
+                }
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -133,7 +142,7 @@ public class MainActivity extends BaseActivity {
         try {
             fis = this.openFileInput("savedata");
             ois = new ObjectInputStream(fis);
-            BoardModel model = (BoardModel) ois.readObject();
+            model = (BoardModel) ois.readObject();
             return model;
         }
         catch (IOException e) {
@@ -148,6 +157,29 @@ public class MainActivity extends BaseActivity {
         }
         return null;
     }
+
+    private ArrayList<Player> loadSettings() {
+        ObjectInputStream ois = null;
+        FileInputStream fis = null;
+        try {
+            fis = this.openFileInput("saveSettings");
+            ois = new ObjectInputStream(fis);
+            ArrayList<Player> last_players = (ArrayList<Player>) ois.readObject();
+            return last_players;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (ois != null) try { ois.close(); } catch (IOException e) {}
+            if (fis != null) try { fis.close(); } catch (IOException e) {}
+        }
+        return null;
+    }
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -165,8 +197,8 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
     }
 
@@ -197,15 +229,32 @@ public class MainActivity extends BaseActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            int id = 0;
-            if (getArguments() != null) {
-                id = getArguments().getInt(ARG_SECTION_NUMBER);
-            }
+            int id;
+          //  if (getArguments() != null) {
 
             View rootView = inflater.inflate(R.layout.fragment_main_menu, container, false);
 
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.gameTypeImage);
+
+             if (getArguments().getInt(ARG_SECTION_NUMBER) == 0)
+             {
+
+                 imageView.setImageResource(R.drawable.ludo);
+                id=4;
+             }
+             else
+             {
+                 imageView.setImageResource(R.drawable.ludo6);
+                 id=6;
+             }
+          //  }
+
+
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText("Mode: " + String.valueOf(id));
+            int max_players = id;
+            String playertypeMessageString = getString(R.string.game_type);
+            playertypeMessageString = playertypeMessageString.replace("%max", String.valueOf(id));
+            textView.setText(playertypeMessageString);
             return rootView;
         }
     }

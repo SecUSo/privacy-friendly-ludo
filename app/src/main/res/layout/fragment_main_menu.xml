@@ -10,7 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="50sp"
+        android:textSize="20sp"
         android:text="Text"/>
+
+    <ImageView
+        android:layout_weight="5"
+        android:id="@+id/gameTypeImage"
+        android:layout_width="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ludo"
+        android:layout_height="0dp" />
 
 </LinearLayout>

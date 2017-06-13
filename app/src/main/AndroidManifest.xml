@@ -59,8 +59,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlyludo.activities.MainActivity" />
         </activity>
-        <activity android:name=".activities.GameSettingActivity" />
-        <activity android:name="org.secuso.ludo.GameActivity" />
+        <activity
+            android:name=".activities.GameSettingActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
         <activity android:name=".activities.GameActivity" />
     </application>
 

@@ -24,15 +24,15 @@ public class HelpDataDump {
     public LinkedHashMap<String, List<String>> getDataGeneral() {
         LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<String, List<String>>();
 
+        List<String> GameTyp = new ArrayList<String>();
+        GameTyp.add(context.getResources().getString(R.string.help_playerNumber_answer));
+
+        expandableListDetail.put(context.getResources().getString(R.string.help_playerNumber), GameTyp);
+
         List<String> general = new ArrayList<String>();
         general.add(context.getResources().getString(R.string.help_whatis_answer));
 
         expandableListDetail.put(context.getResources().getString(R.string.help_whatis), general);
-
-        List<String> features = new ArrayList<String>();
-        features.add(context.getResources().getString(R.string.help_feature_one_answer));
-
-        expandableListDetail.put(context.getResources().getString(R.string.help_feature_one), features);
 
         List<String> privacy = new ArrayList<String>();
         privacy.add(context.getResources().getString(R.string.help_privacy_answer));

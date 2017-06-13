@@ -35,14 +35,15 @@
     <!--###HELP###-->
     <string name="help">Help</string>
 
-    <string name="help_whatis">Was ist Privacy Friendly Beispiel?</string>
-    <string name="help_whatis_answer">Privacy Friendly Beispiel zeigt das Standard-Design einer Privacy Friendly App.</string>
-    <string name="help_feature_one">Feature 1</string>
-    <string name="help_feature_one_answer">Beschreibung vom 1. Feature.</string>
+    <string name="help_whatis">Was ist Privacy Friendly Mensch Ärgere Dich nicht?</string>
+    <string name="help_whatis_answer">Privacy Friendly Mensch Ärgere Dich nicht ist eine App um das gleichnamige Brettspiel zu spielen.</string>
+    <string name="help_playerNumber">Wieviele Personen können maximal spielen?</string>
+    <string name="help_playerNumber_answer">Das Spiel kann mit maximal 4 Spielern gespielt werden.</string>
     <string name="help_privacy">Was macht die App privatsphäre-freundlich?</string>
-    <string name="help_privacy_answer">Erklären welche Mechanismen verwendet wurden.</string>
+    <string name="help_privacy_answer">Diese App erfordert keine Berechtigungen. Außerrdem enthält sie keine Werbung.</string>
     <string name="help_permission">Welche Berechtigungen braucht die App?</string>
-    <string name="help_permission_answer">Privacy Friendly Beispiel benötigt keine Berechtigungen.</string>
+    <string name="help_permission_answer">Privacy Friendly App benötigt keine Berechtigungen.</string>
+
 
     <!--###ABOUT###-->
     <string name="about">Über</string>
@@ -56,9 +57,8 @@
     <!-- ###SETTINGS### -->
     <string name="title_activity_settings">Einstellungen</string>
     <string name="pref_header_general">Allgemein</string>
-    <string name="pref_example_switch">Beispiel Switch</string>
-    <string name="pref_example_switch_summary">Beispiel Switch Summary</string>
-    <string name="pref_example_summary">Beispiel Summary</string>
+    <string name="pref_example_switch">3 Mal würfeln erlaubt</string>
+    <string name="pref_example_switch_summary">Ein Spieler der keine Figur mehr im Spiel hat, darf 3 Mal würfeln</string>
 
     <!-- ### WELCOME DIALOG ### -->
     <string name="okay">Okay</string>
@@ -66,17 +66,32 @@
     <string name="main_button_welcomedialog">Willkommen</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
-    <string name="slide1_heading">Willkommen!</string>
-    <string name="slide1_text">Diese App soll als Anleitung zum Design von Privacy Friendly Apps dienen. Hier wird die App in ein bis zwei Sätzen vorgestellt.</string>
+    <string name="slide1_heading">Willkommen</string>
+    <string name="slide1_text"> Diese App ermöglicht das Spielen des Brettspiels "Mensch Ärgere Dich nicht" auf dem Handy. </string>
 
-    <string name="slide2_heading">Schlüsselelements</string>
-    <string name="slide2_text">Hier können Schlüsselelemente vorgestellt werden. Achtung: Nicht zu detailliert werden.</string>
+    <string name="slide2_heading">Schlüsselelemente</string>
+    <string name="slide2_text">Es können Spiele mit bis zu 4 Personen gespielt werden. Angefangene Spiele können gespeichert werden.
+    Farbe und Name der Spieler kann frei gewählt werden.</string>
 
-    <string name="slide3_heading">Github und Guide</string>
-    <string name="slide3_text">Der Quellcode dieser App ist auf GitHub. Weitere Infos gibt es im Privacy Friendly App Guide.</string>
+    <string name="slide3_heading">Github</string>
+    <string name="slide3_text">Der Quellcode dieser App ist auf GitHub verfügbar.</string>
 
     <string name="next">Weiter</string>
     <string name="skip">Überspringen</string>
-    <string name="player_name">Player %p ist dran.</string>
+    <string name="player_name">%p ist dran.</string>
+    <string name="add_player">Spieler hinzufügen</string>
+
+
+    <string name="roll_dice">würfeln</string>
+    <string name="start_game">Spiel starten</string>
+    <string name="finished_Game">Spiel ist beendet.</string>
+    <string name="game_type">%max Spieler</string>
+    <string name="Missing_playername">Spielername fehlt.</string>
+    <string name="color_uniqueness">Farben sind nicht eindeutig oder Weiß.</string>
+    <string name="choose_color">Farben</string>
+    <string name="max_player_reached">Maximale Anzahl an Spielern erreicht.</string>
+    <string name="header_change_rules">Spezialregeln</string>
+    <string name="initial_name_field">Name</string>
+
 
 </resources>

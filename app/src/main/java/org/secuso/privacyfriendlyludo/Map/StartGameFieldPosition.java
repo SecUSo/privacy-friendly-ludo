@@ -1,8 +1,13 @@
 package org.secuso.privacyfriendlyludo.Map;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
@@ -11,12 +16,13 @@ import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Julchen on 01.06.2017.
  */
 
-public class StartGameFieldPosition implements Parcelable, Serializable {
+public class StartGameFieldPosition implements Parcelable, Serializable{
 
     public ArrayList<GameField> getMyGamefield() {
         return myGamefield;
@@ -28,35 +34,29 @@ public class StartGameFieldPosition implements Parcelable, Serializable {
 
     private ArrayList<GameField> myGamefield = new ArrayList<GameField>();
 
-    public StartGameFieldPosition(ArrayList <Player> players) {
-        int color1, color2, color3, color4;
-        color1 = players.get(0).getColor();
-        color2 = players.get(1).getColor();
-   //     color3 = players.get(2).getColor();
-   //     color4 = players.get(3).getColor();
-        color3 = R.color.green;
-        color4 = R.color.yellow;
+    public StartGameFieldPosition(ArrayList <Integer> colors) {
+
 
         //final fields player 1 with figure 1 to 4
-        myGamefield.add(new GameField(100, 0, 0, 0, 1,  color1));
-        myGamefield.add(new GameField(101, 0, 1, 0, 2, color1));
-        myGamefield.add(new GameField(102, 1, 0, 0, 3, color1));
-        myGamefield.add(new GameField(103, 1, 1, 0, 4, color1));
+        myGamefield.add(new GameField(100, 0, 0, 0, 1, colors.get(0)));
+        myGamefield.add(new GameField(101, 0, 1, 0, 2, colors.get(0)));
+        myGamefield.add(new GameField(102, 1, 0, 0, 3, colors.get(0)));
+        myGamefield.add(new GameField(103, 1, 1, 0, 4, colors.get(0)));
         //player2
-        myGamefield.add(new GameField(104, 9, 0, 0, 1, color2));
-        myGamefield.add(new GameField(105, 10, 1, 0, 2, color2));
-        myGamefield.add(new GameField(106, 9, 1, 0, 3, color2));
-        myGamefield.add(new GameField(107, 10, 0, 0, 4, color2));
+        myGamefield.add(new GameField(104, 9, 0, 0, 1, colors.get(1)));
+        myGamefield.add(new GameField(105, 10, 1, 0, 2, colors.get(1)));
+        myGamefield.add(new GameField(106, 9, 1, 0, 3, colors.get(1)));
+        myGamefield.add(new GameField(107, 10, 0, 0, 4, colors.get(1)));
         //player3
-        myGamefield.add(new GameField(108, 9, 9, 0, 1, color3));
-        myGamefield.add(new GameField(109, 10, 9, 0, 2, color3));
-        myGamefield.add(new GameField(110, 9, 10, 0, 3, color3));
-        myGamefield.add(new GameField(111, 10, 10, 0, 4, color3));
+        myGamefield.add(new GameField(108, 9, 9, 0, 1, colors.get(2)));
+        myGamefield.add(new GameField(109, 10, 9, 0, 2, colors.get(2)));
+        myGamefield.add(new GameField(110, 9, 10, 0, 3, colors.get(2)));
+        myGamefield.add(new GameField(111, 10, 10, 0, 4, colors.get(2)));
         //player 4
-        myGamefield.add(new GameField(112, 0, 10, 0, 1, color4));
-        myGamefield.add(new GameField(113, 0, 9, 0, 2, color4));
-        myGamefield.add(new GameField(114, 1, 9, 0, 3, color4));
-        myGamefield.add(new GameField(115, 1, 10, 0, 4, color4));
+        myGamefield.add(new GameField(112, 0, 10, 0, 1, colors.get(3)));
+        myGamefield.add(new GameField(113, 0, 9, 0, 2, colors.get(3)));
+        myGamefield.add(new GameField(114, 1, 9, 0, 3, colors.get(3)));
+        myGamefield.add(new GameField(115, 1, 10, 0, 4, colors.get(3)));
 
     }
     public void fill_with_players(BoardModel model)

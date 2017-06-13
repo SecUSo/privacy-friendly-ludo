@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlyludo.logic;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,7 +11,11 @@ import org.secuso.privacyfriendlyludo.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by Julchen on 28.05.2017.
@@ -61,15 +67,50 @@ public class BoardModel implements Parcelable, Serializable {
 
    private StartGameFieldPosition start_player_map;
 
-    public BoardModel() {//ArrayList <Player> players) {
-        players.add(new Player(1, R.color.red, ""));
-        players.add(new Player(2, R.color.middleblue, "Mickey"));
-         players.add(new Player(3, R.color.green, "Mini"));
-         players.add(new Player(4, R.color.yellow, "Lisa"));
+    private Set<Integer> generated = new LinkedHashSet<Integer>();
+
+    private ArrayList<Integer> colors = new ArrayList<>();
+
+    public Context getContext() {
+        return context;
+    }
+
+    private Context context;
+
+    public BoardModel(Context context, ArrayList<Player> settingplayers) {
+        this.context = context;
+        //this.players = settingplayers;
+        for(int i=0; i<settingplayers.size(); i++)
+        {
+            this.players.add(new Player(i+1,settingplayers.get(i).getColor(),settingplayers.get(i).getName(), false));
+        }
         recent_player = players.get(0);
-        start_player_map = new StartGameFieldPosition(players);
-        my_game_field = new GameFieldPosition(players);
+        setColors();
+        start_player_map = new StartGameFieldPosition(colors);
+        my_game_field = new GameFieldPosition(colors);
         start_player_map.fill_with_players(this);
+    }
+
+    private void setColors()
+    {
+        for (int i=0; i<players.size(); i++)
+        {
+            generated.add(players.get(i).getColor());
+        }
+        // add colors if not all figures are played
+        if (players.size()<4)
+        {
+            TypedArray ta = context.getResources().obtainTypedArray(R.array.playerColors);
+            int[] androidColors = context.getResources().getIntArray(R.array.playerColors);
+            while (generated.size() < 4)
+            {
+                int random_id = new Random().nextInt(androidColors.length);
+                // As we're adding to a set, this will automatically do a containment check
+                int colorToUse = ta.getResourceId(random_id, R.color.black);
+                generated.add(colorToUse);
+            }
+        }
+        colors.addAll(0,generated);
     }
 
     // get all Figures which can be moved according to the rules
@@ -284,15 +325,15 @@ public class BoardModel implements Parcelable, Serializable {
         }
         // no movable figures, 3 times roll dice done, move is finished
         if (dice_number != 6 && count_Calls >= 3 && movable_figures.size() == 1) {
-            recent_player = players.get((recent_player.getId()) % 4);
+            recent_player = players.get((recent_player.getId()) % players.size());
             return true;
         }
         // figure was moved, move is finished or not finished but in house
         else if ((dice_number != 6 && movable_figures.size() > 1)) {
-            recent_player = players.get((recent_player.getId()) % 4);
+            recent_player = players.get((recent_player.getId()) % players.size());
             return true;
         } else if (dice_number != 6 && notfinished && count_Calls >= 1) {
-            recent_player = players.get((recent_player.getId()) % 4);
+            recent_player = players.get((recent_player.getId()) % players.size());
             return true;
         } else //same player is again
         {
@@ -421,6 +462,5 @@ public class BoardModel implements Parcelable, Serializable {
             return new BoardModel[size];
         }
     };
-
 }
 

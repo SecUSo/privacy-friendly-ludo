@@ -44,6 +44,11 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
         this.layersDrawable = layersDrawable;
     }
 
+    public FieldView(Context context, AttributeSet attrs, int myColor)
+    {
+        super(context, attrs);
+    }
+
     public FieldView(Context context, AttributeSet attrs, int myColor, Drawable d, boolean add_player) {
         super(context, attrs);
         this.myColor = myColor;

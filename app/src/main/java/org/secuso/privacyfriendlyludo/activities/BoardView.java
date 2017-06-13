@@ -57,6 +57,7 @@ public class BoardView extends GridLayout{
 
     }
 
+
     public void createBoard(BoardModel model)
     {
         int count = 0;
@@ -250,27 +251,24 @@ public void removeOldFigure(BoardModel mymodel, int old_position)
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if(!this.layoutDone)
-        {
-            for (int i = 0; i < 11; i++) {
-                for (int j = 0; j < 11; j++)
-                {
-                    ViewGroup.LayoutParams params = board[i][j].getLayoutParams();
-                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        params.width = (int) ((right-left)) / this.getColumnCount();
-                        params.height = (int) ((right-left)) / this.getRowCount();
+            super.onLayout(changed, left, top, right, bottom);
+            if (!this.layoutDone) {
+                for (int i = 0; i < 11; i++) {
+                    for (int j = 0; j < 11; j++) {
+                        ViewGroup.LayoutParams params = board[i][j].getLayoutParams();
+                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            params.width = (int) ((right - left)) / this.getColumnCount();
+                            params.height = (int) ((right - left)) / this.getRowCount();
 
+                        } else {
+                            params.width = (int) ((bottom - top)) / this.getColumnCount();
+                            params.height = (int) ((bottom - top)) / this.getRowCount();
+                        }
+                        board[i][j].setLayoutParams(params);
                     }
-                    else {
-                        params.width = (int) ((bottom-top)) / this.getColumnCount();
-                        params.height = (int) ((bottom-top))/ this.getRowCount();
-                    }
-                    board[i][j].setLayoutParams(params);
                 }
+                this.layoutDone = true;
             }
-            this.layoutDone=true;
-        }
     }
 
 }

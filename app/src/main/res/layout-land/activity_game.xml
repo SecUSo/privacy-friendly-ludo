@@ -19,16 +19,16 @@
             android:background="@color/middlegrey"
             android:clickable="true"></org.secuso.privacyfriendlyludo.activities.BoardView>
 
-        <ImageView
-            android:id="@+id/resultOne"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dots_height"
-            android:layout_marginTop="@dimen/slide_actions"
-            android:background="@drawable/d4"
-            android:layout_toRightOf="@+id/board"
-            android:gravity="right|center_horizontal"
-            tools:ignore="ContentDescription" />
+    <ImageView
+        android:id="@+id/resultOne"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="@dimen/dots_height"
+        android:layout_marginTop="@dimen/slide_actions"
+        android:layout_toRightOf="@+id/board"
+        android:background="@drawable/d4"
+        android:gravity="right|center_horizontal"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/changePlayerMessage"

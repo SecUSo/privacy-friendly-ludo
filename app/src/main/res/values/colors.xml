@@ -34,4 +34,13 @@
         <item>@color/dot_dark_screen</item>
         <item>@color/dot_dark_screen</item>
     </array>
+
+    <array name="playerColors">
+        <item>@color/middleblue</item>
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/yellow</item>
+    </array>
+
+
 </resources>

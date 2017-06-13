@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/button_colors"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"
+    android:gravity="center_vertical"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:clickable="true"
+    />

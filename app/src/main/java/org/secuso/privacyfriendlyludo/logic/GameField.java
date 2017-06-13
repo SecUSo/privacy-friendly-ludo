@@ -35,7 +35,7 @@ public class GameField implements Parcelable, Serializable{
         Log.i("tag", "Index: " + this.getIndex() + " Player_id: " + this.player_id);
     }
 
-    int player_id = 0;
+    int player_id;
     int index;
 
     public int getMyColor() {

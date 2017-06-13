@@ -15,13 +15,14 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
+import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class GameActivity extends AppCompatActivity { // implements Parcelable
+public class GameActivity extends AppCompatActivity {
 
     private ImageView rollDice;
     private TextView playermessage;
@@ -45,8 +46,18 @@ public class GameActivity extends AppCompatActivity { // implements Parcelable
           if (mybundle != null) {
               // there is a resumeable game
               model = mybundle.getParcelable("BoardModel");
-              savedInstanceState = mybundle;
-              mybundle = null;
+              if (model == null)
+              {
+                  // control comes from gameSetting
+                  mybundle = null;
+              }
+              else
+              {
+                  // control comes from main activity
+                  savedInstanceState = mybundle;
+                  mybundle = null;
+              }
+
           }
         super.onCreate(savedInstanceState);
 
@@ -57,13 +68,30 @@ public class GameActivity extends AppCompatActivity { // implements Parcelable
             }
             else
             {
-                model = new BoardModel();
+                // new Game
+                ArrayList<Player> playerArrayList = intent.getParcelableArrayListExtra("Players");
+                // repair id if necessary
+                for (int i=0; i<playerArrayList.size(); i++)
+                {
+                    playerArrayList.get(i).setId(i+1);
+                }
+                model = new BoardModel(this, playerArrayList);
+                // save settings
+                FileOutputStream fos = null;
+                ObjectOutputStream oos = null;
+                try {
+                    fos = this.openFileOutput("saveSettings", Context.MODE_PRIVATE);
+                    oos = new ObjectOutputStream(fos);
+                    oos.writeObject(model.getPlayers());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    if (oos != null) try { oos.close(); } catch (IOException ignored) {}
+                    if (fos != null) try { fos.close(); } catch (IOException ignored) {}
+                }
+
             }
-       /* }
-            else
-            {
-            model = mybundle.getParcelable("MODEL");
-        } */
 
 
         //String textzeile = intent.getStringExtra("PlayerNames");
@@ -81,9 +109,12 @@ public class GameActivity extends AppCompatActivity { // implements Parcelable
 
             //Button
         Display display = getWindowManager().getDefaultDisplay();
+            String playername = model.getRecent_player().getName();
+            String playerMessageString = getString(R.string.player_name);
+            playerMessageString = playerMessageString.replace("%p", playername);
             playermessage = (TextView) findViewById(R.id.changePlayerMessage);
-            playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
-            playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
+            playermessage.setTextColor(getResources().getColor(R.color.black));
+            playermessage.setText(playerMessageString);
 
         rollDice = (ImageView) findViewById(R.id.resultOne);
             rollDice.setImageResource(0);
@@ -100,7 +131,6 @@ public class GameActivity extends AppCompatActivity { // implements Parcelable
                     dice_number = movable_figures.get(0);
                     initResultDiceViews(dice_number, rollDice);
                     flashDiceResult(rollDice);
-                   // Log.i("tag", "es ist: " + model.getRecent_player().getName() + " dran.");
 
                     if(movable_figures.size()==1)
                     {
@@ -112,8 +142,7 @@ public class GameActivity extends AppCompatActivity { // implements Parcelable
                             String playername = model.getRecent_player().getName();
                             String playerMessageString = getString(R.string.player_name);
                             playerMessageString = playerMessageString.replace("%p", playername);
-                            playermessage.setText(playerMessageString);  //" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran."
-                            playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
+                            playermessage.setText(playerMessageString);
                             countRollDice = 0;
                         }
                         // show message for player change
@@ -173,13 +202,15 @@ public class GameActivity extends AppCompatActivity { // implements Parcelable
                 player_changed = model.playerChanged(countRollDice);
                 if (player_changed) {
                     // show a message for player changed
-                    playermessage.setText(" Player " + model.getRecent_player().getId() + " " + model.getRecent_player().getName() + " ist dran.");
-                    playermessage.setTextColor(getResources().getColor(model.getRecent_player().getColor()));
+                    String playername = model.getRecent_player().getName();
+                    String playerMessageString = getString(R.string.player_name);
+                    playerMessageString = playerMessageString.replace("%p", playername);
+                    playermessage.setText(playerMessageString);
                     countRollDice = 0;
                 }
                 rollDice.setClickable(true);
                 if (model.isGame_finished()) {
-                    playermessage.setText("Game is finished.");
+                    playermessage.setText(getString(R.string.finished_Game));
 
                 }
 
