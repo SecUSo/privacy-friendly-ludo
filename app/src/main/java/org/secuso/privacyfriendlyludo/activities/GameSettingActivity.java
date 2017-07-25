@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlyludo.activities;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -105,6 +106,17 @@ public class GameSettingActivity extends AppCompatActivity {
                 case 0:
                     player.get(listposition).setAI(!player.get(listposition).isAI());
                     adapter.notifyItemChanged(listposition);
+                    if (player.get(listposition).isAI())
+                    {
+                        //v.setBackgroundColor(0xFF00FF00 );
+                        v.setBackgroundResource( R.drawable.ic_person );
+                    }
+                    else
+                    {
+                        //v.setBackgroundColor(0x0000AA00 );
+                        v.setBackgroundResource( R.drawable.ic_trash );
+                    }
+
                     break;
                 //playerColor is clicked
                 case 1:
@@ -194,6 +206,14 @@ public class GameSettingActivity extends AppCompatActivity {
         public void onBindViewHolder(RecyclerViewCollectionHolder recyclerViewCollectionHolder, int i) {
             recyclerViewCollectionHolder.playerColor.setBackgroundColor(getResources().getColor(player.get(i).getColor()));
             recyclerViewCollectionHolder.playerName.setText(player.get(i).getName());
+            if (player.get(i).isAI())
+            {
+                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_person);
+            }
+            else
+            {
+                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_trash);
+            }
         }
     }
 
@@ -259,6 +279,8 @@ public class GameSettingActivity extends AppCompatActivity {
       /*  TypedArray ta;
         int colorToUse;
         ta = getResources().obtainTypedArray(R.array.playerColors); */
+      // clear list before filling with colors
+      mList.clear();
 
         for (int i = 1; i < count_colors + 1; i++) {
             // colorToUse = ta.getResourceId(i, R.color.black);

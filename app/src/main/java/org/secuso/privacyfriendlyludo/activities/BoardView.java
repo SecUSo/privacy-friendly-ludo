@@ -176,8 +176,13 @@ public class BoardView extends GridLayout{
         int x = (getFigurePositionOnBoard(mymodel, figure_id)).get(0);
         int y = (getFigurePositionOnBoard(mymodel, figure_id)).get(1);
         board[x][y].markPossibleFigures(color);
-        board[x][y].setOnClickListener(myOnlyhandler);
-        board[x][y].setClickable(true);
+        // only set OnclickListener and Clickable if it is not a AI
+        if (!mymodel.getRecent_player().isAI())
+        {
+            board[x][y].setOnClickListener(myOnlyhandler);
+            board[x][y].setClickable(true);
+        }
+
 
     }
 

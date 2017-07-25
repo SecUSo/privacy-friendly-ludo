@@ -52,7 +52,7 @@ public class BoardModel implements Parcelable, Serializable {
         this.context = context;
         //this.players = settingplayers;
         for (int i = 0; i < settingplayers.size(); i++) {
-            this.players.add(new Player(i + 1, settingplayers.get(i).getColor(), settingplayers.get(i).getName(), false));
+            this.players.add(new Player(i + 1, settingplayers.get(i).getColor(), settingplayers.get(i).getName(), settingplayers.get(i).isAI));
         }
         recent_player = players.get(0);
         setColors();
