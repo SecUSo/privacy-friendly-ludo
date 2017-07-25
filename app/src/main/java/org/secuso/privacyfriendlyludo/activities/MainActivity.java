@@ -143,6 +143,7 @@ public class MainActivity extends BaseActivity {
             fis = this.openFileInput("savedata");
             ois = new ObjectInputStream(fis);
             model = (BoardModel) ois.readObject();
+            model.setContext(getBaseContext());
             return model;
         }
         catch (IOException e) {

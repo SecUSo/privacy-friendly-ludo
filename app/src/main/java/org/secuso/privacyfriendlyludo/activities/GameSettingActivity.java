@@ -34,11 +34,11 @@ import java.util.Set;
 import static java.lang.Integer.max;
 import static java.lang.Integer.valueOf;
 
-public class GameSettingActivity extends AppCompatActivity{
+public class GameSettingActivity extends AppCompatActivity {
 
     private RecyclerView mPlayerList;
-   RecyclerViewCollectionAdapter adapter;
-    private  ArrayList <Player> player = new ArrayList<>();
+    RecyclerViewCollectionAdapter adapter;
+    private ArrayList<Player> player = new ArrayList<>();
     List<Integer> mList = new ArrayList<>();
     private Bundle mybundle;
     int listposition;
@@ -49,8 +49,7 @@ public class GameSettingActivity extends AppCompatActivity{
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState !=null)
-        {
+        if (savedInstanceState != null) {
             savedInstanceState.getParcelable("Players");
             savedInstanceState.getInt("Position");
         }
@@ -58,21 +57,17 @@ public class GameSettingActivity extends AppCompatActivity{
         Intent intent = getIntent();
         mybundle = intent.getExtras();
         if (mybundle != null) {
-            if (mybundle.getInt("Color") != 0)
-            {
+            if (mybundle.getInt("Color") != 0) {
                 // there is a color_change
                 color = mybundle.getInt("Color");
                 listposition = mybundle.getInt("Position");
                 color_changed = true;
                 player = intent.getParcelableArrayListExtra("Players");
-            }
-            else {
+            } else {
                 // when color changed and when setting loaded
                 player = intent.getParcelableArrayListExtra("Players");
             }
-        }
-        else
-        {
+        } else {
             player.add(new Player(1, R.color.white, getString(R.string.initial_name_field), false));
         }
         mPlayerList = (RecyclerView) findViewById(R.id.playerList);
@@ -84,10 +79,9 @@ public class GameSettingActivity extends AppCompatActivity{
         mPlayerList.setLayoutManager(mLayoutManager);
         mPlayerList.setItemAnimator(new DefaultItemAnimator());
         mPlayerList.setAdapter(adapter);
-        if (color_changed)
-        {
+        if (color_changed) {
             TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
-            int colorToUse = ta.getResourceId(color-1, R.color.white);
+            int colorToUse = ta.getResourceId(color - 1, R.color.white);
             int backgroundColor = colorToUse;
             player.get(listposition).setColor(backgroundColor);
         }
@@ -95,172 +89,157 @@ public class GameSettingActivity extends AppCompatActivity{
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                View view = v;
-                int id = v.getId();
-                View parent = (View) v.getParent();
-                while (!(parent instanceof RecyclerView)){
-                    view=parent;
-                    parent = (View) parent.getParent();
-                }
-                listposition = mPlayerList.getChildAdapterPosition(view);
-
-                switch (id) {
-                    //playertype is clicked
-                    case 0:
-                        player.get(listposition).setAI(!player.get(listposition).isAI());
-                        adapter.notifyItemChanged(listposition);
-                        break;
-                    //playerColor is clicked
-                    case 1:
-                        showAlertDialog();
-                        break;
-                    case 2:
-                        //playerName is clicked
-                       // player.get(listposition).setName("Alfred");
-                       // adapter.notifyItemChanged(listposition);
-                        break;
-                    case 3:
-                        //delete Player is clicked
-                        player.remove(listposition);
-                        adapter.notifyItemRemoved(listposition);
-                        break;
-                    default:
-                        break;
-                }
+        @Override
+        public void onClick(View v) {
+            View view = v;
+            int id = v.getId();
+            View parent = (View) v.getParent();
+            while (!(parent instanceof RecyclerView)) {
+                view = parent;
+                parent = (View) parent.getParent();
             }
-        };
+            listposition = mPlayerList.getChildAdapterPosition(view);
 
-        class RecyclerViewCollectionHolder extends RecyclerView.ViewHolder {
+            switch (id) {
+                //playertype is clicked
+                case 0:
+                    player.get(listposition).setAI(!player.get(listposition).isAI());
+                    adapter.notifyItemChanged(listposition);
+                    break;
+                //playerColor is clicked
+                case 1:
+                    showAlertDialog();
+                    break;
+                case 2:
+                    //playerName is clicked
+                    // player.get(listposition).setName("Alfred");
+                    // adapter.notifyItemChanged(listposition);
+                    break;
+                case 3:
+                    //delete Player is clicked
+                    player.remove(listposition);
+                    adapter.notifyItemRemoved(listposition);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
-            ImageButton playerColor;
-            ImageButton playertype;
-            ImageButton delete_player;
-            public EditText playerName;
+    class RecyclerViewCollectionHolder extends RecyclerView.ViewHolder {
 
-            public RecyclerViewCollectionHolder(final View itemView) {
-                super(itemView);
-                playertype = (ImageButton) itemView.findViewById(R.id.button_player_type);
-                playertype.setId(valueOf(0));
-                playertype.setOnClickListener(mOnClickListener);
-                playerColor = (ImageButton) itemView.findViewById(R.id.button_player_color);
-                playerColor.setId(valueOf(1));
-                playerColor.setOnClickListener(mOnClickListener);
-                playerName = (EditText) itemView.findViewById(R.id.textView_player_name);
-                playerName.setId(valueOf(2));
-                playerName.setOnClickListener(mOnClickListener);
-                delete_player = (ImageButton) itemView.findViewById(R.id.button_delete_player);
-                delete_player.setId(valueOf(3));
-                delete_player.setOnClickListener(mOnClickListener);
-                playerName.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
+        ImageButton playerColor;
+        ImageButton playertype;
+        ImageButton delete_player;
+        public EditText playerName;
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
+        public RecyclerViewCollectionHolder(final View itemView) {
+            super(itemView);
+            playertype = (ImageButton) itemView.findViewById(R.id.button_player_type);
+            playertype.setId(valueOf(0));
+            playertype.setOnClickListener(mOnClickListener);
+            playerColor = (ImageButton) itemView.findViewById(R.id.button_player_color);
+            playerColor.setId(valueOf(1));
+            playerColor.setOnClickListener(mOnClickListener);
+            playerName = (EditText) itemView.findViewById(R.id.textView_player_name);
+            playerName.setId(valueOf(2));
+            playerName.setOnClickListener(mOnClickListener);
+            delete_player = (ImageButton) itemView.findViewById(R.id.button_delete_player);
+            delete_player.setId(valueOf(3));
+            delete_player.setOnClickListener(mOnClickListener);
+            playerName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
 
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        View view = itemView;
-                        View parent = (View) view.getParent();
-                        if (parent == null)
-                        {
-                            // initialize view
-                        }
-                        else
-                        {
-                            while (!(parent instanceof RecyclerView)){
-                                view=parent;
-                                if (parent.getParent() !=null)
-                                {
-                                    parent = (View) parent.getParent();
-                                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    View view = itemView;
+                    View parent = (View) view.getParent();
+                    if (parent == null) {
+                        // initialize view
+                    } else {
+                        while (!(parent instanceof RecyclerView)) {
+                            view = parent;
+                            if (parent.getParent() != null) {
+                                parent = (View) parent.getParent();
                             }
-                            listposition = mPlayerList.getChildAdapterPosition(view);
-                            player.get(listposition).setName(String.valueOf(editable));
                         }
+                        listposition = mPlayerList.getChildAdapterPosition(view);
+                        player.get(listposition).setName(String.valueOf(editable));
                     }
-                });
-            }
+                }
+            });
+        }
+    }
+
+    class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<RecyclerViewCollectionHolder> {
+
+        @Override
+        public int getItemCount() {
+            return player.size();
         }
 
-        class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<RecyclerViewCollectionHolder> {
-
-            @Override
-            public int getItemCount() {
-                return player.size();
-            }
-
-            @Override
-            public RecyclerViewCollectionHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                View view = getLayoutInflater().inflate(R.layout.player_item, viewGroup, false);
-                return new RecyclerViewCollectionHolder(view);
-            }
-
-            @Override
-            public void onBindViewHolder(RecyclerViewCollectionHolder recyclerViewCollectionHolder, int i) {
-                recyclerViewCollectionHolder.playerColor.setBackgroundColor(getResources().getColor(player.get(i).getColor()));
-                recyclerViewCollectionHolder.playerName.setText(player.get(i).getName());
-            }
+        @Override
+        public RecyclerViewCollectionHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = getLayoutInflater().inflate(R.layout.player_item, viewGroup, false);
+            return new RecyclerViewCollectionHolder(view);
         }
 
-    public boolean checkColorUniqueness()
-    {
+        @Override
+        public void onBindViewHolder(RecyclerViewCollectionHolder recyclerViewCollectionHolder, int i) {
+            recyclerViewCollectionHolder.playerColor.setBackgroundColor(getResources().getColor(player.get(i).getColor()));
+            recyclerViewCollectionHolder.playerName.setText(player.get(i).getName());
+        }
+    }
+
+    public boolean checkColorUniqueness() {
         boolean white_inUse = false;
-        for (int i=0; i<player.size(); i++)
-        {
+        for (int i = 0; i < player.size(); i++) {
             generated.add(player.get(i).getColor());
-            if (player.get(i).getColor() == R.color.white)
-            {
+            if (player.get(i).getColor() == R.color.white) {
                 white_inUse = true;
             }
         }
-        if(generated.size()==player.size() && white_inUse == false)
-        {
+        if (generated.size() == player.size() && white_inUse == false) {
             return true;
-        }
-        else
-        {
+        } else {
 
             Toast.makeText(GameSettingActivity.this, getString(R.string.color_uniqueness), Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
-    public boolean checkPlayerNames()
-    {
-        for(int i=0; i<player.size(); i++) {
+    public boolean checkPlayerNames() {
+        for (int i = 0; i < player.size(); i++) {
 
             if (player.get(i).getName().equals(getString(R.string.initial_name_field))) {
                 Toast.makeText(GameSettingActivity.this, getString(R.string.Missing_playername), Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
-            return true;
+        return true;
 
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_game:
-                if (checkColorUniqueness() && checkPlayerNames())
-                {
+                if (checkColorUniqueness() && checkPlayerNames()) {
                     Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
                     intent.putParcelableArrayListExtra("Players", player);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-               break;
+                break;
             case R.id.button_add_player:
-                if (player.size()==4)
-                {
+                if (player.size() == 4) {
                     Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     player.add(new Player(3, R.color.white, getString(R.string.initial_name_field), false));
                     mPlayerList.setAdapter(adapter);
                 }
@@ -281,49 +260,49 @@ public class GameSettingActivity extends AppCompatActivity{
         int colorToUse;
         ta = getResources().obtainTypedArray(R.array.playerColors); */
 
-        for (int i = 1; i < count_colors+1; i++) {
-           // colorToUse = ta.getResourceId(i, R.color.black);
+        for (int i = 1; i < count_colors + 1; i++) {
+            // colorToUse = ta.getResourceId(i, R.color.black);
             mList.add(i);
         }
 
         gridView.setAdapter(new ArrayAdapter<Integer>(this, R.layout.test, mList) {
-                                @Override
-                                public View getView(final int position, View convertView, ViewGroup parent) {
-                                    View v = convertView;
-                                    if (v == null) {
-                                        LayoutInflater vi = (LayoutInflater)getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
-                                        v = vi.inflate(R.layout.test, null);
-                                    }
-                                    Integer item = mList.get(position);
-                                    if (item != 0) {
-                                        Button button = (Button) v.findViewById(R.id.button_colors);
-                                        button.setTag(item);
-                                       // button.setText(String.valueOf(item));
-                                       TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
-                                        int colorToUse = ta.getResourceId(item-1, R.color.black);
-                                        int backgroundColor = getResources().getColor(colorToUse);
-                                        button.setBackgroundColor(backgroundColor);
-                                        button.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                // save in local variable, before they will be deleted
-                                                int pos = listposition;
-                                                ArrayList<Player> recent_player = player;
-                                               // ArrayList<Player> play = getIntent().getParcelableArrayExtra("Player");
-                                                Intent intent = new Intent(getContext(), GameSettingActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                intent.putExtra("Color", (Integer) v.getTag());
-                                                intent.putExtra("Position", pos);
-                                                intent.putParcelableArrayListExtra("Players", recent_player);
-                                                getContext().startActivity(intent);
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                View v = convertView;
+                if (v == null) {
+                    LayoutInflater vi = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+                    v = vi.inflate(R.layout.test, null);
+                }
+                Integer item = mList.get(position);
+                if (item != 0) {
+                    Button button = (Button) v.findViewById(R.id.button_colors);
+                    button.setTag(item);
+                    // button.setText(String.valueOf(item));
+                    TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
+                    int colorToUse = ta.getResourceId(item - 1, R.color.black);
+                    int backgroundColor = getResources().getColor(colorToUse);
+                    button.setBackgroundColor(backgroundColor);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // save in local variable, before they will be deleted
+                            int pos = listposition;
+                            ArrayList<Player> recent_player = player;
+                            // ArrayList<Player> play = getIntent().getParcelableArrayExtra("Player");
+                            Intent intent = new Intent(getContext(), GameSettingActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra("Color", (Integer) v.getTag());
+                            intent.putExtra("Position", pos);
+                            intent.putParcelableArrayListExtra("Players", recent_player);
+                            getContext().startActivity(intent);
 
-                                            }
-                                        });
-                                    }
+                        }
+                    });
+                }
 
-                                    return v;
-                                }
-                            });
+                return v;
+            }
+        });
         gridView.setNumColumns(3);
 
         // Set grid view to alertDialog

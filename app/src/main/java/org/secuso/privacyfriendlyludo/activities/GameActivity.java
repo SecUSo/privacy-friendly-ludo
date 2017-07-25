@@ -20,6 +20,7 @@ import org.secuso.privacyfriendlyludo.logic.Player;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.WriteAbortedException;
 import java.util.ArrayList;
 
 public class GameActivity extends AppCompatActivity {
@@ -93,21 +94,18 @@ public class GameActivity extends AppCompatActivity {
 
             }
 
-
         //String textzeile = intent.getStringExtra("PlayerNames");
         boardView = (BoardView) findViewById(R.id.board);
         //boardView = (GridLayout) findViewById(R.id.board);
-         boardView.setColumnCount(11);
-         boardView.setRowCount(11);
+        boardView.setColumnCount(11);
+        boardView.setRowCount(11);
         boardView.createBoard(model);
         boardView.getBoard();
 
-            // doFirstRun();
+        //Preferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-            //Preferences
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
-            //Button
+        //Button
         Display display = getWindowManager().getDefaultDisplay();
             String playername = model.getRecent_player().getName();
             String playerMessageString = getString(R.string.player_name);
@@ -123,7 +121,6 @@ public class GameActivity extends AppCompatActivity {
             layoutParams.height = display.getWidth() / 6;
             rollDice.setLayoutParams(layoutParams);
 
-
             rollDice.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     countRollDice = countRollDice + 1;
@@ -131,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
                     dice_number = movable_figures.get(0);
                     initResultDiceViews(dice_number, rollDice);
                     flashDiceResult(rollDice);
+
 
                     if(movable_figures.size()==1)
                     {
@@ -151,13 +149,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        // i = 1 because of dice_result
-                        for(int i=1; i<movable_figures.size(); i++)
-                        {
-                            int figure_id = movable_figures.get(i);
-                            boardView.MarkPossiblePlayers(model, figure_id, myOnlyhandler);
-                            rollDice.setClickable(false);
-                        }
+                        markMovableFigures();
                     }
 
                 }
@@ -174,6 +166,7 @@ public class GameActivity extends AppCompatActivity {
                     marked_figures = model.getMovable_figures().get(i);
                     boardView.HidePossiblePlayers(model, marked_figures);
                 }
+                model.getMovable_figures().clear();
                 // check if allready another figure is on the new calculated field
                 boolean isEmpty;
                 int new_opponent_index;
@@ -216,14 +209,24 @@ public class GameActivity extends AppCompatActivity {
 
                 }
             };
-        }
 
-      /*  private void doFirstRun() {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            sharedPreferences.edit().putString("firstShow", "").commit();
-            SharedPreferences settings = getSharedPreferences("firstShow", getBaseContext().MODE_PRIVATE);
+        // check if movable figures --> for orientation change + saved game
+      /*  if (model.getMovable_figures() != null && model.getMovable_figures().size()>1)
+        {
+            markMovableFigures();
         }
-*/
+        */
+    }
+
+    private void markMovableFigures() {
+        // i = 1 because of dice_result
+        for(int i=1; i<model.getMovable_figures().size(); i++)
+        {
+            int figure_id = model.getMovable_figures().get(i);
+            boardView.MarkPossiblePlayers(model, figure_id, myOnlyhandler);
+            rollDice.setClickable(false);
+        }
+    }
 
 
     public void initResultDiceViews(int dice, ImageView myImageview) {
@@ -276,6 +279,9 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+
+
         // app will be closed, state will be saved in a file
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
@@ -283,11 +289,9 @@ public class GameActivity extends AppCompatActivity {
             fos = this.openFileOutput("savedata", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(model);
-
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (oos != null) try { oos.close(); } catch (IOException ignored) {}
             if (fos != null) try { fos.close(); } catch (IOException ignored) {}
         }

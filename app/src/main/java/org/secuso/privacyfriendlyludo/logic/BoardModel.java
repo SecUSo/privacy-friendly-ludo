@@ -23,66 +23,36 @@ import java.util.Set;
 
 public class BoardModel implements Parcelable, Serializable {
 
-   private boolean dice = true;
+    public static final Parcelable.Creator<BoardModel> CREATOR = new Parcelable.Creator<BoardModel>() {
+        @Override
+        public BoardModel createFromParcel(Parcel in) {
+            return new BoardModel(in);
+        }
 
-    public boolean isGame_finished() {
-        return game_finished;
-    }
-
-   private boolean game_finished = false;
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-   private ArrayList<Player> players = new ArrayList<>();
-   private int dice_number;
-
-    public Player getRecent_player() {
-        return recent_player;
-    }
-
+        @Override
+        public BoardModel[] newArray(int size) {
+            return new BoardModel[size];
+        }
+    };
+    private boolean dice = true;
+    private boolean game_finished = false;
+    private ArrayList<Player> players = new ArrayList<>();
+    private int dice_number;
     // which player has the control
-   private Player recent_player = new Player();
-
-    public void setOpponent_player(Player opponent) {
-        this.opponent_player = opponent;
-    }
-
-    public Player getOpponent_player() {
-        return opponent_player;
-    }
-
-   private Player opponent_player = new Player();
-
-    public GameFieldPosition getMy_game_field() {
-        return my_game_field;
-    }
-
+    private Player recent_player = new Player();
+    private Player opponent_player = new Player();
     private GameFieldPosition my_game_field;
-
-    public StartGameFieldPosition getStart_player_map() {
-        return start_player_map;
-    }
-
-   private StartGameFieldPosition start_player_map;
-
+    private StartGameFieldPosition start_player_map;
     private Set<Integer> generated = new LinkedHashSet<Integer>();
-
     private ArrayList<Integer> colors = new ArrayList<>();
-
-    public Context getContext() {
-        return context;
-    }
-
-    private Context context;
+    private transient Context context;
+    private ArrayList<Integer> movable_figures;
 
     public BoardModel(Context context, ArrayList<Player> settingplayers) {
         this.context = context;
         //this.players = settingplayers;
-        for(int i=0; i<settingplayers.size(); i++)
-        {
-            this.players.add(new Player(i+1,settingplayers.get(i).getColor(),settingplayers.get(i).getName(), false));
+        for (int i = 0; i < settingplayers.size(); i++) {
+            this.players.add(new Player(i + 1, settingplayers.get(i).getColor(), settingplayers.get(i).getName(), false));
         }
         recent_player = players.get(0);
         setColors();
@@ -91,26 +61,82 @@ public class BoardModel implements Parcelable, Serializable {
         start_player_map.fill_with_players(this);
     }
 
-    private void setColors()
-    {
-        for (int i=0; i<players.size(); i++)
-        {
+    private BoardModel(Parcel in) {
+        dice = in.readByte() != 0x00;
+        game_finished = in.readByte() != 0x00;
+        if (in.readByte() == 0x01) {
+            players = new ArrayList<>();
+            in.readList(players, Player.class.getClassLoader());
+        } else {
+            players = null;
+        }
+        dice_number = in.readInt();
+        recent_player = (Player) in.readValue(Player.class.getClassLoader());
+        opponent_player = (Player) in.readValue(Player.class.getClassLoader());
+        my_game_field = (GameFieldPosition) in.readValue(GameFieldPosition.class.getClassLoader());
+        start_player_map = (StartGameFieldPosition) in.readValue(StartGameFieldPosition.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            movable_figures = new ArrayList<>();
+            in.readList(movable_figures, Integer.class.getClassLoader());
+        } else {
+            movable_figures = null;
+        }
+    }
+
+    public boolean isGame_finished() {
+        return game_finished;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getRecent_player() {
+        return recent_player;
+    }
+
+    public Player getOpponent_player() {
+        return opponent_player;
+    }
+
+    public void setOpponent_player(Player opponent) {
+        this.opponent_player = opponent;
+    }
+
+    public GameFieldPosition getMy_game_field() {
+        return my_game_field;
+    }
+
+    public StartGameFieldPosition getStart_player_map() {
+        return start_player_map;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        if (context != null) {
+            this.context = context;
+        }
+    }
+
+    private void setColors() {
+        for (int i = 0; i < players.size(); i++) {
             generated.add(players.get(i).getColor());
         }
         // add colors if not all figures are played
-        if (players.size()<4)
-        {
+        if (players.size() < 4) {
             TypedArray ta = context.getResources().obtainTypedArray(R.array.playerColors);
             int[] androidColors = context.getResources().getIntArray(R.array.playerColors);
-            while (generated.size() < 4)
-            {
+            while (generated.size() < 4) {
                 int random_id = new Random().nextInt(androidColors.length);
                 // As we're adding to a set, this will automatically do a containment check
                 int colorToUse = ta.getResourceId(random_id, R.color.black);
                 generated.add(colorToUse);
             }
         }
-        colors.addAll(0,generated);
+        colors.addAll(0, generated);
     }
 
     // get all Figures which can be moved according to the rules
@@ -295,8 +321,6 @@ public class BoardModel implements Parcelable, Serializable {
         return movable_figures;
     }
 
-    private ArrayList<Integer> movable_figures;
-
     public ArrayList<Integer> processDiceResult() {
 
         movable_figures = new ArrayList<>();
@@ -338,7 +362,7 @@ public class BoardModel implements Parcelable, Serializable {
         } else //same player is again
         {
             // update information on recent player
-            recent_player = players.get(recent_player.getId()-1);
+            recent_player = players.get(recent_player.getId() - 1);
             return false;
         }
     }
@@ -399,29 +423,6 @@ public class BoardModel implements Parcelable, Serializable {
         }
     }
 
-
-    private BoardModel(Parcel in) {
-        dice = in.readByte() != 0x00;
-        game_finished = in.readByte() != 0x00;
-        if (in.readByte() == 0x01) {
-            players = new ArrayList<>();
-            in.readList(players, Player.class.getClassLoader());
-        } else {
-            players = null;
-        }
-        dice_number = in.readInt();
-        recent_player = (Player) in.readValue(Player.class.getClassLoader());
-        opponent_player = (Player) in.readValue(Player.class.getClassLoader());
-        my_game_field = (GameFieldPosition) in.readValue(GameFieldPosition.class.getClassLoader());
-        start_player_map = (StartGameFieldPosition) in.readValue(StartGameFieldPosition.class.getClassLoader());
-        if (in.readByte() == 0x01) {
-            movable_figures = new ArrayList<>();
-            in.readList(movable_figures, Integer.class.getClassLoader());
-        } else {
-            movable_figures = null;
-        }
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -449,18 +450,5 @@ public class BoardModel implements Parcelable, Serializable {
             dest.writeList(movable_figures);
         }
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<BoardModel> CREATOR = new Parcelable.Creator<BoardModel>() {
-        @Override
-        public BoardModel createFromParcel(Parcel in) {
-            return new BoardModel(in);
-        }
-
-        @Override
-        public BoardModel[] newArray(int size) {
-            return new BoardModel[size];
-        }
-    };
 }
 

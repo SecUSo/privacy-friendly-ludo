@@ -63,7 +63,6 @@
     <!-- ### WELCOME DIALOG ### -->
     <string name="okay">Okay</string>
     <string name="viewhelp">Hilfe</string>
-    <string name="main_button_welcomedialog">Willkommen</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen</string>
