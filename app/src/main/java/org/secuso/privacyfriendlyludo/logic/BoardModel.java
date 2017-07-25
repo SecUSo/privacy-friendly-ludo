@@ -249,7 +249,7 @@ public class BoardModel implements Parcelable, Serializable {
                     return new_index;
                 case "end":
                     new_index = (recent_index + dice_result);
-                    if (new_index < 44 + (recent_player.getId() - 1) * 4) {
+                    if (new_index <= 44 + (recent_player.getId() - 1) * 4) {
                         return new_index;
                     } else {
                         return 0;
@@ -262,15 +262,15 @@ public class BoardModel implements Parcelable, Serializable {
 
     private boolean figureIsAllowedToMove(int dice_result, int figure_id, boolean freeHouse) {
         String figureState = recent_player.getFigures().get(figure_id - 1).getState();
-        return dice_result == 6 && freeHouse || dice_result == 6 && Objects.equals(figureState, "start") || !(dice_result == 6 && !Objects.equals(figureState, "start")) && dice_result != 6 && !Objects.equals(figureState, "start");
+        return dice_result == 6 && freeHouse || dice_result == 6 && Objects.equals(figureState, "start") || (dice_result != 6 && !Objects.equals(figureState, "start"));
     }
 
     //checks if already a figure of this player is there
     private boolean isEmptyofSamePlayer(int fieldindex) {
 
-        // other GameField necessary
-        return my_game_field.getMyGamefield().get(fieldindex - 1).getPlayer_id() != recent_player.getId();
+        int player_id_on_field = my_game_field.getMyGamefield().get(fieldindex - 1).getPlayer_id();
 
+        return player_id_on_field == 0 || player_id_on_field != recent_player.getId();
     }
 
     //checks if already a figure is there
@@ -395,15 +395,15 @@ public class BoardModel implements Parcelable, Serializable {
     private void updateFinishFlag(int player_id, int figure_id, int new_position) {
         if (players.get(player_id - 1).getFigures().get(figure_id - 1).getCount_steps() > 40) {
             int max_possible_fieldindex = 44 + 4 * (player_id - 1);
-            int count_not_empty_fields = 0;
+            int count_empty_fields = 0;
             int count_fields = max_possible_fieldindex - new_position;
             for (int i = 1; i < (count_fields + 1); i++) {
-                if (!isEmptyofSamePlayer(new_position + i)) {
-                    count_not_empty_fields = count_not_empty_fields + 1;
+                if (isEmptyofSamePlayer(new_position + i)) {
+                    count_empty_fields = count_empty_fields + 1;
                 }
             }
             // no fields are empty, figure is finished
-            if (count_not_empty_fields == 0) {
+            if (count_empty_fields == 0) {
                 players.get(player_id - 1).getFigures().get(figure_id - 1).setFinished(true);
                 int count_figures_finished = 0;
                 for (int i = 0; i < players.size(); i++) {
@@ -414,7 +414,7 @@ public class BoardModel implements Parcelable, Serializable {
                     }
                 }
 
-                if (count_figures_finished == 16) {
+                if (count_figures_finished == (players.size()*4)) {
                     // all figures are in the house
                     game_finished = true;
                 }

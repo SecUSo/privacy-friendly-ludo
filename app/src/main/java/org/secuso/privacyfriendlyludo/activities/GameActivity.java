@@ -203,8 +203,10 @@ public class GameActivity extends AppCompatActivity {
                 }
                 rollDice.setClickable(true);
                 if (model.isGame_finished()) {
+                    // Game is finished
                     playermessage.setText(getString(R.string.finished_Game));
-
+                    rollDice.setClickable(false);
+                    rollDice.setImageAlpha(255);
                 }
 
                 }
@@ -280,9 +282,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-
-
-        // app will be closed, state will be saved in a file
+        //state will be saved in a file
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
