@@ -42,10 +42,12 @@ public class GameActivity extends AppCompatActivity {
     int dice_number;
     boolean player_changed;
     View.OnClickListener myOnlyhandler;
+    int timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        timer=10;
         setContentView(R.layout.activity_game);
         Intent intent = getIntent();
         mybundle = intent.getExtras();
@@ -135,13 +137,14 @@ public class GameActivity extends AppCompatActivity {
 
                 int old_figure_index = v.getId();
                 setFigures(old_figure_index);
+                Next_player();
                 }
             };
 
         // roll dice automatically if it is an AI
         if (model.getRecent_player().isAI())
         {
-            new CountDownTimer(1000, 1000) {
+            new CountDownTimer(timer, 1) {
 
                 @Override
                 public void onTick(long l) {
@@ -156,16 +159,66 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    private void rollDice()
+    {
+        // count all number of roll dice of one player
+        model.countRollDice =  model.countRollDice + 1;
+        movable_figures = model.processDiceResult();
+        dice_number = movable_figures.get(0);
+        initResultDiceViews(dice_number, rollDice);
+        flashDiceResult(rollDice);
+
+
+        if(movable_figures.size()==1) {
+            // no movable Figures
+            // choose next player
+            Next_player();
+        }
+        else
+        {
+            // there are movable figures
+            markMovableFigures();
+            // for AI randomly chose figure
+            if (model.getRecent_player().isAI()) {
+                new CountDownTimer(timer, 1) {
+
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    public void onFinish() {
+                        int id;
+                        SecureRandom random = new SecureRandom();
+                        // -2 because of zero and dice_number
+                        int max_figures = movable_figures.size()-1;
+                        int random_num = random.nextInt(max_figures) + 1;
+                        // integer between  zero and max_figures
+                        int figure_id = movable_figures.get(random_num);
+                        int position_id = model.getRecent_player().getFigures().get(figure_id-1).getField_position_index();
+
+                        // move figure
+                        setFigures(position_id);
+
+                        // choose next player
+                        Next_player();
+                    }
+                }.start();
+            }
+        }
+    }
+
     private void setFigures(int old_figure_index)
     {
-        //Log.i("tag", "old Pos: " + old_figure_index);
         int marked_figures;
         // i=1 because of dice_result
+        // deselect all marked_figures
         for (int i = 1; i < model.getMovable_figures().size(); i++) {
             marked_figures = model.getMovable_figures().get(i);
             boardView.HidePossiblePlayers(model, marked_figures);
         }
         // check if allready another figure is on the new calculated field
+        // kick out behaviour checking
         boolean isEmpty;
         int new_opponent_index;
         int figure_id;
@@ -186,125 +239,71 @@ public class GameActivity extends AppCompatActivity {
             boardView.setFigureToNewPosition(model, old_opponent_index, new_opponent_index, true);
         }
 
+        // calculate new position
         int new_figure_index = model.moveFigure(old_figure_index, false);
 
-        //Log.i("tag", "new Pos: " + new_figure_index);
         // set Figure to new Position
         boardView.setFigureToNewPosition(model, old_figure_index, new_figure_index, false);
-        player_changed = model.playerChanged(countRollDice);
-        // show details about recent player
-        if (player_changed) {
-            // show a message for player changed
-            String playername = model.getRecent_player().getName();
-            String playerMessageString = getString(R.string.player_name);
-            playerMessageString = playerMessageString.replace("%p", playername);
-            playermessage.setText(playerMessageString);
-            countRollDice = 0;
-        }
-        if (model.isGame_finished()) {
-            // Game is finished
-            playermessage.setText(getString(R.string.finished_Game));
-            rollDice.setClickable(false);
-            rollDice.setImageAlpha(255);
-        }
-        else
-        { // automatically roll dice if player is AI
-            if (model.getRecent_player().isAI())
-            {
-                new CountDownTimer(1000, 1000) {
 
-                    @Override
-                    public void onTick(long l) {
-
-                    }
-
-                    public void onFinish() {
-                        rollDice.performClick();
-                    }
-                }.start();
-            }
-            else
-            {
-                rollDice.setClickable(true);
-            }
-        }
         // clear old movable figures list
         model.getMovable_figures().clear();
 
     }
 
-    private void rollDice()
+    private void Next_player()
     {
-        countRollDice = countRollDice + 1;
-        movable_figures = model.processDiceResult();
-        dice_number = movable_figures.get(0);
-        initResultDiceViews(dice_number, rollDice);
-        flashDiceResult(rollDice);
-
-
-        if(movable_figures.size()==1)
+        boolean player_changed = model.playerChanged(model.countRollDice);
+        int count_ready_player = 0;
+        // change player until playerstate is not finished or game is finished
+        while (model.getRecent_player().isFinished()) {
+            player_changed = model.playerChanged(0);
+            count_ready_player = count_ready_player + 1;
+            if (count_ready_player == (model.getPlayers().size()-1)) {
+                // all players except one are finished
+                model.setGame_finished(true);
+                break;
+            }
+        }
+        if (model.isGame_finished())
         {
-            // no movable Figures
-            boolean player_changed = model.playerChanged(countRollDice);
+            //game is finished
+            Log.i("tag", "game is finished");
+            playermessage.setText("FERTIG");
+            rollDice.setAlpha(0);
+        }
+        else // still players are not ready, next players turn
+        {
+            // change message for next player and reset countRollDice
             if (player_changed)
             {
-                // show a message for player changed
-                String playername = model.getRecent_player().getName();
-                String playerMessageString = getString(R.string.player_name);
-                playerMessageString = playerMessageString.replace("%p", playername);
-                playermessage.setText(playerMessageString);
-                countRollDice = 0;
+                    // show a message for player changed
+                    String playername = model.getRecent_player().getName();
+                    String playerMessageString = getString(R.string.player_name);
+                    playerMessageString = playerMessageString.replace("%p", playername);
+                    playermessage.setText(playerMessageString);
+                    //reset counter of roll dice
+                    model.countRollDice = 0;
             }
             // check if it is a AI
             if (model.getRecent_player().isAI())
             {
-                new CountDownTimer(1000, 1000) {
+                new CountDownTimer(timer, 1) {
 
-                    @Override
-                    public void onTick(long l) {
+                        @Override
+                        public void onTick(long l) {
 
-                    }
+                        }
 
-                    public void onFinish() {
-                       // rollDice.setClickable(true);
-                        rollDice.performClick();
-                    }
-                }.start();
-            }
-            else
-            {
-                rollDice.setClickable(true);
-            }
-
-        }
-        else
-        {
-            markMovableFigures();
-            // for AI randomly chose figure
-            if (model.getRecent_player().isAI()) {
-                new CountDownTimer(1000, 1000) {
-
-                    @Override
-                    public void onTick(long l) {
-
-                    }
-
-                    public void onFinish() {
-                        int id;
-                        SecureRandom random = new SecureRandom();
-                        // -2 because of zero and dice_number
-                        int max_figures = movable_figures.size()-1;
-                        int random_num = random.nextInt(max_figures) + 1;
-                        // integer between  zero and max_figures
-                        int figure_id = movable_figures.get(random_num);
-                        int position_id = model.getRecent_player().getFigures().get(figure_id-1).getField_position_index();
-
-                        Log.i("Nr.", "Max Figures: " + max_figures + "; Figure_id: " + figure_id + "\n");
-
-                        setFigures(position_id);
-                    }
-                }.start();
-            }
+                        public void onFinish() {
+                            // rollDice.setClickable(true);
+                            rollDice.performClick();
+                        }
+                    }.start();
+                }
+                else
+                {
+                    rollDice.setClickable(true);
+                }
         }
     }
 

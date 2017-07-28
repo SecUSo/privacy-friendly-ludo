@@ -11,8 +11,8 @@ public class Dicer {
 
     public int rollDice(boolean mydice)
     {
-        int dice = 0;
-        if (mydice)
+       int dice = 0;
+      /*   if (mydice)
         {
             dice = 5;
         }
@@ -20,12 +20,12 @@ public class Dicer {
         {
             dice=6;
         }
-/*
+*/
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[6];
         random.nextBytes(bytes);
         dice = random.nextInt(6) +1;
-*/
+
         return dice;
     }
 

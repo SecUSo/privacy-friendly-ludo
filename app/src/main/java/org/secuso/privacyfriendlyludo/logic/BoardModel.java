@@ -50,26 +50,9 @@ public class BoardModel implements Parcelable, Serializable {
     private ArrayList<Integer> movable_figures;
     private int distance_between_2_colors;
     private int max_players;
-
-    public GameType getGame_type() {
-        return game_type;
-    }
-
-    public void setGame_type(GameType game_type) {
-        this.game_type = game_type;
-    }
-
     private GameType game_type;
-
-    public int getMax_players() {
-        return max_players;
-    }
-
-    public int getLast_field_index() {
-        return last_field_index;
-    }
-
     private int last_field_index;
+    public int countRollDice;
 
     public BoardModel(Context context, ArrayList<Player> settingplayers, GameType type) {
         this.context = context;
@@ -98,8 +81,61 @@ public class BoardModel implements Parcelable, Serializable {
 
     }
 
+    private BoardModel(Parcel in) {
+        dice = in.readByte() != 0x00;
+        game_finished = in.readByte() != 0x00;
+        if (in.readByte() == 0x01) {
+            players = new ArrayList<>();
+            in.readList(players, Player.class.getClassLoader());
+        } else {
+            players = null;
+        }
+        dice_number = in.readInt();
+        recent_player = (Player) in.readValue(Player.class.getClassLoader());
+        opponent_player = (Player) in.readValue(Player.class.getClassLoader());
+        my_game_field = (GameFieldPosition) in.readValue(GameFieldPosition.class.getClassLoader());
+        start_player_map = (StartGameFieldPosition) in.readValue(StartGameFieldPosition.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            colors = new ArrayList<Integer>();
+            in.readList(colors, Integer.class.getClassLoader());
+        } else {
+            colors = null;
+        }
+        if (in.readByte() == 0x01) {
+            movable_figures = new ArrayList<>();
+            in.readList(movable_figures, Integer.class.getClassLoader());
+        } else {
+            movable_figures = null;
+        }
+        distance_between_2_colors = in.readInt();
+        game_type = (GameType) in.readValue(GameType.class.getClassLoader());
+        last_field_index = in.readInt();
+        max_players = in.readInt();
+        countRollDice = in.readInt();
+    }
+
+    public GameType getGame_type() {
+        return game_type;
+    }
+
+    public void setGame_type(GameType game_type) {
+        this.game_type = game_type;
+    }
+
+    public int getMax_players() {
+        return max_players;
+    }
+
+    public int getLast_field_index() {
+        return last_field_index;
+    }
+
     public boolean isGame_finished() {
         return game_finished;
+    }
+
+    public void setGame_finished(boolean game_finished) {
+        this.game_finished = game_finished;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -141,8 +177,8 @@ public class BoardModel implements Parcelable, Serializable {
             generated.add(players.get(i).getColor());
         }
         // add colors if not all figures are played
-            TypedArray ta = context.getResources().obtainTypedArray(R.array.playerColors);
-            int[] androidColors = context.getResources().getIntArray(R.array.playerColors);
+        TypedArray ta = context.getResources().obtainTypedArray(R.array.playerColors);
+        int[] androidColors = context.getResources().getIntArray(R.array.playerColors);
         while (generated.size() < max_players) {
             int random_id = new Random().nextInt(androidColors.length);
             // As we're adding to a set, this will automatically do a containment check
@@ -221,28 +257,18 @@ public class BoardModel implements Parcelable, Serializable {
 
     public int getNewPosition(int figure_id, int dice_result) {
         // figure is finished
+
         if (recent_player.getFigures().get(figure_id - 1).isFinished()) {
             return 0;
-        } else {
+        }
+        else {
             String figureState = recent_player.getFigures().get(figure_id - 1).getState();
             //check if figureState is allowed to move
             int recent_index = recent_player.getFigures().get(figure_id - 1).getField_position_index();
             int new_index;
             switch (figureState) {
                 case "start":
-                   /* switch (recent_player.getId()) {
-                        case 1:
-                            return 1;
-                        case 2:
-                            return 11;
-                        case 3:
-                            return 21;
-                        case 4:
-                            return 31;
-                        default:
-                            return 0;
-                    } */
-                    return 1+((recent_player.getId()-1)* distance_between_2_colors);
+                    return 1 + ((recent_player.getId() - 1) * distance_between_2_colors);
                 case "inGame":
                     // check count steps
                     int count_steps = recent_player.getFigures().get(figure_id - 1).getCount_steps();
@@ -252,7 +278,7 @@ public class BoardModel implements Parcelable, Serializable {
                         if (new_index == 0) {
                             new_index = last_field_index;
                         }
-                    } else if (count_steps + dice_result > (last_field_index+4)) {
+                    } else if (count_steps + dice_result > (last_field_index + 4)) {
                         // new position not possible because end of field
                         return 0;
                     } else {
@@ -264,7 +290,7 @@ public class BoardModel implements Parcelable, Serializable {
                     return new_index;
                 case "end":
                     new_index = (recent_index + dice_result);
-                    if (new_index <= (last_field_index+4) + (recent_player.getId() - 1) * 4) {
+                    if (new_index <= (last_field_index + 4) + (recent_player.getId() - 1) * 4) {
                         return new_index;
                     } else {
                         return 0;
@@ -353,8 +379,12 @@ public class BoardModel implements Parcelable, Serializable {
         return movable_figures;
     }
 
-    public boolean playerChanged(int count_Calls)
-    {
+    public boolean playerChanged(int count_Calls) {
+        // check if special case, playerchanged is called again
+        if (count_Calls == 0) {
+            recent_player = players.get((recent_player.getId()) % players.size());
+            return true;
+        } else {
             // no movable figures, 3 times roll dice done, move is finished
             if (dice_number != 6 && count_Calls >= 3 && movable_figures.size() == 1) {
                 recent_player = players.get((recent_player.getId()) % players.size());
@@ -364,13 +394,14 @@ public class BoardModel implements Parcelable, Serializable {
             else if ((dice_number != 6 && count_Calls >= 1)) {
                 recent_player = players.get((recent_player.getId()) % players.size());
                 return true;
-            }
-            else //same player is again because 6 was dice result
+            } else //same player is again because 6 was dice result
             {
                 // update information on recent player
                 recent_player = players.get(recent_player.getId() - 1);
                 return false;
             }
+        }
+
     }
 
     public int moveFigure(int figure_index, boolean kicked_out) {
@@ -393,77 +424,54 @@ public class BoardModel implements Parcelable, Serializable {
         }
         updatePlayer(player_id, figure_id, dice_number, new_position, kicked_out);
         updateBoard(player_id, figure_id, figure_index, new_position);
-        if(recent_player.getFigures().get(figure_id-1).getCount_steps()>last_field_index) {
-            updateFinishFlag(player_id, figure_id, new_position);
+        if (recent_player.getFigures().get(figure_id - 1).getCount_steps() > last_field_index) {
+            updateFinishFlag(player_id, figure_id);
         }
 
         return new_position;
     }
 
-    private void updateFinishFlag(int player_id, int figure_id, int new_position) {
-        if (players.get(player_id - 1).getFigures().get(figure_id - 1).getCount_steps() > last_field_index) {
-            int max_possible_fieldindex = (last_field_index+4) + (4 * (player_id - 1));
-            int count_empty_fields = 0;
-            int count_fields = max_possible_fieldindex - new_position;
-            for (int i = 1; i < (count_fields + 1); i++) {
-                if (isEmptyofSamePlayer(new_position + i)) {
-                    count_empty_fields = count_empty_fields + 1;
-                }
-            }
-            // no fields are empty, figure is finished
-            if (count_empty_fields == 0) {
-                players.get(player_id - 1).getFigures().get(figure_id - 1).setFinished(true);
-                // check if complete player is finished
-                int count_figures_finished = 0;
-                for (int j = 0; j < players.get(player_id - 1).getFigures().size(); j++) {
-                        if (players.get(player_id - 1).getFigures().get(j).isFinished()) {
-                            count_figures_finished = count_figures_finished + 1;
-                        }
+    private void updateFinishFlag(int player_id, int figure_id) {
+        // figure is in Goal fields
+        // check finish state of all other figures --> because jumping is possible
+        int max_possible_fieldindex = (last_field_index + 4) + (4 * (player_id - 1));
+        int count_empty_fields = 0;
+        for (int count_figures = 0; count_figures < 4; count_figures++) {
+            int figure_pos = players.get(player_id - 1).getFigures().get(count_figures).getField_position_index();
+            int count_steps = players.get(player_id - 1).getFigures().get(count_figures).getCount_steps();
+            int count_fields = max_possible_fieldindex - figure_pos;
+            // if figure is already finished
+            if (!players.get(player_id - 1).getFigures().get(count_figures).isFinished() && figure_pos<100 && count_steps > last_field_index) {
+                // check field above figure_pos
+                for (int i = 1; i < (count_fields + 1); i++) {
+                    if (isEmptyofSamePlayer(figure_pos + i)) {
+                        count_empty_fields = count_empty_fields + 1;
                     }
-                if (count_figures_finished == 4) {
-                    // all figures from one player are in the house
-                    players.get(player_id-1).setFinished(true);
                 }
-
+                // no fields are empty, figure is finished
+                if (count_empty_fields == 0) {
+                    players.get(player_id - 1).getFigures().get(count_figures).setFinished(true);
+                }
             }
         }
+
+        // check if complete player is finished
+        int count_figures_finished = 0;
+        for (int j = 0; j < players.get(player_id - 1).getFigures().size(); j++) {
+            if (players.get(player_id - 1).getFigures().get(j).isFinished()) {
+                count_figures_finished = count_figures_finished + 1;
+            }
+        }
+        if (count_figures_finished == 4) {
+            // all figures from one player are in the house
+            players.get(player_id - 1).setFinished(true);
+        }
+
     }
 
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    private BoardModel(Parcel in) {
-        dice = in.readByte() != 0x00;
-        game_finished = in.readByte() != 0x00;
-        if (in.readByte() == 0x01) {
-            players = new ArrayList<>();
-            in.readList(players, Player.class.getClassLoader());
-        } else {
-            players = null;
-        }
-        dice_number = in.readInt();
-        recent_player = (Player) in.readValue(Player.class.getClassLoader());
-        opponent_player = (Player) in.readValue(Player.class.getClassLoader());
-        my_game_field = (GameFieldPosition) in.readValue(GameFieldPosition.class.getClassLoader());
-        start_player_map = (StartGameFieldPosition) in.readValue(StartGameFieldPosition.class.getClassLoader());
-        if (in.readByte() == 0x01) {
-            colors = new ArrayList<Integer>();
-            in.readList(colors, Integer.class.getClassLoader());
-        } else {
-            colors = null;
-        }
-        if (in.readByte() == 0x01) {
-            movable_figures = new ArrayList<>();
-            in.readList(movable_figures, Integer.class.getClassLoader());
-        } else {
-            movable_figures = null;
-        }
-        distance_between_2_colors = in.readInt();
-        game_type = (GameType) in.readValue(GameType.class.getClassLoader());
-        last_field_index = in.readInt();
-        max_players = in.readInt();
     }
 
     @Override
@@ -497,6 +505,7 @@ public class BoardModel implements Parcelable, Serializable {
         dest.writeValue(game_type);
         dest.writeInt(last_field_index);
         dest.writeInt(max_players);
+        dest.writeInt(countRollDice);
     }
 }
 
