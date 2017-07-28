@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
+import org.secuso.privacyfriendlyludo.logic.GameType;
 import org.secuso.privacyfriendlyludo.logic.Player;
 import org.secuso.privacyfriendlyludo.tutorial.PrefManager;
 import org.secuso.privacyfriendlyludo.tutorial.TutorialActivity;
@@ -162,8 +163,17 @@ public class MainActivity extends BaseActivity {
     private ArrayList<Player> loadSettings() {
         ObjectInputStream ois = null;
         FileInputStream fis = null;
+        String file_name="";
+        switch (mSharedPreferences.getInt("lastChosenPage", 0)) {
+            case 0:
+                file_name = "save_settings_4players";
+                break;
+            case 1:
+                file_name = "save_settings_6players";
+                break;
+        }
         try {
-            fis = this.openFileInput("saveSettings");
+            fis = this.openFileInput(file_name);
             ois = new ObjectInputStream(fis);
             ArrayList<Player> last_players = (ArrayList<Player>) ois.readObject();
             return last_players;
@@ -241,7 +251,7 @@ public class MainActivity extends BaseActivity {
              {
 
                  imageView.setImageResource(R.drawable.ludo);
-                id=4;
+                 id=4;
              }
              else
              {

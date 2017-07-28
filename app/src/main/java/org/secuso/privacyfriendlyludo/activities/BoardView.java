@@ -45,6 +45,7 @@ public class BoardView extends GridLayout{
     int dicer_number;
     public Drawable d;
     View.OnClickListener myOnlyhandler;
+    int board_size;
 
 
     public BoardView(Context context, AttributeSet attrs)
@@ -52,9 +53,6 @@ public class BoardView extends GridLayout{
         super(context, attrs);
         this.attrs = attrs;
         this.layoutDone=false;
-       // this.controller = controller;
-        this.model = model;
-
     }
 
 
@@ -62,12 +60,20 @@ public class BoardView extends GridLayout{
     {
         int count = 0;
         //create Array of size of the board
-        this.board = new FieldView[11][11];
-        this.setRowCount(11);
-        this.setColumnCount(11);
+        switch (model.getGame_type()) {
+            case Four_players:
+                board_size = 11;
+                break;
+            case Six_players:
+                board_size = 15;
+                break;
+        }
+        this.board = new FieldView[board_size][board_size];
+        this.setRowCount(board_size);
+        this.setColumnCount(board_size);
         //initialize complete board with empty Imageviews
-        for(int i=0; i<11; i++) {
-            for (int j = 0; j < 11; j++) {
+        for(int i=0; i<board_size; i++) {
+            for (int j = 0; j < board_size; j++) {
                // filled = false;
                 board[i][j] = new FieldView(getContext(), this.attrs, 0, null, false);
                 count = count +1;
@@ -126,8 +132,8 @@ public class BoardView extends GridLayout{
 
         //add design of imageviews to the board
         // add it after all colors are set
-        for(int i=0; i<11; i++) {
-            for (int j = 0; j < 11; j++) {
+        for(int i=0; i<board_size; i++) {
+            for (int j = 0; j < board_size; j++) {
 
                 addView(board[i][j]);
             }
@@ -142,6 +148,7 @@ public class BoardView extends GridLayout{
         int index = mymodel.getRecent_player().getFigures().get(figure_id - 1).getField_position_index();
         int x=0;
         int y=0;
+
         switch(state)
         {
             case "start":
@@ -258,8 +265,8 @@ public void removeOldFigure(BoardModel mymodel, int old_position)
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
             super.onLayout(changed, left, top, right, bottom);
             if (!this.layoutDone) {
-                for (int i = 0; i < 11; i++) {
-                    for (int j = 0; j < 11; j++) {
+                for (int i = 0; i < board_size; i++) {
+                    for (int j = 0; j < board_size; j++) {
                         ViewGroup.LayoutParams params = board[i][j].getLayoutParams();
                         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             params.width = (int) ((right - left)) / this.getColumnCount();

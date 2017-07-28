@@ -38,16 +38,16 @@ public class Figure implements Parcelable, Serializable{
         return state;
     }
 
-    public void setState(int field_position_index) {
-        if (field_position_index <=40 && field_position_index >0)
+    public void setState(int field_position_index, BoardModel model) {
+        if (field_position_index <=model.getLast_field_index() && field_position_index >0)
         {
             this.state="inGame";
         }
-        else if (field_position_index >100)
+        else if (field_position_index >=100)
         {
             this.state="start";
         }
-        else if (field_position_index>40 && field_position_index<56)
+        else if (field_position_index>model.getLast_field_index() && field_position_index<=(field_position_index+ model.getMax_players()*4))
         {
             this.state="end";
         }

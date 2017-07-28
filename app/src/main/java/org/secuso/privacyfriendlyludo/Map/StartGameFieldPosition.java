@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.GameField;
+import org.secuso.privacyfriendlyludo.logic.GameType;
 import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.io.Serializable;
@@ -34,29 +35,66 @@ public class StartGameFieldPosition implements Parcelable, Serializable{
 
     private ArrayList<GameField> myGamefield = new ArrayList<GameField>();
 
-    public StartGameFieldPosition(ArrayList <Integer> colors) {
+    public StartGameFieldPosition(ArrayList<Integer> colors, GameType game_type) {
 
+        switch (game_type) {
+            case Four_players:
+                //Home fields player 1 with figure 1 to 4
+                myGamefield.add(new GameField(100, 0, 0, 0, 1, colors.get(0)));
+                myGamefield.add(new GameField(101, 0, 1, 0, 2, colors.get(0)));
+                myGamefield.add(new GameField(102, 1, 0, 0, 3, colors.get(0)));
+                myGamefield.add(new GameField(103, 1, 1, 0, 4, colors.get(0)));
+                //player2
+                myGamefield.add(new GameField(104, 9, 0, 0, 1, colors.get(1)));
+                myGamefield.add(new GameField(105, 10, 1, 0, 2, colors.get(1)));
+                myGamefield.add(new GameField(106, 9, 1, 0, 3, colors.get(1)));
+                myGamefield.add(new GameField(107, 10, 0, 0, 4, colors.get(1)));
+                //player3
+                myGamefield.add(new GameField(108, 9, 9, 0, 1, colors.get(2)));
+                myGamefield.add(new GameField(109, 10, 9, 0, 2, colors.get(2)));
+                myGamefield.add(new GameField(110, 9, 10, 0, 3, colors.get(2)));
+                myGamefield.add(new GameField(111, 10, 10, 0, 4, colors.get(2)));
+                //player 4
+                myGamefield.add(new GameField(112, 0, 10, 0, 1, colors.get(3)));
+                myGamefield.add(new GameField(113, 0, 9, 0, 2, colors.get(3)));
+                myGamefield.add(new GameField(114, 1, 9, 0, 3, colors.get(3)));
+                myGamefield.add(new GameField(115, 1, 10, 0, 4, colors.get(3)));
+                break;
+            case Six_players:
+                //home fields player1 with figure 1 to 4
+                myGamefield.add(new GameField(100, 0, 3, 0, 1, colors.get(0)));
+                myGamefield.add(new GameField(101, 0, 4, 0, 2, colors.get(0)));
+                myGamefield.add(new GameField(102, 0, 5, 0, 3, colors.get(0)));
+                myGamefield.add(new GameField(103, 0, 6, 0, 4, colors.get(0)));
+                //player2
+                myGamefield.add(new GameField(104, 5, 0, 0, 1, colors.get(1)));
+                myGamefield.add(new GameField(105, 6, 0, 0, 2, colors.get(1)));
+                myGamefield.add(new GameField(106, 7, 0, 0, 3, colors.get(1)));
+                myGamefield.add(new GameField(107, 8, 0, 0, 4, colors.get(1)));
+                //player3
+                myGamefield.add(new GameField(108, 14, 3, 0, 1, colors.get(2)));
+                myGamefield.add(new GameField(109, 14, 4, 0, 2, colors.get(2)));
+                myGamefield.add(new GameField(110, 14, 5, 0, 3, colors.get(2)));
+                myGamefield.add(new GameField(111, 14, 6, 0, 4, colors.get(2)));
+                //player4
+                myGamefield.add(new GameField(112, 14, 8, 0, 1, colors.get(3)));
+                myGamefield.add(new GameField(113, 14, 9, 0, 2, colors.get(3)));
+                myGamefield.add(new GameField(114, 14, 10, 0, 3, colors.get(3)));
+                myGamefield.add(new GameField(115, 14, 11, 0, 4, colors.get(3)));
+                //player5
+                myGamefield.add(new GameField(116, 5, 14, 0, 1, colors.get(4)));
+                myGamefield.add(new GameField(117, 6, 14, 0, 2, colors.get(4)));
+                myGamefield.add(new GameField(118, 7, 14, 0, 3, colors.get(4)));
+                myGamefield.add(new GameField(119, 8, 14, 0, 4, colors.get(4)));
+                //player6
+                myGamefield.add(new GameField(120, 0, 8, 0, 1, colors.get(5)));
+                myGamefield.add(new GameField(121, 0, 9, 0, 2, colors.get(5)));
+                myGamefield.add(new GameField(122, 0, 10, 0, 3, colors.get(5)));
+                myGamefield.add(new GameField(123, 0, 11, 0, 4, colors.get(5)));
 
-        //final fields player 1 with figure 1 to 4
-        myGamefield.add(new GameField(100, 0, 0, 0, 1, colors.get(0)));
-        myGamefield.add(new GameField(101, 0, 1, 0, 2, colors.get(0)));
-        myGamefield.add(new GameField(102, 1, 0, 0, 3, colors.get(0)));
-        myGamefield.add(new GameField(103, 1, 1, 0, 4, colors.get(0)));
-        //player2
-        myGamefield.add(new GameField(104, 9, 0, 0, 1, colors.get(1)));
-        myGamefield.add(new GameField(105, 10, 1, 0, 2, colors.get(1)));
-        myGamefield.add(new GameField(106, 9, 1, 0, 3, colors.get(1)));
-        myGamefield.add(new GameField(107, 10, 0, 0, 4, colors.get(1)));
-        //player3
-        myGamefield.add(new GameField(108, 9, 9, 0, 1, colors.get(2)));
-        myGamefield.add(new GameField(109, 10, 9, 0, 2, colors.get(2)));
-        myGamefield.add(new GameField(110, 9, 10, 0, 3, colors.get(2)));
-        myGamefield.add(new GameField(111, 10, 10, 0, 4, colors.get(2)));
-        //player 4
-        myGamefield.add(new GameField(112, 0, 10, 0, 1, colors.get(3)));
-        myGamefield.add(new GameField(113, 0, 9, 0, 2, colors.get(3)));
-        myGamefield.add(new GameField(114, 1, 9, 0, 3, colors.get(3)));
-        myGamefield.add(new GameField(115, 1, 10, 0, 4, colors.get(3)));
+                break;
+        }
+
 
     }
     public void fill_with_players(BoardModel model)

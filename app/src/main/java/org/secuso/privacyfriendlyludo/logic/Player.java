@@ -12,6 +12,15 @@ import java.util.ArrayList;
 
 public class Player implements Parcelable, Serializable{
 
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
+
+    private boolean isFinished;
     ArrayList <Figure> figures = new ArrayList<Figure>();
     int id;
     int color;
@@ -38,6 +47,7 @@ public class Player implements Parcelable, Serializable{
         this.id = id;
         this.color = playercolor;
         this.isAI = isAI;
+        this.isFinished = false;
         //create 4 figures
         for (int i=0; i<4; i++)
         {
@@ -86,6 +96,7 @@ public class Player implements Parcelable, Serializable{
         color = in.readInt();
         name = in.readString();
         isAI = in.readByte() != 0;
+        isFinished = in.readByte() != 0;
         figures = in.createTypedArrayList(Figure.CREATOR);
     }
 
@@ -100,6 +111,7 @@ public class Player implements Parcelable, Serializable{
         dest.writeInt(color);
         dest.writeString(name);
         dest.writeByte((byte) (isAI ? 1 : 0));
+        dest.writeByte((byte) (isFinished ? 1 : 0));
         dest.writeTypedList(figures);
     }
 

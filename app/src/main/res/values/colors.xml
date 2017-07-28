@@ -13,6 +13,7 @@
     <color name="yellow">#f6d126</color>
     <color name="red">#b71c1c</color>
     <color name="green">#388E3C</color>
+    <color name="pink">#E3C</color>
 
     <!-- lighter colors -->
     <color name="lightred">#D23B3B</color>
@@ -40,6 +41,9 @@
         <item>@color/red</item>
         <item>@color/green</item>
         <item>@color/yellow</item>
+        <item>@color/pink</item>
+        <item>@color/middlegrey</item>
+
     </array>
 
 

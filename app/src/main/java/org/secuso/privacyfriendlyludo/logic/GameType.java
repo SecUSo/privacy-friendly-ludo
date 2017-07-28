@@ -4,6 +4,7 @@ package org.secuso.privacyfriendlyludo.logic;
  * Created by Julchen on 28.05.2017.
  */
 
-enum GameType {
-
+public enum GameType {
+    Four_players,
+    Six_players
 }

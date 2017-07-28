@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
+import org.secuso.privacyfriendlyludo.logic.GameType;
 import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.io.FileOutputStream;
@@ -75,34 +76,32 @@ public class GameActivity extends AppCompatActivity {
             {
                 // new Game
                 ArrayList<Player> playerArrayList = intent.getParcelableArrayListExtra("Players");
+                // determine gametype
+                SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                int type = mSharedPreferences.getInt("lastChosenPage", -1);
                 // repair id if necessary
                 for (int i=0; i<playerArrayList.size(); i++)
                 {
                     playerArrayList.get(i).setId(i+1);
                 }
-                model = new BoardModel(this, playerArrayList);
-                // save settings
-                FileOutputStream fos = null;
-                ObjectOutputStream oos = null;
-                try {
-                    fos = this.openFileOutput("saveSettings", Context.MODE_PRIVATE);
-                    oos = new ObjectOutputStream(fos);
-                    oos.writeObject(model.getPlayers());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                GameType game_typ;
+                switch(type)
+                {
+                    case 0:
+                        game_typ = GameType.Four_players;
+                        break;
+                    case 1:
+                        game_typ = GameType.Six_players;
+                        break;
+                    default:
+                        game_typ=GameType.Four_players;
                 }
-                finally {
-                    if (oos != null) try { oos.close(); } catch (IOException ignored) {}
-                    if (fos != null) try { fos.close(); } catch (IOException ignored) {}
-                }
-
+                model = new BoardModel(this, playerArrayList, game_typ);
             }
 
         //String textzeile = intent.getStringExtra("PlayerNames");
         boardView = (BoardView) findViewById(R.id.board);
         //boardView = (GridLayout) findViewById(R.id.board);
-        boardView.setColumnCount(11);
-        boardView.setRowCount(11);
         boardView.createBoard(model);
         boardView.getBoard();
 
@@ -188,10 +187,12 @@ public class GameActivity extends AppCompatActivity {
         }
 
         int new_figure_index = model.moveFigure(old_figure_index, false);
+
         //Log.i("tag", "new Pos: " + new_figure_index);
         // set Figure to new Position
         boardView.setFigureToNewPosition(model, old_figure_index, new_figure_index, false);
         player_changed = model.playerChanged(countRollDice);
+        // show details about recent player
         if (player_changed) {
             // show a message for player changed
             String playername = model.getRecent_player().getName();

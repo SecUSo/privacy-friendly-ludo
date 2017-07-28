@@ -1,8 +1,11 @@
 package org.secuso.privacyfriendlyludo.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,11 +27,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.secuso.privacyfriendlyludo.R;
+import org.secuso.privacyfriendlyludo.logic.GameType;
 import org.secuso.privacyfriendlyludo.logic.Player;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -46,13 +54,14 @@ public class GameSettingActivity extends AppCompatActivity {
     int color;
     boolean color_changed;
     private Set<Integer> generated = new LinkedHashSet<Integer>();
+    private int max_players;
+    int gametyp;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            savedInstanceState.getParcelable("Players");
-            savedInstanceState.getInt("Position");
+            player = savedInstanceState.getParcelable("Players");
         }
         setContentView(R.layout.activity_game_setting);
         Intent intent = getIntent();
@@ -85,6 +94,20 @@ public class GameSettingActivity extends AppCompatActivity {
             int colorToUse = ta.getResourceId(color - 1, R.color.white);
             int backgroundColor = colorToUse;
             player.get(listposition).setColor(backgroundColor);
+        }
+        // determine gametype
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        gametyp = mSharedPreferences.getInt("lastChosenPage", -1);
+
+        // 4 players
+        if(gametyp==0)
+        {
+            max_players = 4;
+        }
+        // 6 players
+        else
+        {
+            max_players = 6;
         }
     }
 
@@ -253,11 +276,35 @@ public class GameSettingActivity extends AppCompatActivity {
                     Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
                     intent.putParcelableArrayListExtra("Players", player);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    // save recent settings
+                    // save settings
+                    FileOutputStream fos = null;
+                    ObjectOutputStream oos = null;
+                    String file_name="";
+                    switch (gametyp) {
+                        case 0:
+                            file_name = "save_settings_4players";
+                            break;
+                        case 1:
+                            file_name = "save_settings_6players";
+                            break;
+                    }
+                    try {
+                        fos = this.openFileOutput(file_name, Context.MODE_PRIVATE);
+                        oos = new ObjectOutputStream(fos);
+                        oos.writeObject(player);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        if (oos != null) try { oos.close(); } catch (IOException ignored) {}
+                        if (fos != null) try { fos.close(); } catch (IOException ignored) {}
+                    }
                     startActivity(intent);
                 }
                 break;
             case R.id.button_add_player:
-                if (player.size() == 4) {
+                if (player.size() == max_players) {
                     Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
                 } else {
                     player.add(new Player(3, R.color.white, getString(R.string.initial_name_field), false));
@@ -307,7 +354,7 @@ public class GameSettingActivity extends AppCompatActivity {
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // save in local variable, before they will be deleted
+                            // save information in local variable, before they will be deleted
                             int pos = listposition;
                             ArrayList<Player> recent_player = player;
                             // ArrayList<Player> play = getIntent().getParcelableArrayExtra("Player");
