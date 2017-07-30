@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -49,6 +51,9 @@ public class GameActivity extends AppCompatActivity {
 
         timer=10;
         setContentView(R.layout.activity_game);
+        // keep screen on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         Intent intent = getIntent();
         mybundle = intent.getExtras();
           if (mybundle != null) {
