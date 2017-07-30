@@ -240,26 +240,26 @@ public class MainActivity extends BaseActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            int id;
-          //  if (getArguments() != null) {
+            int id=0;
 
             View rootView = inflater.inflate(R.layout.fragment_main_menu, container, false);
 
             ImageView imageView = (ImageView) rootView.findViewById(R.id.gameTypeImage);
 
-             if (getArguments().getInt(ARG_SECTION_NUMBER) == 0)
-             {
+            switch ((getArguments().getInt(ARG_SECTION_NUMBER)))
+            {
+                case 0:
+                    imageView.setImageResource(R.drawable.ludo);
+                    id=4;
+                    break;
+                case 1:
+                    imageView.setImageResource(R.drawable.ludo6);
+                    id=6;
+                    break;
+                default:
+                    break;
 
-                 imageView.setImageResource(R.drawable.ludo);
-                 id=4;
-             }
-             else
-             {
-                 imageView.setImageResource(R.drawable.ludo6);
-                 id=6;
-             }
-          //  }
-
+            }
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             int max_players = id;
