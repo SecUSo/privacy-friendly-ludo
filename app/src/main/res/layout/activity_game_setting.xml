@@ -37,10 +37,10 @@
 
     <Button
         android:id="@+id/button_add_player"
-        android:layout_width="46dp"
-        android:layout_height="45dp"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginLeft="43dp"
+        android:layout_marginLeft="27dp"
         android:layout_marginStart="27dp"
         android:background="@drawable/ic_person_add"
         android:onClick="onClick"
@@ -50,7 +50,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/playerList"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -60,7 +60,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout_editor_absoluteY="0dp">
     </android.support.v7.widget.RecyclerView>
 
 

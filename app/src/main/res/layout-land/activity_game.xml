@@ -28,6 +28,7 @@
         android:layout_toRightOf="@+id/board"
         android:background="@drawable/d4"
         android:gravity="right|center_horizontal"
+        android:visibility="invisible"
         tools:ignore="ContentDescription" />
 
     <TextView

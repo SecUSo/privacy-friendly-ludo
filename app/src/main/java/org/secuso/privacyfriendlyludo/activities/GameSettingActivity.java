@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +22,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.secuso.privacyfriendlyludo.R;
-import org.secuso.privacyfriendlyludo.logic.GameType;
 import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.io.FileOutputStream;
@@ -36,11 +33,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
-import static java.lang.Integer.max;
 import static java.lang.Integer.valueOf;
 
 public class GameSettingActivity extends AppCompatActivity {
@@ -49,13 +43,13 @@ public class GameSettingActivity extends AppCompatActivity {
     RecyclerViewCollectionAdapter adapter;
     private ArrayList<Player> player = new ArrayList<>();
     List<Integer> mList = new ArrayList<>();
-    private Bundle mybundle;
     int listposition;
     int color;
     boolean color_changed;
-    private Set<Integer> generated = new LinkedHashSet<Integer>();
+    private Set<Integer> generated = new LinkedHashSet<>();
     private int max_players;
     int gametyp;
+    boolean useOwnDice;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -65,8 +59,10 @@ public class GameSettingActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_game_setting);
         Intent intent = getIntent();
-        mybundle = intent.getExtras();
+        Bundle mybundle = intent.getExtras();
         if (mybundle != null) {
+            // save it for later
+            useOwnDice = intent.getBooleanExtra("own_dice", false);
             if (mybundle.getInt("Color") != 0) {
                 // there is a color_change
                 color = mybundle.getInt("Color");
@@ -80,6 +76,7 @@ public class GameSettingActivity extends AppCompatActivity {
         } else {
             player.add(new Player(1, R.color.white, getString(R.string.initial_name_field), false));
         }
+
         mPlayerList = (RecyclerView) findViewById(R.id.playerList);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -92,8 +89,7 @@ public class GameSettingActivity extends AppCompatActivity {
         if (color_changed) {
             TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
             int colorToUse = ta.getResourceId(color - 1, R.color.white);
-            int backgroundColor = colorToUse;
-            player.get(listposition).setColor(backgroundColor);
+            player.get(listposition).setColor(colorToUse);
         }
         // determine gametype
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -127,17 +123,20 @@ public class GameSettingActivity extends AppCompatActivity {
             switch (id) {
                 //playertype is clicked
                 case 0:
-                    player.get(listposition).setAI(!player.get(listposition).isAI());
-                    adapter.notifyItemChanged(listposition);
-                    if (player.get(listposition).isAI())
+                    if (!useOwnDice)
                     {
-                        //v.setBackgroundColor(0xFF00FF00 );
-                        v.setBackgroundResource( R.drawable.ic_person );
-                    }
-                    else
-                    {
-                        //v.setBackgroundColor(0x0000AA00 );
-                        v.setBackgroundResource( R.drawable.ic_trash );
+                        player.get(listposition).setAI(!player.get(listposition).isAI());
+                        adapter.notifyItemChanged(listposition);
+                        if (player.get(listposition).isAI())
+                        {
+                            //v.setBackgroundColor(0xFF00FF00 );
+                            v.setBackgroundResource( R.drawable.ic_computer);
+                        }
+                        else
+                        {
+                            //v.setBackgroundColor(0x0000AA00 );
+                            v.setBackgroundResource( R.drawable.ic_person );
+                        }
                     }
 
                     break;
@@ -195,9 +194,7 @@ public class GameSettingActivity extends AppCompatActivity {
                 public void afterTextChanged(Editable editable) {
                     View view = itemView;
                     View parent = (View) view.getParent();
-                    if (parent == null) {
-                        // initialize view
-                    } else {
+                    if (parent != null)  {
                         while (!(parent instanceof RecyclerView)) {
                             view = parent;
                             if (parent.getParent() != null) {
@@ -227,15 +224,15 @@ public class GameSettingActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RecyclerViewCollectionHolder recyclerViewCollectionHolder, int i) {
-            recyclerViewCollectionHolder.playerColor.setBackgroundColor(getResources().getColor(player.get(i).getColor()));
+            recyclerViewCollectionHolder.playerColor.setBackgroundColor(ContextCompat.getColor(getBaseContext(),player.get(i).getColor()));
             recyclerViewCollectionHolder.playerName.setText(player.get(i).getName());
             if (player.get(i).isAI())
             {
-                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_person);
+                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_computer);
             }
             else
             {
-                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_trash);
+                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_person);
             }
         }
     }
@@ -248,7 +245,7 @@ public class GameSettingActivity extends AppCompatActivity {
                 white_inUse = true;
             }
         }
-        if (generated.size() == player.size() && white_inUse == false) {
+        if (generated.size() == player.size() && !white_inUse) {
             return true;
         } else {
 
@@ -273,7 +270,9 @@ public class GameSettingActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.start_game:
                 if (checkColorUniqueness() && checkPlayerNames()) {
+
                     Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
+                    intent.putExtra("own_dice", useOwnDice);
                     intent.putParcelableArrayListExtra("Players", player);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     // save recent settings
@@ -384,6 +383,7 @@ public class GameSettingActivity extends AppCompatActivity {
         // Save the user's current game state
         savedInstanceState.putInt("Position", listposition);
         savedInstanceState.putParcelableArrayList("Player", player);
+        savedInstanceState.putBoolean("useOwnDice", useOwnDice);
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }

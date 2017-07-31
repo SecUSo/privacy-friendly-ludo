@@ -1,20 +1,23 @@
 package org.secuso.privacyfriendlyludo.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +29,6 @@ import org.secuso.privacyfriendlyludo.logic.Player;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.WriteAbortedException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
@@ -45,31 +47,41 @@ public class GameActivity extends AppCompatActivity {
     boolean player_changed;
     View.OnClickListener myOnlyhandler;
     int timer;
+    private boolean useOwnDice;
+    boolean marked;
+    int old_figure_index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         timer=10;
+
         setContentView(R.layout.activity_game);
+
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
         // keep screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Intent intent = getIntent();
         mybundle = intent.getExtras();
           if (mybundle != null) {
-              // there is a resumeable game
               model = mybundle.getParcelable("BoardModel");
               if (model == null)
               {
                   // control comes from gameSetting
-                  mybundle = null;
               }
               else
               {
                   // control comes from main activity
+                  // there is a resumeable game
                   savedInstanceState = mybundle;
-                  mybundle = null;
               }
+              // reset mybundle
+              mybundle = null;
 
           }
         super.onCreate(savedInstanceState);
@@ -83,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
             {
                 // new Game
                 ArrayList<Player> playerArrayList = intent.getParcelableArrayListExtra("Players");
+                boolean useOwnDice = intent.getBooleanExtra("own_dice", false);
                 // determine gametype
                 SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 int type = mSharedPreferences.getInt("lastChosenPage", -1);
@@ -103,7 +116,7 @@ public class GameActivity extends AppCompatActivity {
                     default:
                         game_typ=GameType.Four_players;
                 }
-                model = new BoardModel(this, playerArrayList, game_typ);
+                model = new BoardModel(this, playerArrayList, game_typ, useOwnDice);
             }
 
         //String textzeile = intent.getStringExtra("PlayerNames");
@@ -117,15 +130,23 @@ public class GameActivity extends AppCompatActivity {
 
         //Button
         Display display = getWindowManager().getDefaultDisplay();
+        // only show info about recent player if Own dice is not used
+        if (!model.useOwnDice)
+        {
             String playername = model.getRecent_player().getName();
             String playerMessageString = getString(R.string.player_name);
             playerMessageString = playerMessageString.replace("%p", playername);
             playermessage = (TextView) findViewById(R.id.changePlayerMessage);
             playermessage.setTextColor(getResources().getColor(R.color.black));
             playermessage.setText(playerMessageString);
+        }
 
-        rollDice = (ImageView) findViewById(R.id.resultOne);
+        // only build a dice if switch for use own dice is deactivated
+        if (!model.useOwnDice)
+        {
+            rollDice = (ImageView) findViewById(R.id.resultOne);
             rollDice.setImageResource(0);
+            rollDice.setVisibility(View.VISIBLE);
             android.view.ViewGroup.LayoutParams layoutParams = rollDice.getLayoutParams();
             layoutParams.width = display.getWidth() / 6;
             layoutParams.height = display.getWidth() / 6;
@@ -137,17 +158,45 @@ public class GameActivity extends AppCompatActivity {
                 }
             });
 
+        }
+
         myOnlyhandler = new View.OnClickListener() {
             public void onClick(View v) {
 
-                int old_figure_index = v.getId();
-                setFigures(old_figure_index);
-                Next_player();
+                if (model.useOwnDice)
+                {
+                    interactWithFigure(v);
+                }
+                else
+                {
+                    int old_figure_index = v.getId();
+                    setFigures(old_figure_index);
+                    Next_player();
+
+                    // roll dice automatically if it is an AI
+                    if (model.getRecent_player().isAI())
+                    {
+                        new CountDownTimer(timer, 1) {
+
+                            @Override
+                            public void onTick(long l) {
+
+                            }
+
+                            public void onFinish() {
+                                // rollDice.setClickable(true);
+                                rollDice.performClick();
+                            }
+                        }.start();
+                    }
+                }
+
                 }
             };
 
+
         // roll dice automatically if it is an AI
-        if (model.getRecent_player().isAI())
+        if (model.getRecent_player().isAI() && !model.useOwnDice)
         {
             new CountDownTimer(timer, 1) {
 
@@ -161,6 +210,80 @@ public class GameActivity extends AppCompatActivity {
                     rollDice.performClick();
                 }
             }.start();
+        }
+        else if (model.useOwnDice)
+        {
+            boardView.makeAllFieldsClickable(myOnlyhandler);
+        }
+    }
+
+    private void interactWithFigure(View v)
+    {
+        int new_figure_index = v.getId();
+        ArrayList<Integer>playerInfos;
+        ArrayList<Integer>playerInfos_opponent;
+        // check if a figure is on chosen position
+        boolean is_empty = model.no_player_on_field(new_figure_index);
+
+        if ((marked) && old_figure_index == new_figure_index && !is_empty)
+        {
+            // deselect figure
+            boardView.SelectAndDeselectPlayer(model,old_figure_index, true);
+            marked=false;
+            // save index for next time
+            old_figure_index = new_figure_index;
+        }
+        else if ((marked) && (old_figure_index != new_figure_index))
+        {
+            // second click on another field move marked figure to this field
+            //check if another figure is already there
+            playerInfos_opponent = boardView.getPlayerInfos(model, new_figure_index);
+            playerInfos = boardView.getPlayerInfos(model,old_figure_index);
+
+            if(!is_empty) {
+                // check if it is same player
+                boolean not_same_player_on_field = model.isEmptyofSamePlayer(new_figure_index, playerInfos.get(0));
+                if (not_same_player_on_field && (new_figure_index <= model.getLast_field_index())) {
+                    // set figure back to start
+                    int new_opponent_figure_index = model.moveFigure(new_figure_index, true);
+                    boardView.setFigureToNewPosition(model, playerInfos_opponent.get(0), new_figure_index, new_opponent_figure_index, true);
+                    // update player and board information
+                    model.updateBoard(playerInfos_opponent.get(0), playerInfos_opponent.get(1), new_figure_index, new_opponent_figure_index);
+                    model.updatePlayer(playerInfos_opponent.get(0), playerInfos_opponent.get(1), 0, new_opponent_figure_index, true);
+                    // deselect figure
+                    // set figure to choosen point
+                    boardView.SelectAndDeselectPlayer(model, old_figure_index, true);
+                    boardView.setFigureToNewPosition(model, playerInfos.get(0), old_figure_index, new_figure_index, false);
+                    // update player and board information
+                    model.updateBoard(playerInfos.get(0), playerInfos.get(1), old_figure_index, new_figure_index);
+                    model.updatePlayer(playerInfos.get(0), playerInfos.get(1), 0, new_figure_index, false);
+                    marked = false;
+                    // save index for next time
+                    old_figure_index = 0;
+
+                }
+            }
+            else
+            {
+                // deselect figure
+                playerInfos = boardView.getPlayerInfos(model,old_figure_index);
+                boardView.SelectAndDeselectPlayer(model,old_figure_index, true);
+                boardView.setFigureToNewPosition(model, playerInfos.get(0), old_figure_index, new_figure_index, false);
+                // update player and board information
+                model.updateBoard(playerInfos.get(0), playerInfos.get(1),old_figure_index,new_figure_index);
+                model.updatePlayer(playerInfos.get(0), playerInfos.get(1), 0, new_figure_index, false);
+                marked = false;
+                // save index for next time
+                old_figure_index = 0;
+            }
+        }
+        else if (!is_empty)// not marked
+        {
+            // select figure
+            boardView.SelectAndDeselectPlayer(model,new_figure_index, false);
+            marked=true;
+            // save index for next time
+            old_figure_index = new_figure_index;
         }
     }
 
@@ -237,18 +360,18 @@ public class GameActivity extends AppCompatActivity {
         }
 
         int old_opponent_index = model.getNewPosition(figure_id, dice_number);
-        isEmpty = model.recent_player_on_field(old_opponent_index);
+        isEmpty = model.no_player_on_field(old_opponent_index);
         if (!isEmpty) {
             model.setOpponent_player(model.getPlayers().get(player_id - 1));
             new_opponent_index = model.moveFigure(old_opponent_index, true);
-            boardView.setFigureToNewPosition(model, old_opponent_index, new_opponent_index, true);
+            boardView.setFigureToNewPosition(model, model.getOpponent_player().getId(), old_opponent_index, new_opponent_index , true);
         }
 
         // calculate new position
         int new_figure_index = model.moveFigure(old_figure_index, false);
 
         // set Figure to new Position
-        boardView.setFigureToNewPosition(model, old_figure_index, new_figure_index, false);
+        boardView.setFigureToNewPosition(model, model.getRecent_player().getId(), old_figure_index, new_figure_index, false);
 
         // clear old movable figures list
         model.getMovable_figures().clear();
@@ -274,7 +397,33 @@ public class GameActivity extends AppCompatActivity {
             //game is finished
             Log.i("tag", "game is finished");
             playermessage.setText("FERTIG");
-            rollDice.setAlpha(0);
+            rollDice.setVisibility(View.INVISIBLE);
+            final Dialog dialog = new Dialog(this, R.style.WinDialog);
+            dialog.getWindow().setContentView(R.layout.win_screen_layout);
+            //dialog.setContentView(getLayoutInflater().inflate(R.layout.win_screen_layout,null));
+            //dialog.setContentView(R.layout.win_screen_layout);
+            dialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL);
+            dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+            // Register onClickListener
+            ((Button)dialog.findViewById(R.id.win_more_info_button)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // open new dialog with statistic information
+                }
+            });
+            ((Button)dialog.findViewById(R.id.win_open_Main_button)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+            });
+
+            dialog.show();
         }
         else // still players are not ready, next players turn
         {

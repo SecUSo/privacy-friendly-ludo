@@ -103,7 +103,7 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
 
     }
 
-    public void markPossibleFigures(int color) {
+    public void markPossibleFigure(int color) {
 
        // this.myColor = color;
         layersDrawable.getDrawable(2).setAlpha(255);

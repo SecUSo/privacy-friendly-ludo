@@ -44,7 +44,7 @@ public class BoardModel implements Parcelable, Serializable {
     private Player opponent_player = new Player();
     private GameFieldPosition my_game_field;
     private StartGameFieldPosition start_player_map;
-    private transient Set<Integer> generated = new LinkedHashSet<Integer>();
+    private transient Set<Integer> generated = new LinkedHashSet<>();
     private ArrayList<Integer> colors = new ArrayList<>();
     private transient Context context;
     private ArrayList<Integer> movable_figures;
@@ -53,10 +53,12 @@ public class BoardModel implements Parcelable, Serializable {
     private GameType game_type;
     private int last_field_index;
     public int countRollDice;
+    public boolean useOwnDice;
 
-    public BoardModel(Context context, ArrayList<Player> settingplayers, GameType type) {
+    public BoardModel(Context context, ArrayList<Player> settingplayers, GameType type, Boolean useOwnDice) {
         this.context = context;
         this.game_type = type;
+        this.useOwnDice = useOwnDice;
         // define variables depending on gametype
         switch (game_type) {
             case Four_players:
@@ -96,7 +98,7 @@ public class BoardModel implements Parcelable, Serializable {
         my_game_field = (GameFieldPosition) in.readValue(GameFieldPosition.class.getClassLoader());
         start_player_map = (StartGameFieldPosition) in.readValue(StartGameFieldPosition.class.getClassLoader());
         if (in.readByte() == 0x01) {
-            colors = new ArrayList<Integer>();
+            colors = new ArrayList<>();
             in.readList(colors, Integer.class.getClassLoader());
         } else {
             colors = null;
@@ -112,6 +114,7 @@ public class BoardModel implements Parcelable, Serializable {
         last_field_index = in.readInt();
         max_players = in.readInt();
         countRollDice = in.readInt();
+        useOwnDice = in.readByte() != 0x00;
     }
 
     public GameType getGame_type() {
@@ -144,10 +147,6 @@ public class BoardModel implements Parcelable, Serializable {
 
     public Player getRecent_player() {
         return recent_player;
-    }
-
-    public Player getOpponent_player() {
-        return opponent_player;
     }
 
     public void setOpponent_player(Player opponent) {
@@ -188,6 +187,10 @@ public class BoardModel implements Parcelable, Serializable {
         colors.addAll(0, generated);
     }
 
+    public Player getOpponent_player() {
+        return opponent_player;
+    }
+
     // get all Figures which can be moved according to the rules
     private ArrayList<Integer> checkMovableFigures() {
         int new_position;
@@ -197,6 +200,7 @@ public class BoardModel implements Parcelable, Serializable {
 
         // make first field free if still players are in the house
         boolean freeHouse;
+
         boolean freeFirstField;
         freeFirstField = checkFirstFieldFree();
         freeHouse = checkHouseisFree();
@@ -207,7 +211,7 @@ public class BoardModel implements Parcelable, Serializable {
             int figure_id = getMy_game_field().getMyGamefield().get(position - 1).getFigure_id();
             new_position = getNewPosition(figure_id, dice_number);
 
-            if (isEmptyofSamePlayer(new_position)) {
+            if (isEmptyofSamePlayer(new_position, recent_player.getId())) {
                 figure_ids.add(figure_id);
             } else {
                 figure_id = getMy_game_field().getMyGamefield().get(new_position - 1).getFigure_id();
@@ -222,7 +226,7 @@ public class BoardModel implements Parcelable, Serializable {
                 moveOfFigureAllowed = figureIsAllowedToMove(dice_number, figure_id, freeHouse);
                 if (moveOfFigureAllowed) {
                     new_position = getNewPosition(figure_id, dice_number);
-                    movePossible = new_position != 0 && isEmptyofSamePlayer(new_position);
+                    movePossible = new_position != 0 && isEmptyofSamePlayer(new_position, recent_player.getId());
                 }
 
                 //move allowed and possible
@@ -241,7 +245,7 @@ public class BoardModel implements Parcelable, Serializable {
     private boolean checkFirstFieldFree() {
         boolean freeField;
         int position = 1 + (recent_player.getId() - 1) * 10;
-        freeField = isEmptyofSamePlayer(position);
+        freeField = isEmptyofSamePlayer(position, recent_player.getId());
         return freeField;
     }
 
@@ -308,41 +312,62 @@ public class BoardModel implements Parcelable, Serializable {
     }
 
     //checks if already a figure of this player is there
-    private boolean isEmptyofSamePlayer(int fieldindex) {
+    public boolean isEmptyofSamePlayer(int fieldindex, int player_id) {
 
-        int player_id_on_field = my_game_field.getMyGamefield().get(fieldindex - 1).getPlayer_id();
+        int player_id_on_field=0;
 
-        return player_id_on_field == 0 || player_id_on_field != recent_player.getId();
+        if (fieldindex>=100)
+        {
+            player_id_on_field = start_player_map.getMyGamefield().get(fieldindex%100).getPlayer_id();
+        }
+        else
+        {
+            player_id_on_field = my_game_field.getMyGamefield().get(fieldindex - 1).getPlayer_id();
+        }
+
+        return player_id_on_field == 0 || player_id_on_field != player_id;
+
     }
 
     //checks if already a figure is there
-    public Boolean recent_player_on_field(int fieldindex) {
-        return (my_game_field.getMyGamefield().get(fieldindex - 1).getPlayer_id() == 0);
+    public Boolean no_player_on_field(int fieldindex) {
+        if (fieldindex>=100)
+        {
+            return (start_player_map.getMyGamefield().get(fieldindex%100).getPlayer_id() == 0);
+        }
+        else
+        {
+            return (my_game_field.getMyGamefield().get(fieldindex - 1).getPlayer_id() == 0);
+        }
+
     }
 
-    private void updatePlayer(int player_id, int figure_id, int dice_result, int new_position, boolean kickedOut) {
-        opponent_player = players.get(player_id - 1);
-        Figure moved_figure = opponent_player.getFigures().get(figure_id - 1);
+    public void updatePlayer(int player_id, int figure_id, int dice_result, int new_position, boolean kickedOut) {
         int count_steps;
-        if (kickedOut) {
-            count_steps = 0;
+        Figure moved_figure = players.get(player_id-1).getFigures().get(figure_id-1);
+        if (dice_result!=0)
+        {
+            // no free mode
+            if (kickedOut) {
+                count_steps = 0;
+            }
+            // if figure comes out to the gamefield
+            else if (Objects.equals(moved_figure.getState(), "start")) {
+                count_steps = 1;
+            } else {
+                count_steps = (recent_player.getFigures().get(figure_id - 1).getCount_steps()) + dice_result;
+            }
+            moved_figure.setCount_steps(count_steps);
         }
-        // if figure comes out to the gamefield
-        else if (Objects.equals(moved_figure.getState(), "start")) {
-            count_steps = 1;
-        } else {
-            count_steps = (recent_player.getFigures().get(figure_id - 1).getCount_steps()) + dice_result;
-        }
-        moved_figure.setCount_steps(count_steps);
+
         moved_figure.setField_position_index(new_position);
         moved_figure.setState(moved_figure.getField_position_index(), this);
 
     }
 
-    private void updateBoard(int player_id, int figure_id, int old_position, int new_position) {
+    public void updateBoard(int player_id, int figure_id, int old_position, int new_position) {
         GameField field_position_old;
         GameField field_position_new;
-        opponent_player = players.get(player_id - 1);
         if (old_position >= 100) {
             field_position_old = getStart_player_map().getMyGamefield().get(old_position % 100);
         } else {
@@ -355,7 +380,7 @@ public class BoardModel implements Parcelable, Serializable {
         } else {
             field_position_new = getMy_game_field().getMyGamefield().get(new_position - 1);
         }
-        field_position_new.setPlayer_id(opponent_player.getId());
+        field_position_new.setPlayer_id(player_id);
         field_position_new.setFigure_id(figure_id);
     }
 
@@ -425,13 +450,13 @@ public class BoardModel implements Parcelable, Serializable {
         updatePlayer(player_id, figure_id, dice_number, new_position, kicked_out);
         updateBoard(player_id, figure_id, figure_index, new_position);
         if (recent_player.getFigures().get(figure_id - 1).getCount_steps() > last_field_index) {
-            updateFinishFlag(player_id, figure_id);
+            updateFinishFlag(player_id);
         }
 
         return new_position;
     }
 
-    private void updateFinishFlag(int player_id, int figure_id) {
+    private void updateFinishFlag(int player_id) {
         // figure is in Goal fields
         // check finish state of all other figures --> because jumping is possible
         int max_possible_fieldindex = (last_field_index + 4) + (4 * (player_id - 1));
@@ -444,7 +469,7 @@ public class BoardModel implements Parcelable, Serializable {
             if (!players.get(player_id - 1).getFigures().get(count_figures).isFinished() && figure_pos<100 && count_steps > last_field_index) {
                 // check field above figure_pos
                 for (int i = 1; i < (count_fields + 1); i++) {
-                    if (isEmptyofSamePlayer(figure_pos + i)) {
+                    if (isEmptyofSamePlayer(figure_pos + i, recent_player.getId())) {
                         count_empty_fields = count_empty_fields + 1;
                     }
                 }
@@ -506,6 +531,7 @@ public class BoardModel implements Parcelable, Serializable {
         dest.writeInt(last_field_index);
         dest.writeInt(max_players);
         dest.writeInt(countRollDice);
+        dest.writeByte((byte) (useOwnDice ? 0x01 : 0x00));
     }
 }
 

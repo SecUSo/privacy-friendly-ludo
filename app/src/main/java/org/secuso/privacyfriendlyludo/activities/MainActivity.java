@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlyludo.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,14 +9,18 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
@@ -24,6 +29,7 @@ import org.secuso.privacyfriendlyludo.logic.Player;
 import org.secuso.privacyfriendlyludo.tutorial.PrefManager;
 import org.secuso.privacyfriendlyludo.tutorial.TutorialActivity;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,8 +43,28 @@ public class MainActivity extends BaseActivity {
     private ViewPager mViewPager;
     private ImageView mArrowLeft;
     private ImageView mArrowRight;
-    private Button game_continue;
     private BoardModel model;
+    private Boolean game_continuable;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        model = loadFile();
+        Button game_continue = (Button) findViewById(R.id.game_button_continue);
+        if (model == null || model.isGame_finished())
+        {
+            // no saved game available
+            game_continuable = false;
+            game_continue.setClickable(false);
+            game_continue.setBackgroundColor(ContextCompat.getColor(getBaseContext(),(R.color.middlegrey)));
+        }
+        else
+        {
+            game_continuable = true;
+            game_continue.setClickable(true);
+            game_continue.setBackgroundColor(ContextCompat.getColor(getBaseContext(),R.color.colorPrimary));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +114,19 @@ public class MainActivity extends BaseActivity {
         });
 
         model = loadFile();
-        game_continue = (Button) findViewById(R.id.game_button_continue);
+        Button game_continue = (Button) findViewById(R.id.game_button_continue);
         if (model == null || model.isGame_finished())
         {
             // no saved game available
+            game_continuable = false;
             game_continue.setClickable(false);
-            game_continue.setBackgroundColor(getResources().getColor(R.color.middlegrey));
+            game_continue.setBackgroundColor(ContextCompat.getColor(getBaseContext(),(R.color.middlegrey)));
         }
         else
         {
+            game_continuable = true;
             game_continue.setClickable(true);
-            game_continue.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            game_continue.setBackgroundColor(ContextCompat.getColor(getBaseContext(),R.color.colorPrimary));
         }
     }
 
@@ -116,14 +144,64 @@ public class MainActivity extends BaseActivity {
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
                 break;
             case R.id.game_button_start:
-                Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
-                ArrayList<Player> last_players = loadSettings();
-                if (last_players != null)
+                if (game_continuable)
                 {
-                    intent.putParcelableArrayListExtra("Players", last_players);
+                    // show alertDialog
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
+                    // Setting Dialog Title
+                    alertBuilder.setTitle(R.string.OverwriteResumableGameTitle);
+                    // Setting Dialog Message
+                    alertBuilder.setMessage(R.string.OverwriteResumableGame);
+
+                    alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // delete file
+                            deleteFile("savedata");
+                            // open Settings
+                            Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
+                            // check if switch is activated and save it for later
+                            Switch own_dice = (Switch) findViewById(R.id.switch_own_dice);
+                            Boolean switchState = own_dice.isChecked();
+
+                            ArrayList<Player> last_players = loadSettings(switchState);
+                            if (last_players != null)
+                            {
+                                intent.putParcelableArrayListExtra("Players", last_players);
+
+                            }
+                            intent.putExtra("own_dice", switchState);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    });
+
+                    alertBuilder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener()     {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do nothing
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
                 }
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                else
+                {
+                    Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
+                    // check if switch is activated and save it for later
+                    Switch own_dice = (Switch) findViewById(R.id.switch_own_dice);
+                    Boolean switchState = own_dice.isChecked();
+
+                    ArrayList<Player> last_players = loadSettings(switchState);
+                    if (last_players != null)
+                    {
+                        intent.putParcelableArrayListExtra("Players", last_players);
+
+                    }
+                    intent.putExtra("own_dice", switchState);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
+
                 break;
             case R.id.game_button_continue:
                 Intent myintent = new Intent(MainActivity.this, GameActivity.class);
@@ -147,23 +225,20 @@ public class MainActivity extends BaseActivity {
             model.setContext(getBaseContext());
             return model;
         }
-        catch (IOException e) {
+        catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (ois != null) try { ois.close(); } catch (IOException e) {}
-            if (fis != null) try { fis.close(); } catch (IOException e) {}
+        } finally {
+            if (ois != null) try { ois.close(); } catch (IOException e) { e.printStackTrace();}
+            if (fis != null) try { fis.close(); } catch (IOException e) { e.printStackTrace();}
         }
         return null;
     }
 
-    private ArrayList<Player> loadSettings() {
+    private ArrayList<Player> loadSettings(Boolean useOwnDice) {
         ObjectInputStream ois = null;
         FileInputStream fis = null;
         String file_name="";
+        ArrayList<Player> last_players;
         switch (mSharedPreferences.getInt("lastChosenPage", 0)) {
             case 0:
                 file_name = "save_settings_4players";
@@ -175,18 +250,22 @@ public class MainActivity extends BaseActivity {
         try {
             fis = this.openFileInput(file_name);
             ois = new ObjectInputStream(fis);
-            ArrayList<Player> last_players = (ArrayList<Player>) ois.readObject();
+            last_players = (ArrayList<Player>) ois.readObject();
+            // change isAI state for all players to false if ownDice is used
+            if (useOwnDice)
+            {
+                for (int i=0; i<last_players.size(); i++)
+                {
+                    last_players.get(i).setAI(false);
+                }
+            }
             return last_players;
         }
-        catch (IOException e) {
+        catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (ois != null) try { ois.close(); } catch (IOException e) {}
-            if (fis != null) try { fis.close(); } catch (IOException e) {}
+        } finally {
+            if (ois != null) try { ois.close(); } catch (IOException e) { e.printStackTrace();}
+            if (fis != null) try { fis.close(); } catch (IOException e) { e.printStackTrace();}
         }
         return null;
     }
@@ -262,7 +341,6 @@ public class MainActivity extends BaseActivity {
             }
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            int max_players = id;
             String playertypeMessageString = getString(R.string.game_type);
             playertypeMessageString = playertypeMessageString.replace("%max", String.valueOf(id));
             textView.setText(playertypeMessageString);
