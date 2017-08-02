@@ -95,5 +95,8 @@
     <string name="initial_name_field">name</string>
     <string name="OverwriteResumableGame">The resumable Game will be overwritten if you continue.</string>
     <string name="OverwriteResumableGameTitle">Overwrite Resumable Game?</string>
+    <string name="LeaveGame">The recent Game will be closed if you continue</string>
+    <string name="LeaveGameTitle">Close recent Game?</string>
+    <string name="enough_players">not enough players choosen</string>
 
 </resources>

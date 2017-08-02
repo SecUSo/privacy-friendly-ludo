@@ -4,6 +4,7 @@ package org.secuso.privacyfriendlyludo.activities;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Switch;
 
 import org.secuso.privacyfriendlyludo.R;
 
@@ -92,7 +95,6 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
-
         overridePendingTransition(0, 0);
     }
 
@@ -122,7 +124,7 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
-            //setHasOptionsMenu(true);
+            setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
@@ -137,6 +139,7 @@ public class SettingsActivity extends BaseActivity {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 //getActivity().finish();
+                // save states in prefmanager
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
             }

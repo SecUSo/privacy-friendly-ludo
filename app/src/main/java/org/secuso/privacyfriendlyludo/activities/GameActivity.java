@@ -2,11 +2,20 @@ package org.secuso.privacyfriendlyludo.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +28,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
@@ -37,19 +47,20 @@ public class GameActivity extends AppCompatActivity {
     private ImageView rollDice;
     private TextView playermessage;
     SharedPreferences sharedPreferences;
-    private int countRollDice;
     Bundle mybundle;
 
     private BoardView boardView;
     BoardModel model;
     ArrayList<Integer> movable_figures;
     int dice_number;
-    boolean player_changed;
     View.OnClickListener myOnlyhandler;
     int timer;
-    private boolean useOwnDice;
+
     boolean marked;
     int old_figure_index;
+    Drawable[] layers = new Drawable[2];
+    Resources r;
+    LayerDrawable layersDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
         }
 
         // keep screen on
@@ -145,7 +157,19 @@ public class GameActivity extends AppCompatActivity {
         if (!model.useOwnDice)
         {
             rollDice = (ImageView) findViewById(R.id.resultOne);
-            rollDice.setImageResource(0);
+            r  = getResources();
+            layers[0] = r.getDrawable(R.drawable.dice);
+            layers[1] = r.getDrawable(R.drawable.d4);
+            layersDrawable = new LayerDrawable(layers);
+
+            layersDrawable.mutate();
+            layersDrawable.setLayerInset(0, 0, 0, 0, 0);
+            layersDrawable.setLayerInset(0, 0, 0, 0, 0);
+            // change color of dice
+            int new_color = ContextCompat.getColor(getBaseContext(), model.getRecent_player().getColor());
+            layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
+            rollDice.setImageDrawable(layersDrawable);
+
             rollDice.setVisibility(View.VISIBLE);
             android.view.ViewGroup.LayoutParams layoutParams = rollDice.getLayoutParams();
             layoutParams.width = display.getWidth() / 6;
@@ -172,6 +196,8 @@ public class GameActivity extends AppCompatActivity {
                     int old_figure_index = v.getId();
                     setFigures(old_figure_index);
                     Next_player();
+                    // clear old movable figures list
+                    model.getMovable_figures().clear();
 
                     // roll dice automatically if it is an AI
                     if (model.getRecent_player().isAI())
@@ -306,6 +332,10 @@ public class GameActivity extends AppCompatActivity {
         {
             // there are movable figures
             markMovableFigures();
+            //change color of dice
+            int new_color = ContextCompat.getColor(getBaseContext(), model.getRecent_player().getColor());
+            layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
+            rollDice.setImageDrawable(layersDrawable);
             // for AI randomly chose figure
             if (model.getRecent_player().isAI()) {
                 new CountDownTimer(timer, 1) {
@@ -373,9 +403,6 @@ public class GameActivity extends AppCompatActivity {
         // set Figure to new Position
         boardView.setFigureToNewPosition(model, model.getRecent_player().getId(), old_figure_index, new_figure_index, false);
 
-        // clear old movable figures list
-        model.getMovable_figures().clear();
-
     }
 
     private void Next_player()
@@ -384,7 +411,7 @@ public class GameActivity extends AppCompatActivity {
         int count_ready_player = 0;
         // change player until playerstate is not finished or game is finished
         while (model.getRecent_player().isFinished()) {
-            player_changed = model.playerChanged(0);
+            player_changed = model.playerChanged(-1);
             count_ready_player = count_ready_player + 1;
             if (count_ready_player == (model.getPlayers().size()-1)) {
                 // all players except one are finished
@@ -438,6 +465,10 @@ public class GameActivity extends AppCompatActivity {
                     //reset counter of roll dice
                     model.countRollDice = 0;
             }
+            //change color of dice
+            int new_color = ContextCompat.getColor(getBaseContext(), model.getRecent_player().getColor());
+            layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
+            rollDice.setImageDrawable(layersDrawable);
             // check if it is a AI
             if (model.getRecent_player().isAI())
             {
@@ -473,24 +504,25 @@ public class GameActivity extends AppCompatActivity {
 
 
     public void initResultDiceViews(int dice, ImageView myImageview) {
+
         switch (dice) {
             case 1:
-                myImageview.setImageResource(R.drawable.d1);
+                layers[1] = r.getDrawable(R.drawable.d1);
                 break;
             case 2:
-                myImageview.setImageResource(R.drawable.d2);
+                layers[1] = r.getDrawable(R.drawable.d2);
                 break;
             case 3:
-                myImageview.setImageResource(R.drawable.d3);
+                layers[1] = r.getDrawable(R.drawable.d3);
                 break;
             case 4:
-                myImageview.setImageResource(R.drawable.d4);
+                layers[1] = r.getDrawable(R.drawable.d4);
                 break;
             case 5:
-                myImageview.setImageResource(R.drawable.d5);
+                layers[1] = r.getDrawable(R.drawable.d5);
                 break;
             case 6:
-                myImageview.setImageResource(R.drawable.d6);
+                layers[1] = r.getDrawable(R.drawable.d6);
                 break;
             case 0:
                 myImageview.setImageResource(0);
@@ -498,7 +530,13 @@ public class GameActivity extends AppCompatActivity {
             default:
                 break;
         }
+        layersDrawable = new LayerDrawable(layers);
 
+        layersDrawable.mutate();
+        layersDrawable.setLayerInset(0, 0, 0, 0, 0);
+        layersDrawable.setLayerInset(0, 0, 0, 0, 0);
+
+        myImageview.setImageDrawable(layersDrawable);
 
     }
 
@@ -520,23 +558,42 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    public void onBackPressed() {
+        //show warning
+        // show alertDialog
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
+        // Setting Dialog Title
+        alertBuilder.setTitle(R.string.LeaveGameTitle);
+        // Setting Dialog Message
+        alertBuilder.setMessage(R.string.LeaveGame);
 
-        //state will be saved in a file
-        FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
-        try {
-            fos = this.openFileOutput("savedata", Context.MODE_PRIVATE);
-            oos = new ObjectOutputStream(fos);
-            oos.writeObject(model);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (oos != null) try { oos.close(); } catch (IOException ignored) {}
-            if (fos != null) try { fos.close(); } catch (IOException ignored) {}
-        }
+        alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //state will be saved in a file
+                FileOutputStream fos = null;
+                ObjectOutputStream oos = null;
+                try {
+                    fos = openFileOutput("savedata", Context.MODE_PRIVATE);
+                    oos = new ObjectOutputStream(fos);
+                    oos.writeObject(model);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (oos != null) try { oos.close(); } catch (IOException ignored) {}
+                    if (fos != null) try { fos.close(); } catch (IOException ignored) {}
+                }
+                finish();
+                GameActivity.super.onBackPressed();
+            }
+        });
 
+        alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
+            public void onClick(DialogInterface dialog, int id) {
+                //do nothing
+            }
+        });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 }
 

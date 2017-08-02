@@ -15,39 +15,6 @@
     tools:context="org.secuso.privacyfriendlyludo.activities.GameSettingActivity"
     android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/start_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="fill_horizontal"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/colorAccent"
-        android:onClick="onClick"
-        android:text="@string/start_game"
-        android:textColor="@android:color/white"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
-        app:layout_constraintLeft_toRightOf="@+id/button_add_player"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <Button
-        android:id="@+id/button_add_player"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="27dp"
-        android:layout_marginStart="27dp"
-        android:background="@drawable/ic_person_add"
-        android:onClick="onClick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:ignore="RtlHardcoded" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/playerList"
         android:layout_width="0dp"

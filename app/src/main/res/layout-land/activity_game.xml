@@ -26,7 +26,7 @@
         android:layout_marginLeft="@dimen/dots_height"
         android:layout_marginTop="@dimen/slide_actions"
         android:layout_toRightOf="@+id/board"
-        android:background="@drawable/d4"
+        android:background="@drawable/dice"
         android:gravity="right|center_horizontal"
         android:visibility="invisible"
         tools:ignore="ContentDescription" />
@@ -42,4 +42,16 @@
         android:textSize="25sp"
         android:text="" />
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/showTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/changePlayerMessage"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_toRightOf="@+id/board"
+        android:text="abc"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+
+</RelativeLayout>

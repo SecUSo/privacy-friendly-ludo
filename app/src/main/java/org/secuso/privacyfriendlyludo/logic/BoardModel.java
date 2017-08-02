@@ -1,9 +1,11 @@
 package org.secuso.privacyfriendlyludo.logic;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.secuso.privacyfriendlyludo.Map.GameFieldPosition;
@@ -52,13 +54,18 @@ public class BoardModel implements Parcelable, Serializable {
     private int max_players;
     private GameType game_type;
     private int last_field_index;
-    public int countRollDice;
+    public int countRollDice = 0;
     public boolean useOwnDice;
+    private transient SharedPreferences prefs;
+    public boolean switch_dice_3times;
 
     public BoardModel(Context context, ArrayList<Player> settingplayers, GameType type, Boolean useOwnDice) {
         this.context = context;
         this.game_type = type;
         this.useOwnDice = useOwnDice;
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        this.switch_dice_3times = prefs.getBoolean("switch_dice_3times", false);
         // define variables depending on gametype
         switch (game_type) {
             case Four_players:
@@ -115,6 +122,7 @@ public class BoardModel implements Parcelable, Serializable {
         max_players = in.readInt();
         countRollDice = in.readInt();
         useOwnDice = in.readByte() != 0x00;
+        switch_dice_3times = in.readByte() != 0x00;
     }
 
     public GameType getGame_type() {
@@ -405,13 +413,20 @@ public class BoardModel implements Parcelable, Serializable {
     }
 
     public boolean playerChanged(int count_Calls) {
+        Log.i("count", "Anz: würfe: " + count_Calls);
         // check if special case, playerchanged is called again
-        if (count_Calls == 0) {
+        if (count_Calls == -1) {
             recent_player = players.get((recent_player.getId()) % players.size());
             return true;
         } else {
-            // no movable figures, 3 times roll dice done, move is finished
-            if (dice_number != 6 && count_Calls >= 3 && movable_figures.size() == 1) {
+            // no movable figures, 3 times roll dice not done but allowed acccording to settings, move is not finished
+            if (dice_number != 6 && (count_Calls < 3 && switch_dice_3times) && movable_figures.size() == 1) {
+                // update information on recent player
+                recent_player = players.get(recent_player.getId() - 1);
+                return false;
+            }
+            // no movable figures, 3 times roll dice done or not allowed according to settings, move is finished
+            if (dice_number != 6 && (count_Calls >= 3 || switch_dice_3times) && movable_figures.size() == 1) {
                 recent_player = players.get((recent_player.getId()) % players.size());
                 return true;
             }
@@ -532,6 +547,7 @@ public class BoardModel implements Parcelable, Serializable {
         dest.writeInt(max_players);
         dest.writeInt(countRollDice);
         dest.writeByte((byte) (useOwnDice ? 0x01 : 0x00));
+        dest.writeByte((byte) (switch_dice_3times ? 0x01 : 0x00));
     }
 }
 

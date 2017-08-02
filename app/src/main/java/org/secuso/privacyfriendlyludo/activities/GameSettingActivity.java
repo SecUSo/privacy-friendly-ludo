@@ -74,7 +74,7 @@ public class GameSettingActivity extends AppCompatActivity {
                 player = intent.getParcelableArrayListExtra("Players");
             }
         } else {
-            player.add(new Player(1, R.color.white, getString(R.string.initial_name_field), false));
+            player.add(new Player(1, R.color.white, "", false));
         }
 
         mPlayerList = (RecyclerView) findViewById(R.id.playerList);
@@ -107,133 +107,223 @@ public class GameSettingActivity extends AppCompatActivity {
         }
     }
 
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<ViewHolder> {
+
+        public static final int PLAYER = 0;
+        public static final int ADDPLAYER = 1;
 
         @Override
-        public void onClick(View v) {
-            View view = v;
-            int id = v.getId();
-            View parent = (View) v.getParent();
-            while (!(parent instanceof RecyclerView)) {
-                view = parent;
-                parent = (View) parent.getParent();
-            }
-            listposition = mPlayerList.getChildAdapterPosition(view);
+        public int getItemCount() {
+            return player.size() + 1;
+        }
 
-            switch (id) {
-                //playertype is clicked
-                case 0:
-                    if (!useOwnDice)
-                    {
-                        player.get(listposition).setAI(!player.get(listposition).isAI());
-                        adapter.notifyItemChanged(listposition);
-                        if (player.get(listposition).isAI())
-                        {
-                            //v.setBackgroundColor(0xFF00FF00 );
-                            v.setBackgroundResource( R.drawable.ic_computer);
-                        }
-                        else
-                        {
-                            //v.setBackgroundColor(0x0000AA00 );
-                            v.setBackgroundResource( R.drawable.ic_person );
-                        }
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view;
+            switch(viewType) {
+                case PLAYER:
+                    view = getLayoutInflater().inflate(R.layout.player_item, viewGroup, false);
+                    return new PlayerViewHolder(view);
+                case ADDPLAYER:
+                    view = getLayoutInflater().inflate(R.layout.add_player, viewGroup, false);
+                    return new AddPlayerViewHolder(view);
+                default:
+                    view = getLayoutInflater().inflate(R.layout.add_player, viewGroup, false);
+                    return new AddPlayerViewHolder(view);
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder vh, int position) {
+            switch(vh.getItemViewType()) {
+                case PLAYER:
+                    // initializing
+                    PlayerViewHolder playerViewHolder = (PlayerViewHolder)vh;
+                    playerViewHolder.playerColor.setBackgroundColor(ContextCompat.getColor(getBaseContext(), player.get(position).getColor()));
+                    playerViewHolder.playerName.setText(player.get(position).getName());
+                    if (player.get(position).isAI()) {
+                        playerViewHolder.playertype.setBackgroundResource(R.drawable.ic_computer);
+                    } else {
+                        playerViewHolder.playertype.setBackgroundResource(R.drawable.ic_person);
                     }
 
+                    //on click DeletePlayer
+                    playerViewHolder.delete_player.setOnClickListener(new View.OnClickListener() {
+                        boolean deleted = false;
+                        @Override
+                        public void onClick(View view) {
+                            if(deleted) return;
+                            deleted = true;
+                            int listPosition = vh.getAdapterPosition();
+                            player.remove(listPosition);
+                            adapter.notifyItemRemoved(listPosition);
+                        }
+                    });
+                    // on click playerColor
+                    playerViewHolder.playerColor.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view) {
+                            int listPosition = vh.getAdapterPosition();
+                            showAlertDialog(listPosition);
+                        }
+                    });
+
+                    //on click playertype
+                    playerViewHolder.playertype.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view) {
+                            int listPosition = vh.getAdapterPosition();
+                            if (!useOwnDice)
+                            {
+                                player.get(listPosition).setAI(!player.get(listPosition).isAI());
+                                adapter.notifyItemChanged(listPosition);
+                                if (player.get(listPosition).isAI())
+                                {
+                                    view.setBackgroundResource( R.drawable.ic_computer);
+                                }
+                                else
+                                {
+                                    view.setBackgroundResource( R.drawable.ic_person );
+                                }
+                            }
+                        }
+                    });
+
+                    // on change playername
+                    playerViewHolder.playerName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        }
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        }
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            int listPosition = vh.getAdapterPosition();
+                            player.get(listPosition).setName(String.valueOf(editable));
+                        }
+                    });
                     break;
-                //playerColor is clicked
-                case 1:
-                    showAlertDialog();
-                    break;
-                case 2:
-                    //playerName is clicked
-                    // player.get(listposition).setName("Alfred");
-                    // adapter.notifyItemChanged(listposition);
-                    break;
-                case 3:
-                    //delete Player is clicked
-                    player.remove(listposition);
-                    adapter.notifyItemRemoved(listposition);
-                    break;
+                case ADDPLAYER:
+                    // TODO
+                    AddPlayerViewHolder addplayerViewHolder = (AddPlayerViewHolder) vh;
+                    // onclick startgame
+                    addplayerViewHolder.start_game.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view) {
+                            if (min_player_reached() && checkColorUniqueness() && checkPlayerNames())  {
+
+                                Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
+                                intent.putExtra("own_dice", useOwnDice);
+                                intent.putParcelableArrayListExtra("Players", player);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                // save recent settings
+                                // save settings
+                                FileOutputStream fos = null;
+                                ObjectOutputStream oos = null;
+                                String file_name = "";
+                                switch (gametyp) {
+                                    case 0:
+                                        file_name = "save_settings_4players";
+                                        break;
+                                    case 1:
+                                        file_name = "save_settings_6players";
+                                        break;
+                                }
+                                try {
+                                    fos = openFileOutput(file_name, Context.MODE_PRIVATE);
+                                    oos = new ObjectOutputStream(fos);
+                                    oos.writeObject(player);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (oos != null) try {
+                                        oos.close();
+                                    } catch (IOException ignored) {
+                                    }
+                                    if (fos != null) try {
+                                        fos.close();
+                                    } catch (IOException ignored) {
+                                    }
+                                }
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    //onclick addPlayer
+                    addplayerViewHolder.addPlayer.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view) {
+                            if (player.size() == max_players) {
+                                Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
+                            } else {
+                                player.add(new Player(3, R.color.white, "", false));
+                             //   mPlayerList.setAdapter(adapter);
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                        break;
                 default:
+                    // nix :)
                     break;
             }
         }
+
+        @Override
+        public int getItemViewType(int position) {                          // p
+            return (position < player.size()) ? PLAYER : ADDPLAYER;         // +
+        }
+    }
+
+    abstract class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
     };
 
-    class RecyclerViewCollectionHolder extends RecyclerView.ViewHolder {
+    class AddPlayerViewHolder extends ViewHolder {
+
+        ImageButton addPlayer;
+        Button start_game;
+
+        public AddPlayerViewHolder(View itemView) {
+            super(itemView);
+            addPlayer = (ImageButton) itemView.findViewById(R.id.button_add_player);
+            start_game = (Button) itemView.findViewById(R.id.button_game_start);
+        }
+    }
+
+    class PlayerViewHolder extends ViewHolder {
 
         ImageButton playerColor;
         ImageButton playertype;
         ImageButton delete_player;
         public EditText playerName;
 
-        public RecyclerViewCollectionHolder(final View itemView) {
+        public PlayerViewHolder(final View itemView) {
             super(itemView);
             playertype = (ImageButton) itemView.findViewById(R.id.button_player_type);
-            playertype.setId(valueOf(0));
-            playertype.setOnClickListener(mOnClickListener);
             playerColor = (ImageButton) itemView.findViewById(R.id.button_player_color);
-            playerColor.setId(valueOf(1));
-            playerColor.setOnClickListener(mOnClickListener);
             playerName = (EditText) itemView.findViewById(R.id.textView_player_name);
-            playerName.setId(valueOf(2));
-            playerName.setOnClickListener(mOnClickListener);
             delete_player = (ImageButton) itemView.findViewById(R.id.button_delete_player);
-            delete_player.setId(valueOf(3));
-            delete_player.setOnClickListener(mOnClickListener);
-            playerName.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    View view = itemView;
-                    View parent = (View) view.getParent();
-                    if (parent != null)  {
-                        while (!(parent instanceof RecyclerView)) {
-                            view = parent;
-                            if (parent.getParent() != null) {
-                                parent = (View) parent.getParent();
-                            }
-                        }
-                        listposition = mPlayerList.getChildAdapterPosition(view);
-                        player.get(listposition).setName(String.valueOf(editable));
-                    }
-                }
-            });
         }
     }
 
-    class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<RecyclerViewCollectionHolder> {
-
-        @Override
-        public int getItemCount() {
-            return player.size();
+    public boolean min_player_reached()
+    {
+        if (player.size()<2)
+        {
+            Toast.makeText(GameSettingActivity.this, getString(R.string.enough_players), Toast.LENGTH_SHORT).show();
+            return false;
         }
-
-        @Override
-        public RecyclerViewCollectionHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = getLayoutInflater().inflate(R.layout.player_item, viewGroup, false);
-            return new RecyclerViewCollectionHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerViewCollectionHolder recyclerViewCollectionHolder, int i) {
-            recyclerViewCollectionHolder.playerColor.setBackgroundColor(ContextCompat.getColor(getBaseContext(),player.get(i).getColor()));
-            recyclerViewCollectionHolder.playerName.setText(player.get(i).getName());
-            if (player.get(i).isAI())
-            {
-                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_computer);
-            }
-            else
-            {
-                recyclerViewCollectionHolder.playertype.setBackgroundResource(R.drawable.ic_person);
-            }
+        else
+        {
+            return true;
         }
     }
 
@@ -257,7 +347,7 @@ public class GameSettingActivity extends AppCompatActivity {
     public boolean checkPlayerNames() {
         for (int i = 0; i < player.size(); i++) {
 
-            if (player.get(i).getName().equals(getString(R.string.initial_name_field))) {
+            if (player.get(i).getName().equals("")) {
                 Toast.makeText(GameSettingActivity.this, getString(R.string.Missing_playername), Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -266,56 +356,7 @@ public class GameSettingActivity extends AppCompatActivity {
 
     }
 
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.start_game:
-                if (checkColorUniqueness() && checkPlayerNames()) {
-
-                    Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
-                    intent.putExtra("own_dice", useOwnDice);
-                    intent.putParcelableArrayListExtra("Players", player);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    // save recent settings
-                    // save settings
-                    FileOutputStream fos = null;
-                    ObjectOutputStream oos = null;
-                    String file_name="";
-                    switch (gametyp) {
-                        case 0:
-                            file_name = "save_settings_4players";
-                            break;
-                        case 1:
-                            file_name = "save_settings_6players";
-                            break;
-                    }
-                    try {
-                        fos = this.openFileOutput(file_name, Context.MODE_PRIVATE);
-                        oos = new ObjectOutputStream(fos);
-                        oos.writeObject(player);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    finally {
-                        if (oos != null) try { oos.close(); } catch (IOException ignored) {}
-                        if (fos != null) try { fos.close(); } catch (IOException ignored) {}
-                    }
-                    startActivity(intent);
-                }
-                break;
-            case R.id.button_add_player:
-                if (player.size() == max_players) {
-                    Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
-                } else {
-                    player.add(new Player(3, R.color.white, getString(R.string.initial_name_field), false));
-                    mPlayerList.setAdapter(adapter);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void showAlertDialog() {
+    private void showAlertDialog(final int listPosition) {
         // Prepare grid view
         GridView gridView = new GridView(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -333,13 +374,13 @@ public class GameSettingActivity extends AppCompatActivity {
             mList.add(i);
         }
 
-        gridView.setAdapter(new ArrayAdapter<Integer>(this, R.layout.test, mList) {
+        gridView.setAdapter(new ArrayAdapter<Integer>(this, R.layout.color_list, mList) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 View v = convertView;
                 if (v == null) {
                     LayoutInflater vi = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
-                    v = vi.inflate(R.layout.test, null);
+                    v = vi.inflate(R.layout.color_list, null);
                 }
                 Integer item = mList.get(position);
                 if (item != 0) {
@@ -354,13 +395,12 @@ public class GameSettingActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             // save information in local variable, before they will be deleted
-                            int pos = listposition;
+                            int pos = listPosition;
                             ArrayList<Player> recent_player = player;
-                            // ArrayList<Player> play = getIntent().getParcelableArrayExtra("Player");
                             Intent intent = new Intent(getContext(), GameSettingActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra("Color", (Integer) v.getTag());
-                            intent.putExtra("Position", pos);
+                            intent.putExtra("Position", listPosition);
                             intent.putParcelableArrayListExtra("Players", recent_player);
                             getContext().startActivity(intent);
 

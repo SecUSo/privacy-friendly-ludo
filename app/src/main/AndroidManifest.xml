@@ -63,7 +63,12 @@
             android:name=".activities.GameSettingActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activities.GameActivity" />
+        <activity android:name=".activities.GameActivity"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.secuso.privacyfriendlyludo.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

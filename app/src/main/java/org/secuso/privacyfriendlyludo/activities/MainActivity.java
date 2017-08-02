@@ -175,7 +175,7 @@ public class MainActivity extends BaseActivity {
                         }
                     });
 
-                    alertBuilder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener()     {
+                    alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
                         public void onClick(DialogInterface dialog, int id) {
                             //do nothing
                         }
