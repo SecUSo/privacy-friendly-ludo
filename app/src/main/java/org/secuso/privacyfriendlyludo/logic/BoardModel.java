@@ -58,6 +58,7 @@ public class BoardModel implements Parcelable, Serializable {
     public boolean useOwnDice;
     private transient SharedPreferences prefs;
     public boolean switch_dice_3times;
+    public ArrayList<Integer> order_of_winners = new ArrayList<>();
 
     public BoardModel(Context context, ArrayList<Player> settingplayers, GameType type, Boolean useOwnDice) {
         this.context = context;
@@ -88,6 +89,10 @@ public class BoardModel implements Parcelable, Serializable {
         my_game_field = new GameFieldPosition(colors, game_type);
         start_player_map.fill_with_players(this);
 
+    }
+
+    public ArrayList<Integer> getOrder_of_winners() {
+        return order_of_winners;
     }
 
     private BoardModel(Parcel in) {
@@ -123,6 +128,13 @@ public class BoardModel implements Parcelable, Serializable {
         countRollDice = in.readInt();
         useOwnDice = in.readByte() != 0x00;
         switch_dice_3times = in.readByte() != 0x00;
+        if (in.readByte() == 0x01) {
+            order_of_winners = new ArrayList<>();
+            in.readList(order_of_winners, Integer.class.getClassLoader());
+        } else {
+
+            order_of_winners = null;
+        }
     }
 
     public GameType getGame_type() {
@@ -402,8 +414,10 @@ public class BoardModel implements Parcelable, Serializable {
         // check if Dice Roll is allowed
         //roll Dice
         Dicer dicer = new Dicer();
-        dice = !dice;
-        dice_number = dicer.rollDice(dice);
+        dice_number = dicer.rollDice();
+        // save dice_result for statistik reasons
+        recent_player.setStatistics(dice_number);
+
         //ask model what to do next --> for game rules
         // return all movable figures
         movable_figures = checkMovableFigures();
@@ -505,6 +519,7 @@ public class BoardModel implements Parcelable, Serializable {
         if (count_figures_finished == 4) {
             // all figures from one player are in the house
             players.get(player_id - 1).setFinished(true);
+            order_of_winners.add(player_id);
         }
 
     }
@@ -548,6 +563,7 @@ public class BoardModel implements Parcelable, Serializable {
         dest.writeInt(countRollDice);
         dest.writeByte((byte) (useOwnDice ? 0x01 : 0x00));
         dest.writeByte((byte) (switch_dice_3times ? 0x01 : 0x00));
+        dest.writeList(order_of_winners);
     }
 }
 

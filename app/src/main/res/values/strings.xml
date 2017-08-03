@@ -98,5 +98,10 @@
     <string name="LeaveGame">The recent Game will be closed if you continue</string>
     <string name="LeaveGameTitle">Close recent Game?</string>
     <string name="enough_players">not enough players choosen</string>
+    <string name="GameFinished">The Game is finished.</string>
+    <string name="Congrats">Congratulation!</string>
+    <string name="Winner">Rank %n: </string>
+    <string name="LeaveWinDialogTitle">Do you want to leave this Dialog?</string>
+    <string name="LeaveWinDialog">It is not possible to go back, are you sure?</string>
 
 </resources>

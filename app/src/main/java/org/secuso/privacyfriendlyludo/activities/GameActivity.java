@@ -35,6 +35,7 @@ import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.GameType;
 import org.secuso.privacyfriendlyludo.logic.Player;
+import org.w3c.dom.Text;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -419,34 +420,109 @@ public class GameActivity extends AppCompatActivity {
                 break;
             }
         }
-        if (model.isGame_finished())
-        {
+        if (model.isGame_finished()) {
             //game is finished
             Log.i("tag", "game is finished");
             playermessage.setText("FERTIG");
             rollDice.setVisibility(View.INVISIBLE);
+
             final Dialog dialog = new Dialog(this, R.style.WinDialog);
             dialog.getWindow().setContentView(R.layout.win_screen_layout);
             //dialog.setContentView(getLayoutInflater().inflate(R.layout.win_screen_layout,null));
             //dialog.setContentView(R.layout.win_screen_layout);
             dialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL);
             dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            TextView name1 = (TextView) dialog.findViewById(R.id.textView_name1);
+            TextView name2 = (TextView) dialog.findViewById(R.id.textView_name2);
+            TextView name3 = (TextView) dialog.findViewById(R.id.textView_name3);
+            TextView name4 = (TextView) dialog.findViewById(R.id.textView_name4);
+            TextView name5 = (TextView) dialog.findViewById(R.id.textView_name5);
+            TextView name6 = (TextView) dialog.findViewById(R.id.textView_name6);
+
+            // add last player to winnerlist
+            int last_player_nr = model.order_of_winners.size()+1;
+            for(int i=0; i<model.getPlayers().size(); i++)
+            {
+                if (model.getPlayers().get(i).isFinished()==false)
+                {
+                    int playerid = model.getPlayers().get(i).getId();
+                    model.order_of_winners.add(playerid);
+                }
+            }
+
+
+            // set text in correct order
+            for (int i = 0; i < model.order_of_winners.size(); i++) {
+                int player_id = model.order_of_winners.get(i);
+                String winnerString = getString(R.string.Winner);
+                int position = i+1;
+                winnerString = winnerString.replace("%n", "" + position);
+                String playerName = " " + model.getPlayers().get(player_id-1).getName();
+                String concatenate = new StringBuilder().append(winnerString).append(playerName).toString();
+
+                switch (i) {
+                    case 0:
+                        name1.setText(concatenate);
+                        break;
+                    case 1:
+                        name2.setText(concatenate);
+                        break;
+                    case 2:
+                        name3.setText(concatenate);
+                        break;
+                    case 3:
+                        name4.setText(concatenate);
+                        break;
+                    case 4:
+                        name5.setText(concatenate);
+                        break;
+                    case 5:
+                        name6.setText(concatenate);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             // Register onClickListener
             ((Button)dialog.findViewById(R.id.win_more_info_button)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // open new dialog with statistic information
+                            // open new dialog with statistic information
+                            Intent intent = new Intent(GameActivity.this, WinActivity.class);
+                            intent.putParcelableArrayListExtra("Players", model.getPlayers());
+                            intent.putExtra("WinnerOrder", model.getOrder_of_winners());
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                 }
             });
             ((Button)dialog.findViewById(R.id.win_open_Main_button)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialog.dismiss();
-                    Intent intent = new Intent(GameActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
+                    // show alertDialog
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
+                    // Setting Dialog Title
+                    alertBuilder.setTitle(R.string.LeaveWinDialogTitle);
+                    // Setting Dialog Message
+                    alertBuilder.setMessage(R.string.LeaveWinDialog);
+
+                    alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            overridePendingTransition(0, 0);
+                        }
+                    });
+
+                    alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do nothing
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
                 }
             });
 

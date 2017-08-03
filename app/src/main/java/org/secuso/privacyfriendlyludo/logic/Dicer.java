@@ -9,7 +9,7 @@ import java.security.SecureRandom;
 
 public class Dicer {
 
-    public int rollDice(boolean mydice)
+    public int rollDice()
     {
        int dice = 0;
       /*   if (mydice)

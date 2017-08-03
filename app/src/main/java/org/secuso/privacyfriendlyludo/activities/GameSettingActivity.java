@@ -41,7 +41,7 @@ public class GameSettingActivity extends AppCompatActivity {
 
     private RecyclerView mPlayerList;
     RecyclerViewCollectionAdapter adapter;
-    private ArrayList<Player> player = new ArrayList<>();
+    private ArrayList<Player> player = new ArrayList<Player>();
     List<Integer> mList = new ArrayList<>();
     int listposition;
     int color;
@@ -69,7 +69,11 @@ public class GameSettingActivity extends AppCompatActivity {
                 listposition = mybundle.getInt("Position");
                 color_changed = true;
                 player = intent.getParcelableArrayListExtra("Players");
-            } else {
+                // no players saved
+            } else if (intent.getParcelableArrayListExtra("Players")==null) {
+            }
+            else
+            {
                 // when color changed and when setting loaded
                 player = intent.getParcelableArrayListExtra("Players");
             }
@@ -114,7 +118,15 @@ public class GameSettingActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return player.size() + 1;
+
+            if (player == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return (player.size() + 1);
+            }
         }
 
         @Override
@@ -258,7 +270,7 @@ public class GameSettingActivity extends AppCompatActivity {
                     {
                         @Override
                         public void onClick(View view) {
-                            if (player.size() == max_players) {
+                            if ((player!=null) && (player.size() == max_players)) {
                                 Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
                             } else {
                                 player.add(new Player(3, R.color.white, "", false));
@@ -275,8 +287,16 @@ public class GameSettingActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getItemViewType(int position) {                          // p
-            return (position < player.size()) ? PLAYER : ADDPLAYER;         // +
+        public int getItemViewType(int position) {
+            if (player ==null)
+            {
+                return ADDPLAYER;
+            }
+            else
+            {
+                return (position < player.size()) ? PLAYER : ADDPLAYER;
+            }
+                  // +
         }
     }
 

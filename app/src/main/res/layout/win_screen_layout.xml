@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Glückwunsch"
+                    android:text="@string/Congrats"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
@@ -76,49 +76,46 @@
                     android:visibility="invisible" />
 
                 <TextView
+                    android:id="@+id/textView_name1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Winner1"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
                 <TextView
+                    android:id="@+id/textView_name2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Winner2"
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:id="@+id/win_time"
+                    android:id="@+id/textView_name3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Winner3"
                     android:textColor="@color/white" />
 
                 <TextView
+                    android:id="@+id/textView_name4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Winner4"
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:id="@+id/win_hints"
+                    android:id="@+id/textView_name5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Winner5"
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:id="@+id/win_new_besttime"
+                    android:id="@+id/textView_name6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Winner6"
                     android:textColor="@color/white" />
             </LinearLayout>
 

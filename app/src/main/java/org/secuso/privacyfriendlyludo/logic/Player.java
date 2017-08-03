@@ -21,10 +21,16 @@ public class Player implements Parcelable, Serializable{
     }
 
     private boolean isFinished;
-    ArrayList <Figure> figures = new ArrayList<Figure>();
+    ArrayList <Figure> figures = new ArrayList<>();
     int id;
     int color;
     String name;
+    int[] statistics = new int[6];
+
+    public void setStatistics(int dice_result) {
+
+        statistics[dice_result-1] = statistics[dice_result-1] + 1;
+    }
 
     public boolean isAI() {
         return isAI;
@@ -32,7 +38,12 @@ public class Player implements Parcelable, Serializable{
 
     boolean isAI;
 
+    public int[] getStatistics() {
+        return statistics;
+    }
+
     public Player()
+
     {
 
     }
@@ -98,6 +109,8 @@ public class Player implements Parcelable, Serializable{
         isAI = in.readByte() != 0;
         isFinished = in.readByte() != 0;
         figures = in.createTypedArrayList(Figure.CREATOR);
+        statistics = new int[in.readInt()];
+        in.readIntArray(statistics);
     }
 
     @Override
@@ -113,6 +126,8 @@ public class Player implements Parcelable, Serializable{
         dest.writeByte((byte) (isAI ? 1 : 0));
         dest.writeByte((byte) (isFinished ? 1 : 0));
         dest.writeTypedList(figures);
+        dest.writeInt(statistics.length);        // First write array length
+        dest.writeIntArray(statistics);       // Then array content
     }
 
     public static final Parcelable.Creator<Player> CREATOR = new Parcelable.Creator<Player>() {
