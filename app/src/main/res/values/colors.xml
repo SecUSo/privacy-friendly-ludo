@@ -37,13 +37,21 @@
     </array>
 
     <array name="playerColors">
-        <item>@color/middleblue</item>
+        <item>@color/darkblue</item>
         <item>@color/red</item>
         <item>@color/green</item>
-        <item>@color/yellow</item>
-        <item>@color/pink</item>
-        <item>@color/middlegrey</item>
+        <item>#380B61</item>
+        <item>#B4045F</item>
+        <item>#088A85</item>
+    </array>
 
+    <array name="neonColors">
+        <item>#2E64FE</item>
+        <item>#FF0000</item>
+        <item>#40FF00</item>
+        <item>#642EFE</item>
+        <item>#FF00FF</item>
+        <item>#00FFFF</item>
     </array>
 
 

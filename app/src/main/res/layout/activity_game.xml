@@ -48,12 +48,11 @@
         android:id="@+id/showTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:layout_below="@+id/changePlayerMessage"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
-        android:text="Bitte würfeln"
+        android:layout_toRightOf="@+id/resultOne"
         android:textColor="@color/black"
-        android:textSize="25sp"
-        android:layout_toRightOf="@+id/resultOne"/>
+        android:textSize="25sp" />
 
 </RelativeLayout>

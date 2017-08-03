@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.CountDownTimer;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -47,6 +48,7 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView rollDice;
     private TextView playermessage;
+    private TextView showTask;
     SharedPreferences sharedPreferences;
     Bundle mybundle;
 
@@ -76,8 +78,13 @@ public class GameActivity extends AppCompatActivity {
             ab.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
         }
 
-        // keep screen on
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("switch_dice_3times", false))
+        {
+            // keep screen on
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
 
         Intent intent = getIntent();
         mybundle = intent.getExtras();
@@ -152,6 +159,10 @@ public class GameActivity extends AppCompatActivity {
             playermessage = (TextView) findViewById(R.id.changePlayerMessage);
             playermessage.setTextColor(getResources().getColor(R.color.black));
             playermessage.setText(playerMessageString);
+            showTask = (TextView) findViewById(R.id.showTask);
+            if (!model.getRecent_player().isAI()) {
+                showTask.setText(R.string.Task_Roll_Dice);
+            }
         }
 
         // only build a dice if switch for use own dice is deactivated
@@ -167,7 +178,7 @@ public class GameActivity extends AppCompatActivity {
             layersDrawable.setLayerInset(0, 0, 0, 0, 0);
             layersDrawable.setLayerInset(0, 0, 0, 0, 0);
             // change color of dice
-            int new_color = ContextCompat.getColor(getBaseContext(), model.getRecent_player().getColor());
+            int new_color = model.getRecent_player().getColor();
             layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
             rollDice.setImageDrawable(layersDrawable);
 
@@ -255,7 +266,8 @@ public class GameActivity extends AppCompatActivity {
         if ((marked) && old_figure_index == new_figure_index && !is_empty)
         {
             // deselect figure
-            boardView.SelectAndDeselectPlayer(model,old_figure_index, true);
+            playerInfos = boardView.getPlayerInfos(model,old_figure_index);
+            boardView.SelectAndDeselectPlayer(model,old_figure_index, playerInfos.get(0), true);
             marked=false;
             // save index for next time
             old_figure_index = new_figure_index;
@@ -279,7 +291,7 @@ public class GameActivity extends AppCompatActivity {
                     model.updatePlayer(playerInfos_opponent.get(0), playerInfos_opponent.get(1), 0, new_opponent_figure_index, true);
                     // deselect figure
                     // set figure to choosen point
-                    boardView.SelectAndDeselectPlayer(model, old_figure_index, true);
+                    boardView.SelectAndDeselectPlayer(model, old_figure_index, playerInfos.get(0), true);
                     boardView.setFigureToNewPosition(model, playerInfos.get(0), old_figure_index, new_figure_index, false);
                     // update player and board information
                     model.updateBoard(playerInfos.get(0), playerInfos.get(1), old_figure_index, new_figure_index);
@@ -294,7 +306,7 @@ public class GameActivity extends AppCompatActivity {
             {
                 // deselect figure
                 playerInfos = boardView.getPlayerInfos(model,old_figure_index);
-                boardView.SelectAndDeselectPlayer(model,old_figure_index, true);
+                boardView.SelectAndDeselectPlayer(model,old_figure_index, playerInfos.get(0), true);
                 boardView.setFigureToNewPosition(model, playerInfos.get(0), old_figure_index, new_figure_index, false);
                 // update player and board information
                 model.updateBoard(playerInfos.get(0), playerInfos.get(1),old_figure_index,new_figure_index);
@@ -307,7 +319,8 @@ public class GameActivity extends AppCompatActivity {
         else if (!is_empty)// not marked
         {
             // select figure
-            boardView.SelectAndDeselectPlayer(model,new_figure_index, false);
+            playerInfos = boardView.getPlayerInfos(model,new_figure_index);
+            boardView.SelectAndDeselectPlayer(model,new_figure_index, playerInfos.get(0), false);
             marked=true;
             // save index for next time
             old_figure_index = new_figure_index;
@@ -334,7 +347,7 @@ public class GameActivity extends AppCompatActivity {
             // there are movable figures
             markMovableFigures();
             //change color of dice
-            int new_color = ContextCompat.getColor(getBaseContext(), model.getRecent_player().getColor());
+            int new_color = model.getRecent_player().getColor();
             layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
             rollDice.setImageDrawable(layersDrawable);
             // for AI randomly chose figure
@@ -363,6 +376,11 @@ public class GameActivity extends AppCompatActivity {
                         Next_player();
                     }
                 }.start();
+            }
+            else
+            {
+                showTask = (TextView) findViewById(R.id.showTask);
+                showTask.setText(R.string.TaskSetFigure);
             }
         }
     }
@@ -421,112 +439,8 @@ public class GameActivity extends AppCompatActivity {
             }
         }
         if (model.isGame_finished()) {
-            //game is finished
-            Log.i("tag", "game is finished");
-            playermessage.setText("FERTIG");
-            rollDice.setVisibility(View.INVISIBLE);
 
-            final Dialog dialog = new Dialog(this, R.style.WinDialog);
-            dialog.getWindow().setContentView(R.layout.win_screen_layout);
-            //dialog.setContentView(getLayoutInflater().inflate(R.layout.win_screen_layout,null));
-            //dialog.setContentView(R.layout.win_screen_layout);
-            dialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL);
-            dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-            TextView name1 = (TextView) dialog.findViewById(R.id.textView_name1);
-            TextView name2 = (TextView) dialog.findViewById(R.id.textView_name2);
-            TextView name3 = (TextView) dialog.findViewById(R.id.textView_name3);
-            TextView name4 = (TextView) dialog.findViewById(R.id.textView_name4);
-            TextView name5 = (TextView) dialog.findViewById(R.id.textView_name5);
-            TextView name6 = (TextView) dialog.findViewById(R.id.textView_name6);
-
-            // add last player to winnerlist
-            int last_player_nr = model.order_of_winners.size()+1;
-            for(int i=0; i<model.getPlayers().size(); i++)
-            {
-                if (model.getPlayers().get(i).isFinished()==false)
-                {
-                    int playerid = model.getPlayers().get(i).getId();
-                    model.order_of_winners.add(playerid);
-                }
-            }
-
-
-            // set text in correct order
-            for (int i = 0; i < model.order_of_winners.size(); i++) {
-                int player_id = model.order_of_winners.get(i);
-                String winnerString = getString(R.string.Winner);
-                int position = i+1;
-                winnerString = winnerString.replace("%n", "" + position);
-                String playerName = " " + model.getPlayers().get(player_id-1).getName();
-                String concatenate = new StringBuilder().append(winnerString).append(playerName).toString();
-
-                switch (i) {
-                    case 0:
-                        name1.setText(concatenate);
-                        break;
-                    case 1:
-                        name2.setText(concatenate);
-                        break;
-                    case 2:
-                        name3.setText(concatenate);
-                        break;
-                    case 3:
-                        name4.setText(concatenate);
-                        break;
-                    case 4:
-                        name5.setText(concatenate);
-                        break;
-                    case 5:
-                        name6.setText(concatenate);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            // Register onClickListener
-            ((Button)dialog.findViewById(R.id.win_more_info_button)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                            // open new dialog with statistic information
-                            Intent intent = new Intent(GameActivity.this, WinActivity.class);
-                            intent.putParcelableArrayListExtra("Players", model.getPlayers());
-                            intent.putExtra("WinnerOrder", model.getOrder_of_winners());
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                }
-            });
-            ((Button)dialog.findViewById(R.id.win_open_Main_button)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // show alertDialog
-                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
-                    // Setting Dialog Title
-                    alertBuilder.setTitle(R.string.LeaveWinDialogTitle);
-                    // Setting Dialog Message
-                    alertBuilder.setMessage(R.string.LeaveWinDialog);
-
-                    alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            Intent intent = new Intent(GameActivity.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            overridePendingTransition(0, 0);
-                        }
-                    });
-
-                    alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //do nothing
-                        }
-                    });
-                    AlertDialog alert = alertBuilder.create();
-                    alert.show();
-                }
-            });
-
-            dialog.show();
+            ShowStatistics();
         }
         else // still players are not ready, next players turn
         {
@@ -542,7 +456,7 @@ public class GameActivity extends AppCompatActivity {
                     model.countRollDice = 0;
             }
             //change color of dice
-            int new_color = ContextCompat.getColor(getBaseContext(), model.getRecent_player().getColor());
+            int new_color = model.getRecent_player().getColor();
             layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
             rollDice.setImageDrawable(layersDrawable);
             // check if it is a AI
@@ -564,8 +478,121 @@ public class GameActivity extends AppCompatActivity {
                 else
                 {
                     rollDice.setClickable(true);
+                    showTask = (TextView) findViewById(R.id.showTask);
+                    showTask.setText(R.string.Task_Roll_Dice);
                 }
         }
+    }
+
+    private void ShowStatistics() {
+        //game is finished
+        Log.i("tag", "game is finished");
+        playermessage.setText("FERTIG");
+        showTask = (TextView) findViewById(R.id.showTask);
+        showTask.setText("");
+        rollDice.setVisibility(View.INVISIBLE);
+
+        final Dialog dialog = new Dialog(this, R.style.WinDialog);
+        dialog.getWindow().setContentView(R.layout.win_screen_layout);
+        //dialog.setContentView(getLayoutInflater().inflate(R.layout.win_screen_layout,null));
+        //dialog.setContentView(R.layout.win_screen_layout);
+        dialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView name1 = (TextView) dialog.findViewById(R.id.textView_name1);
+        TextView name2 = (TextView) dialog.findViewById(R.id.textView_name2);
+        TextView name3 = (TextView) dialog.findViewById(R.id.textView_name3);
+        TextView name4 = (TextView) dialog.findViewById(R.id.textView_name4);
+        TextView name5 = (TextView) dialog.findViewById(R.id.textView_name5);
+        TextView name6 = (TextView) dialog.findViewById(R.id.textView_name6);
+
+        // add last player to winnerlist
+        int last_player_nr = model.order_of_winners.size()+1;
+        for(int i=0; i<model.getPlayers().size(); i++)
+        {
+            if (model.getPlayers().get(i).isFinished()==false)
+            {
+                int playerid = model.getPlayers().get(i).getId();
+                model.order_of_winners.add(playerid);
+            }
+        }
+
+
+        // set text in correct order
+        for (int i = 0; i < model.order_of_winners.size(); i++) {
+            int player_id = model.order_of_winners.get(i);
+            String winnerString = getString(R.string.Winner);
+            int position = i+1;
+            winnerString = winnerString.replace("%n", "" + position);
+            String playerName = " " + model.getPlayers().get(player_id-1).getName();
+            String concatenate = new StringBuilder().append(winnerString).append(playerName).toString();
+
+            switch (i) {
+                case 0:
+                    name1.setText(concatenate);
+                    break;
+                case 1:
+                    name2.setText(concatenate);
+                    break;
+                case 2:
+                    name3.setText(concatenate);
+                    break;
+                case 3:
+                    name4.setText(concatenate);
+                    break;
+                case 4:
+                    name5.setText(concatenate);
+                    break;
+                case 5:
+                    name6.setText(concatenate);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Register onClickListener
+        ((Button)dialog.findViewById(R.id.win_more_info_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open new dialog with statistic information
+                Intent intent = new Intent(GameActivity.this, WinActivity.class);
+                intent.putParcelableArrayListExtra("Players", model.getPlayers());
+                intent.putExtra("WinnerOrder", model.getOrder_of_winners());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        ((Button)dialog.findViewById(R.id.win_open_Main_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show alertDialog
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
+                // Setting Dialog Title
+                alertBuilder.setTitle(R.string.LeaveWinDialogTitle);
+                // Setting Dialog Message
+                alertBuilder.setMessage(R.string.LeaveWinDialog);
+
+                alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    }
+                });
+
+                alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do nothing
+                    }
+                });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+            }
+        });
+
+        dialog.show();
     }
 
     private void markMovableFigures() {
@@ -637,7 +664,7 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed() {
         //show warning
         // show alertDialog
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
+       /* AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
         // Setting Dialog Title
         alertBuilder.setTitle(R.string.LeaveGameTitle);
         // Setting Dialog Message
@@ -645,19 +672,6 @@ public class GameActivity extends AppCompatActivity {
 
         alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //state will be saved in a file
-                FileOutputStream fos = null;
-                ObjectOutputStream oos = null;
-                try {
-                    fos = openFileOutput("savedata", Context.MODE_PRIVATE);
-                    oos = new ObjectOutputStream(fos);
-                    oos.writeObject(model);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (oos != null) try { oos.close(); } catch (IOException ignored) {}
-                    if (fos != null) try { fos.close(); } catch (IOException ignored) {}
-                }
                 finish();
                 GameActivity.super.onBackPressed();
             }
@@ -669,7 +683,26 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         AlertDialog alert = alertBuilder.create();
-        alert.show();
+        alert.show(); */
+       super.onBackPressed();
+    }
+
+    public void onPause()
+    {
+        //state will be saved in a file
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            fos = openFileOutput("savedata", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(model);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (oos != null) try { oos.close(); } catch (IOException ignored) {}
+            if (fos != null) try { fos.close(); } catch (IOException ignored) {}
+        }
+        super.onPause();
     }
 }
 

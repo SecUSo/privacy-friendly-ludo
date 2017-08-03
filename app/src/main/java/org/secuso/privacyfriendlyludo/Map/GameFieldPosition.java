@@ -33,10 +33,10 @@ public class GameFieldPosition implements  Parcelable, Serializable{
     //40 fields
 
     public GameFieldPosition(ArrayList<Integer> colors, GameType game_type) {
-        int main_color = R.color.white;
-
+        int main_color;
         switch (game_type) {
             case Four_players:
+                main_color=colors.get(4);
                 //start field p1
                 myGamefield.add(new GameField(1 ,0,4,0,0, colors.get(0)));
 
@@ -110,7 +110,7 @@ public class GameFieldPosition implements  Parcelable, Serializable{
                 break;
             case Six_players:
                //start field p1
-
+                main_color=colors.get(6);
                 myGamefield.add(new GameField(1 , 4, 2,0,0, colors.get(0)));
 
                 myGamefield.add(new GameField(2,  4, 3,0,0, main_color));

@@ -78,7 +78,7 @@ public class GameSettingActivity extends AppCompatActivity {
                 player = intent.getParcelableArrayListExtra("Players");
             }
         } else {
-            player.add(new Player(1, R.color.white, "", false));
+            player.add(new Player(1, getResources().getColor(R.color.white), "", false));
         }
 
         mPlayerList = (RecyclerView) findViewById(R.id.playerList);
@@ -91,8 +91,10 @@ public class GameSettingActivity extends AppCompatActivity {
         mPlayerList.setItemAnimator(new DefaultItemAnimator());
         mPlayerList.setAdapter(adapter);
         if (color_changed) {
-            TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
-            int colorToUse = ta.getResourceId(color - 1, R.color.white);
+           // TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
+           // int colorToUse = ta.getResourceId(color - 1, R.color.white);
+            int[] androidColors = getResources().getIntArray(R.array.playerColors);
+            int colorToUse = androidColors[color-1];
             player.get(listposition).setColor(colorToUse);
         }
         // determine gametype
@@ -151,7 +153,7 @@ public class GameSettingActivity extends AppCompatActivity {
                 case PLAYER:
                     // initializing
                     PlayerViewHolder playerViewHolder = (PlayerViewHolder)vh;
-                    playerViewHolder.playerColor.setBackgroundColor(ContextCompat.getColor(getBaseContext(), player.get(position).getColor()));
+                    playerViewHolder.playerColor.setBackgroundColor(player.get(position).getColor());
                     playerViewHolder.playerName.setText(player.get(position).getName());
                     if (player.get(position).isAI()) {
                         playerViewHolder.playertype.setBackgroundResource(R.drawable.ic_computer);
@@ -219,7 +221,6 @@ public class GameSettingActivity extends AppCompatActivity {
                     });
                     break;
                 case ADDPLAYER:
-                    // TODO
                     AddPlayerViewHolder addplayerViewHolder = (AddPlayerViewHolder) vh;
                     // onclick startgame
                     addplayerViewHolder.start_game.setOnClickListener(new View.OnClickListener()
@@ -273,7 +274,7 @@ public class GameSettingActivity extends AppCompatActivity {
                             if ((player!=null) && (player.size() == max_players)) {
                                 Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
                             } else {
-                                player.add(new Player(3, R.color.white, "", false));
+                                player.add(new Player(3, getResources().getColor(R.color.white), "", false));
                              //   mPlayerList.setAdapter(adapter);
                             }
                             adapter.notifyDataSetChanged();
@@ -351,7 +352,7 @@ public class GameSettingActivity extends AppCompatActivity {
         boolean white_inUse = false;
         for (int i = 0; i < player.size(); i++) {
             generated.add(player.get(i).getColor());
-            if (player.get(i).getColor() == R.color.white) {
+            if (player.get(i).getColor() == getResources().getColor(R.color.white)) {
                 white_inUse = true;
             }
         }
@@ -381,7 +382,7 @@ public class GameSettingActivity extends AppCompatActivity {
         GridView gridView = new GridView(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        int[] androidColors = getResources().getIntArray(R.array.playerColors);
+        final int[] androidColors = getResources().getIntArray(R.array.playerColors);
         int count_colors = androidColors.length;
       /*  TypedArray ta;
         int colorToUse;
@@ -408,9 +409,9 @@ public class GameSettingActivity extends AppCompatActivity {
                     button.setTag(item);
                     // button.setText(String.valueOf(item));
                     TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
-                    int colorToUse = ta.getResourceId(item - 1, R.color.black);
-                    int backgroundColor = getResources().getColor(colorToUse);
-                    button.setBackgroundColor(backgroundColor);
+                    int colorToUse = androidColors[item-1];
+                   // int backgroundColor = getResources().getColor(colorToUse);
+                    button.setBackgroundColor(colorToUse);
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

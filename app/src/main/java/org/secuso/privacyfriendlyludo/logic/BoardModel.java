@@ -198,13 +198,15 @@ public class BoardModel implements Parcelable, Serializable {
         // add colors if not all figures are played
         TypedArray ta = context.getResources().obtainTypedArray(R.array.playerColors);
         int[] androidColors = context.getResources().getIntArray(R.array.playerColors);
+        int white = context.getResources().getColor(R.color.white);
         while (generated.size() < max_players) {
             int random_id = new Random().nextInt(androidColors.length);
             // As we're adding to a set, this will automatically do a containment check
-            int colorToUse = ta.getResourceId(random_id, R.color.black);
+            int colorToUse = androidColors[random_id];
             generated.add(colorToUse);
         }
         colors.addAll(0, generated);
+        colors.add(white);
     }
 
     public Player getOpponent_player() {

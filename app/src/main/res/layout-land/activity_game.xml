@@ -50,7 +50,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
         android:layout_toRightOf="@+id/board"
-        android:text="abc"
         android:textColor="@color/black"
         android:textSize="25sp" />
 

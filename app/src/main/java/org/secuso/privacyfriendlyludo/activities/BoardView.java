@@ -72,12 +72,12 @@ public class BoardView extends GridLayout{
             int x = model.getMy_game_field().getMyGamefield().get(i).getX();
             int y = model.getMy_game_field().getMyGamefield().get(i).getY();
             int field_index = model.getMy_game_field().getMyGamefield().get(i).getIndex();
-            int mycolor = ContextCompat.getColor(getContext(), model.getMy_game_field().getMyGamefield().get(i).getMyColor());
+            int mycolor = model.getMy_game_field().getMyGamefield().get(i).getMyColor();
             int player_id = model.getMy_game_field().getMyGamefield().get(i).getPlayer_id();
             if (player_id != 0)
             {
                 // add player
-                int player_color = ContextCompat.getColor(getContext(), (model.getPlayers().get(player_id-1).getColor()));
+                int player_color = model.getPlayers().get(player_id-1).getColor();
                 board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), true);
                 board[x][y].getLayersDrawable().getDrawable(1).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
             }
@@ -96,12 +96,12 @@ public class BoardView extends GridLayout{
             int x = model.getStart_player_map().getMyGamefield().get(i).getX();
             int y = model.getStart_player_map().getMyGamefield().get(i).getY();
             int field_index = model.getStart_player_map().getMyGamefield().get(i).getIndex();
-            int mycolor = ContextCompat.getColor(getContext(), model.getStart_player_map().getMyGamefield().get(i).getMyColor());
+            int mycolor = model.getStart_player_map().getMyGamefield().get(i).getMyColor();
             int player_id = model.getStart_player_map().getMyGamefield().get(i).getPlayer_id();
             if (player_id != 0)
             {
                 // add player
-                int player_color = ContextCompat.getColor(getContext(), model.getPlayers().get(player_id-1).getColor());
+                int player_color = model.getPlayers().get(player_id-1).getColor();
                 board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), true);
                 board[x][y].getLayersDrawable().getDrawable(1).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
             }
@@ -182,30 +182,31 @@ public class BoardView extends GridLayout{
         this.model = mymodel;
         int x = (getFigurePositionOnBoard(mymodel, figure_id)).get(0);
         int y = (getFigurePositionOnBoard(mymodel, figure_id)).get(1);
-        board[x][y].hidePossibleFigure();
+        int color = mymodel.getRecent_player().getColor();
+        board[x][y].hidePossibleFigure(color);
         board[x][y].setClickable(false);
     }
 
     // for free mode
-    public void SelectAndDeselectPlayer(BoardModel mymodel, int figure_index, boolean marked)
+    public void SelectAndDeselectPlayer(BoardModel mymodel, int figure_index, int playerID, boolean marked)
     {
         this.model = mymodel;
         int color, x, y;
+        color = mymodel.getPlayers().get(playerID-1).getColor();
         if (figure_index >=100)
         {
-            color = mymodel.getStart_player_map().getMyGamefield().get(figure_index%100).getMyColor();
             x = mymodel.getStart_player_map().getMyGamefield().get(figure_index%100).getX();
             y = mymodel.getStart_player_map().getMyGamefield().get(figure_index%100).getY();
         }
         else
         {
-            color = mymodel.getMy_game_field().getMyGamefield().get(figure_index-1).getMyColor();
             x = mymodel.getMy_game_field().getMyGamefield().get(figure_index-1).getX();
             y = mymodel.getMy_game_field().getMyGamefield().get(figure_index-1).getY();
         }
         if (marked)
         {
-            board[x][y].hidePossibleFigure();
+
+            board[x][y].hidePossibleFigure(color);
         }
         else
         {
@@ -293,12 +294,12 @@ public void removeOldFigure(BoardModel mymodel, int old_position)
 
         if (!knocked_out)
             {
-                color = ContextCompat.getColor(getContext(),model.getPlayers().get(player_id-1).getColor());
+                color = model.getPlayers().get(player_id-1).getColor();
             }
             else
             {
                 player_id = (getPlayerInfos(mymodel, new_position)).get(0);
-                color = ContextCompat.getColor(getContext(),model.getPlayers().get(player_id-1).getColor());
+                color = model.getPlayers().get(player_id-1).getColor();
             }
         //add figure layer
         board[x][y].getLayersDrawable().getDrawable(1).setAlpha(255);

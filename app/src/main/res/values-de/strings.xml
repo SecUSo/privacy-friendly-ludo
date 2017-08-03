@@ -91,6 +91,8 @@
     <string name="max_player_reached">Maximale Anzahl an Spielern erreicht.</string>
     <string name="header_change_rules">Spezialregeln</string>
     <string name="initial_name_field">Name</string>
+    <string name="Task_Roll_Dice">Bitte Würfeln</string>
+    <string name="TaskSetFigure">Bitte gewünschte Figur anklicken.</string>
 
 
 </resources>

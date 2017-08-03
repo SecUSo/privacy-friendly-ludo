@@ -63,6 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:maxLines="1"
                     android:text="@string/Congrats"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
@@ -77,45 +78,50 @@
 
                 <TextView
                     android:id="@+id/textView_name1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"
+                    android:maxLines="1"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/textView_name2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:maxLines="1"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/textView_name3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:maxLines="1"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/textView_name4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:maxLines="1"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/textView_name5"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:maxLines="1"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/textView_name6"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:maxLines="1"
                     android:textColor="@color/white" />
             </LinearLayout>
 

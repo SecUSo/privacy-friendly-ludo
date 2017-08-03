@@ -3,6 +3,7 @@ package org.secuso.privacyfriendlyludo.activities;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
@@ -105,12 +106,24 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
 
     public void markPossibleFigure(int color) {
 
-       // this.myColor = color;
-        layersDrawable.getDrawable(2).setAlpha(255);
+        this.myColor = color;
+        int[] androidColors = getResources().getIntArray(R.array.playerColors);
+        int[] neonColors = getResources().getIntArray(R.array.neonColors);
+        int new_color = color;
+        int neonColor=0;
+        for(int i=0; i<androidColors.length; i++)
+        {
+            if ( new_color == androidColors[i])
+            {
+                 neonColor = neonColors[i];
+            }
+        }
+        layersDrawable.getDrawable(1).setColorFilter(neonColor, PorterDuff.Mode.MULTIPLY);
+        //layersDrawable.getDrawable(2).setAlpha(255);
     }
 
-    public void hidePossibleFigure() {
-        layersDrawable.getDrawable(2).setAlpha(0);
+    public void hidePossibleFigure(int color) {
+        layersDrawable.getDrawable(1).setColorFilter(color, PorterDuff.Mode.MULTIPLY);
     }
 
 

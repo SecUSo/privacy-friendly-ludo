@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlyludo.activities;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -27,6 +28,11 @@ public class WinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_win);
 
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
+        }
         Intent intent = getIntent();
         players =  intent.getParcelableArrayListExtra("Players");
         WinnerOrder =  intent.getIntegerArrayListExtra("WinnerOrder");
