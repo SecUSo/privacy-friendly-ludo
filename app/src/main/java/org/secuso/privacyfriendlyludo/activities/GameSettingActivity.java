@@ -87,7 +87,7 @@ public class GameSettingActivity extends AppCompatActivity {
                 player = intent.getParcelableArrayListExtra("Players");
             }
         } else {
-            player.add(new Player(1, ContextCompat.getColor(getBaseContext(), R.color.white), "", false));
+            player.add(new Player(1, ContextCompat.getColor(getBaseContext(), R.color.middlegrey), "", false));
         }
 
         RecyclerView mPlayerList = (RecyclerView) findViewById(R.id.playerList);
@@ -159,9 +159,10 @@ public class GameSettingActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder vh, int position) {
             switch(vh.getItemViewType()) {
+
                 case PLAYER:
                     // initializing
-                    PlayerViewHolder playerViewHolder = (PlayerViewHolder)vh;
+                    final PlayerViewHolder playerViewHolder = (PlayerViewHolder)vh;
                     playerViewHolder.playerColor.setBackgroundColor(player.get(position).getColor());
                     playerViewHolder.playerName.setText(player.get(position).getName());
                     if (player.get(position).isAI()) {
@@ -230,7 +231,7 @@ public class GameSettingActivity extends AppCompatActivity {
                     });
                     break;
                 case ADDPLAYER:
-                    AddPlayerViewHolder addplayerViewHolder = (AddPlayerViewHolder) vh;
+                    final AddPlayerViewHolder addplayerViewHolder = (AddPlayerViewHolder) vh;
                     // onclick startgame
                     addplayerViewHolder.start_game.setOnClickListener(new View.OnClickListener()
                     {
@@ -283,7 +284,7 @@ public class GameSettingActivity extends AppCompatActivity {
                             if ((player!=null) && (player.size() == max_players)) {
                                 Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
                             } else {
-                                player.add(new Player(3, ContextCompat.getColor(getBaseContext(), R.color.white), "", false));
+                                player.add(new Player(3, ContextCompat.getColor(getBaseContext(), R.color.middlegrey), "", false));
                              //   mPlayerList.setAdapter(adapter);
                             }
                             adapter.notifyDataSetChanged();
@@ -358,14 +359,14 @@ public class GameSettingActivity extends AppCompatActivity {
     }
 
     public boolean checkColorUniqueness() {
-        boolean white_inUse = false;
+        boolean grey_inUse = false;
         for (int i = 0; i < player.size(); i++) {
             generated.add(player.get(i).getColor());
-            if (player.get(i).getColor() == ContextCompat.getColor(getBaseContext(), R.color.white)) {
-                white_inUse = true;
+            if (player.get(i).getColor() == ContextCompat.getColor(getBaseContext(), R.color.middlegrey)) {
+                grey_inUse = true;
             }
         }
-        if (generated.size() == player.size() && !white_inUse) {
+        if (generated.size() == player.size() && !grey_inUse) {
             return true;
         } else {
 

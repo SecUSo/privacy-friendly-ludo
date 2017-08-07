@@ -74,7 +74,7 @@
             android:layout_height="42dp"
             android:defaultValue="false"
             android:key="switch"
-            android:text="Play with own dice"
+            android:text="@string/play_with_own_dice"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:textSize="22sp" />
 

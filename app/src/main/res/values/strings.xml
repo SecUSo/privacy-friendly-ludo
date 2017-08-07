@@ -92,7 +92,7 @@
     <string name="choose_color">Colors</string>
     <string name="max_player_reached">Maximum Number of Player reached.</string>
     <string name="Missing_playername">Playername is missing</string>
-    <string name="color_uniqueness">Colors not unique or white.</string>
+    <string name="color_uniqueness">Colors not unique or grey.</string>
     <string name="header_change_rules">Special Rules</string>
     <string name="initial_name_field">name</string>
     <string name="OverwriteResumableGame">The resumable Game will be overwritten if you continue.</string>
@@ -108,5 +108,6 @@
     <string name="header_change_settings">General Settings</string>
     <string name="Task_Roll_Dice">Please roll dice</string>
     <string name="TaskSetFigure">Please move desired figure.</string>
+    <string name="play_with_own_dice">play with own dice</string>
 
 </resources>

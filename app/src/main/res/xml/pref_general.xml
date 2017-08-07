@@ -2,6 +2,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+        android:title="@string/header_change_settings">
+        <SwitchPreference
+            android:id="@+id/keepScreenOn"
+            android:key="keepScreenOn"
+            android:title="@string/pref_keepScreenOn_switch"
+            android:summary="@string/pref_keepScreenOn_switch_summary"
+            android:defaultValue="false"/>
+        <!-- <Preference android:title="Test Setting"
+             android:summary="Text Summary"/> -->
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/header_change_rules">
         <SwitchPreference
             android:id="@+id/switch_dice_3times"
@@ -10,17 +22,7 @@
             android:summary="@string/pref_rollDice3times_switch_summary"
             android:defaultValue="false"/>
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/header_change_settings">
-        <SwitchPreference
-            android:id="@+id/keepScreenOn"
-            android:key="keepScreenOn"
-            android:title="@string/pref_keepScreenOn_switch"
-            android:summary="@string/pref_keepScreenOn_switch_summary"
-            android:defaultValue="false"/>
-       <!-- <Preference android:title="Test Setting"
-            android:summary="Text Summary"/> -->
-    </PreferenceCategory>
+
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->

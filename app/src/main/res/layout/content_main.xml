@@ -65,7 +65,7 @@
         android:layout_gravity="center"
         android:defaultValue="false"
         android:key="switch"
-        android:text="Play with own dice"
+        android:text="@string/play_with_own_dice"
         android:textSize="22sp" />
 
     <LinearLayout

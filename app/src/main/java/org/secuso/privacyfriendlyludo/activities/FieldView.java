@@ -99,13 +99,13 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
 
         this.myColor = color;
         int[] androidColors = getResources().getIntArray(R.array.playerColors);
-        int[] neonColors = getResources().getIntArray(R.array.neonColors);
+        int[] highlightColors = getResources().getIntArray(R.array.highlightColors);
         int neonColor=0;
         for(int i=0; i<androidColors.length; i++)
         {
             if ( color == androidColors[i])
             {
-                 neonColor = neonColors[i];
+                 neonColor = highlightColors[i];
             }
         }
         layersDrawable.getDrawable(1).setColorFilter(neonColor, PorterDuff.Mode.MULTIPLY);

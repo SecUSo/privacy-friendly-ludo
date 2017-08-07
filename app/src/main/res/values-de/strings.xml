@@ -84,7 +84,7 @@
     <string name="finished_Game">Spiel ist beendet.</string>
     <string name="game_type">%max Spieler</string>
     <string name="Missing_playername">Spielername fehlt.</string>
-    <string name="color_uniqueness">Farben sind nicht eindeutig oder Weiß.</string>
+    <string name="color_uniqueness">Farben sind nicht eindeutig oder Grau.</string>
     <string name="choose_color">Farben</string>
     <string name="max_player_reached">Maximale Anzahl an Spielern erreicht.</string>
     <string name="header_change_rules">Spezialregeln</string>
@@ -94,10 +94,10 @@
     <string name="Congrats">Glückwunsch!</string>
     <string name="GameFinished">Das Spiel ist beendet.</string>
     <string name="LeaveGame">Wenn Sie fortfahren, wird das aktuelle Spiel geschlossen.</string>
-    <string name="LeaveGameTitle">Aktuelle Spiel schliessen?</string>
+    <string name="LeaveGameTitle">Aktuelle Spiel schließen?</string>
     <string name="LeaveWinDialog">Wenn Sie fortfahren, können Sie nicht zurückkehren, sind sie sicher?</string>
     <string name="LeaveWinDialogTitle">Sind sie sicher, das sie den Dialog verlassen wollen?</string>
-    <string name="OverwriteResumableGame">Wenn Sie fortfahren, wird das etzte gespeicherte Spiel überschrieben</string>
+    <string name="OverwriteResumableGame">Wenn Sie fortfahren, wird das letzte gespeicherte Spiel überschrieben</string>
     <string name="pref_keepScreenOn_switch_summary">Während des kompletten Spiels bleibt der Bildschirm an.</string>
     <string name="OverwriteResumableGameTitle">Gespeichertes Spiel überschreiben?</string>
     <string name="Winner">Platz %n:</string>
@@ -106,6 +106,7 @@
     <string name="pref_keepScreenOn_switch">Bildschirm bleibt während des Spiels an.</string>
     <string name="pref_rollDice3times_switch">3 Mal würfeln ist erlaubt.</string>
     <string name="pref_rollDice3times_switch_summary">Ein Spieler der keine Figuren im Spiel hat, hat 3 Versuche eine 6 zu würfeln.</string>
+    <string name="play_with_own_dice">mit eigenem Würfel spielen.</string>
 
 
 </resources>
