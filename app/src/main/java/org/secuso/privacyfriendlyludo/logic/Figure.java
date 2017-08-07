@@ -6,9 +6,20 @@ import android.util.Log;
 
 import java.io.Serializable;
 
-/**
- * Created by Julchen on 28.05.2017.
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 public class Figure implements Parcelable, Serializable{
 
@@ -24,11 +35,11 @@ public class Figure implements Parcelable, Serializable{
 
     private int id;
 
-    public int getCount_steps() {
+    int getCount_steps() {
         return count_steps;
     }
 
-    public void setCount_steps(int count_steps) {
+    void setCount_steps(int count_steps) {
         this.count_steps = count_steps;
     }
 
@@ -38,7 +49,7 @@ public class Figure implements Parcelable, Serializable{
         return state;
     }
 
-    public void setState(int field_position_index, BoardModel model) {
+    void setState(int field_position_index, BoardModel model) {
         if (field_position_index <=model.getLast_field_index() && field_position_index >0)
         {
             this.state="inGame";
@@ -61,17 +72,17 @@ public class Figure implements Parcelable, Serializable{
 
     private String state;
 
-    public boolean isFinished() {
+    boolean isFinished() {
         return finished;
     }
 
-    public void setFinished(boolean finished) {
+    void setFinished(boolean finished) {
         this.finished = finished;
     }
 
     private boolean finished;
 
-    public Figure(int id, int field_position_index) {
+    Figure(int id, int field_position_index) {
         this.field_position_index = field_position_index;
         this.state = "start";
         this.count_steps = 0;
@@ -83,11 +94,11 @@ public class Figure implements Parcelable, Serializable{
         return field_position_index ;
     }
 
-    public void setField_position_index(int field_position_index) {
+    void setField_position_index(int field_position_index) {
         this.field_position_index = field_position_index;
     }
 
-    protected Figure(Parcel in) {
+    private Figure(Parcel in) {
         field_position_index = in.readInt();
         id = in.readInt();
         count_steps = in.readInt();

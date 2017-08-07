@@ -104,7 +104,9 @@
     <string name="Congrats">Congratulation!</string>
     <string name="Winner">Rank %n: </string>
     <string name="LeaveWinDialogTitle">Do you want to leave this Dialog?</string>
-    <string name="LeaveWinDialog">It is not possible to go back, are you sure?</string>
+    <string name="LeaveWinDialog">If you continue it is not possible to go back, are you sure?</string>
     <string name="header_change_settings">General Settings</string>
+    <string name="Task_Roll_Dice">Please roll dice</string>
+    <string name="TaskSetFigure">Please move desired figure.</string>
 
 </resources>

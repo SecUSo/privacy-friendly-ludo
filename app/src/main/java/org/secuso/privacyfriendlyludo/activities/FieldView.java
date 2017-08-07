@@ -1,35 +1,30 @@
 package org.secuso.privacyfriendlyludo.activities;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
-import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.view.animation.Animation;
-import android.widget.ImageView;
+
 
 import org.secuso.privacyfriendlyludo.R;
 
-/**
- * Created by Julchen on 15.05.2017.
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 public class FieldView extends android.support.v7.widget.AppCompatImageView {
     int myColor;
@@ -41,11 +36,8 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
         return layersDrawable;
     }
 
-    public void setLayersDrawable(LayerDrawable layersDrawable) {
-        this.layersDrawable = layersDrawable;
-    }
 
-    public FieldView(Context context, AttributeSet attrs, int myColor)
+    public FieldView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
@@ -53,11 +45,10 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
     public FieldView(Context context, AttributeSet attrs, int myColor, Drawable d, boolean add_player) {
         super(context, attrs);
         this.myColor = myColor;
-        Resources r = getResources();
         Drawable[] layers = new Drawable[3];
-        layers[0] = r.getDrawable(R.drawable.field2);
-        layers[1] = r.getDrawable(R.drawable.figure);
-        layers[2] = r.getDrawable(R.drawable.field2);
+        layers[0] = ContextCompat.getDrawable(context, R.drawable.field2);
+        layers[1] = ContextCompat.getDrawable(context, R.drawable.figure);
+        layers[2] = ContextCompat.getDrawable(context, R.drawable.field2);
         layersDrawable = new LayerDrawable(layers);
 
         layersDrawable.mutate();
@@ -96,7 +87,7 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
                 layersDrawable.getDrawable(2).setColorFilter(new_color, PorterDuff.Mode.MULTIPLY);
             }
             this.add_player = add_player;
-            if (add_player == true) {
+            if (add_player) {
             layersDrawable.getDrawable(1).setAlpha(255);
             layersDrawable.getDrawable(2).setAlpha(0);
            // layersDrawable.getDrawable(1).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
@@ -109,11 +100,10 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
         this.myColor = color;
         int[] androidColors = getResources().getIntArray(R.array.playerColors);
         int[] neonColors = getResources().getIntArray(R.array.neonColors);
-        int new_color = color;
         int neonColor=0;
         for(int i=0; i<androidColors.length; i++)
         {
-            if ( new_color == androidColors[i])
+            if ( color == androidColors[i])
             {
                  neonColor = neonColors[i];
             }

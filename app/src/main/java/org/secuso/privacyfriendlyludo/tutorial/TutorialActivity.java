@@ -21,18 +21,25 @@ import android.widget.TextView;
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.activities.MainActivity;
 
-/**
- * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
- * @author Karola Marky
- * @version 20161214
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 public class TutorialActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
     private LinearLayout dotsLayout;
-    private TextView[] dots;
     private int[] layouts;
     private Button btnSkip, btnNext;
     private PrefManager prefManager;
@@ -74,7 +81,7 @@ public class TutorialActivity extends AppCompatActivity {
         // making notification bar transparent
         changeStatusBarColor();
 
-        myViewPagerAdapter = new MyViewPagerAdapter();
+        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
@@ -102,7 +109,7 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void addBottomDots(int currentPage) {
-        dots = new TextView[layouts.length];
+        TextView[] dots = new TextView[layouts.length];
 
         int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
         int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
@@ -174,10 +181,10 @@ public class TutorialActivity extends AppCompatActivity {
     /**
      * View pager adapter
      */
-    public class MyViewPagerAdapter extends PagerAdapter {
+    private class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 
-        public MyViewPagerAdapter() {
+        MyViewPagerAdapter() {
         }
 
         @Override

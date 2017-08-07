@@ -1,27 +1,30 @@
 package org.secuso.privacyfriendlyludo.Map;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Color;
+
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
 
-import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.GameField;
 import org.secuso.privacyfriendlyludo.logic.GameType;
-import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
-/**
- * Created by Julchen on 01.06.2017.
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 public class StartGameFieldPosition implements Parcelable, Serializable{
 
@@ -29,11 +32,7 @@ public class StartGameFieldPosition implements Parcelable, Serializable{
         return myGamefield;
     }
 
-    public void setMyGamefield(ArrayList<GameField> myGamefield) {
-        this.myGamefield = myGamefield;
-    }
-
-    private ArrayList<GameField> myGamefield = new ArrayList<GameField>();
+    private ArrayList<GameField> myGamefield = new ArrayList<>();
 
     public StartGameFieldPosition(ArrayList<Integer> colors, GameType game_type) {
 
@@ -110,9 +109,9 @@ public class StartGameFieldPosition implements Parcelable, Serializable{
         }
     }
 
-    protected StartGameFieldPosition(Parcel in) {
+    private StartGameFieldPosition(Parcel in) {
         if (in.readByte() == 0x01) {
-            myGamefield = new ArrayList<GameField>();
+            myGamefield = new ArrayList<>();
             in.readList(myGamefield, GameField.class.getClassLoader());
         } else {
             myGamefield = null;

@@ -1,17 +1,27 @@
 package org.secuso.privacyfriendlyludo.logic;
 
-import android.os.Parcelable;
-import android.util.Log;
-
-import java.io.Serializable;
 import java.security.SecureRandom;
 
+/*
+  @author: Julia Schneider
 
-public class Dicer {
+  This file is part of the Game Ludo.
 
-    public int rollDice()
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+class Dicer {
+
+    int rollDice()
     {
-       int dice = 0;
+       int dice;
       /*   if (mydice)
         {
             dice = 5;

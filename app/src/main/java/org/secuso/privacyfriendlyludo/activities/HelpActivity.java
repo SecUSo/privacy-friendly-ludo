@@ -10,10 +10,20 @@ import org.secuso.privacyfriendlyludo.helpers.ExpandableListAdapter;
 import org.secuso.privacyfriendlyludo.helpers.HelpDataDump;
 import org.secuso.privacyfriendlyludo.R;
 
-/**
- * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
- * last access 27th October 2016
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 public class HelpActivity extends BaseActivity {
 
@@ -28,7 +38,7 @@ public class HelpActivity extends BaseActivity {
         ExpandableListView generalExpandableListView = (ExpandableListView) findViewById(R.id.generalExpandableListView);
 
         LinkedHashMap<String, List<String>> expandableListDetail = helpDataDump.getDataGeneral();
-        List<String> expandableListTitleGeneral = new ArrayList<String>(expandableListDetail.keySet());
+        List<String> expandableListTitleGeneral = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new ExpandableListAdapter(this, expandableListTitleGeneral, expandableListDetail);
         generalExpandableListView.setAdapter(expandableListAdapter);
 

@@ -1,19 +1,28 @@
 package org.secuso.privacyfriendlyludo.logic;
 
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.io.Serializable;
 
-/**
- * Created by Julchen on 31.05.2017.
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 public class GameField implements Parcelable, Serializable{
-    int x=0;
-    int y=0;
+    private int x=0;
+    private int y=0;
 
     public int getFigure_id() {
         return figure_id;
@@ -21,10 +30,9 @@ public class GameField implements Parcelable, Serializable{
 
     public void setFigure_id(int figure_id) {
         this.figure_id = figure_id;
-        Log.i("tag", "Index: " + this.getIndex() + " Figure_id: " + this.figure_id);
     }
 
-    int figure_id;
+    private int figure_id;
 
     public int getPlayer_id() {
         return player_id;
@@ -32,11 +40,10 @@ public class GameField implements Parcelable, Serializable{
 
     public void setPlayer_id(int player_id) {
         this.player_id = player_id;
-        Log.i("tag", "Index: " + this.getIndex() + " Player_id: " + this.player_id);
     }
 
-    int player_id;
-    int index;
+    private int player_id;
+    private int index;
 
     public int getMyColor() {
         return myColor;
@@ -65,7 +72,7 @@ public class GameField implements Parcelable, Serializable{
         return y;
     }
 
-    protected GameField(Parcel in) {
+    private GameField(Parcel in) {
         x = in.readInt();
         y = in.readInt();
         figure_id = in.readInt();

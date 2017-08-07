@@ -1,16 +1,13 @@
 package org.secuso.privacyfriendlyludo.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.os.ParcelableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -20,23 +17,31 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
-import org.secuso.privacyfriendlyludo.logic.GameType;
-import org.secuso.privacyfriendlyludo.logic.Player;
-import org.secuso.privacyfriendlyludo.tutorial.PrefManager;
-import org.secuso.privacyfriendlyludo.tutorial.TutorialActivity;
 
-import java.io.File;
+import org.secuso.privacyfriendlyludo.logic.Player;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 
-import static android.R.attr.id;
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 public class MainActivity extends BaseActivity {
 
@@ -147,13 +152,13 @@ public class MainActivity extends BaseActivity {
                 if (game_continuable)
                 {
                     // show alertDialog
-                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     // Setting Dialog Title
-                    alertBuilder.setTitle(R.string.OverwriteResumableGameTitle);
+                    builder.setTitle(R.string.OverwriteResumableGameTitle);
                     // Setting Dialog Message
-                    alertBuilder.setMessage(R.string.OverwriteResumableGame);
+                    builder.setMessage(R.string.OverwriteResumableGame);
 
-                    alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // delete file
                             deleteFile("savedata");
@@ -172,16 +177,21 @@ public class MainActivity extends BaseActivity {
                             intent.putExtra("own_dice", switchState);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
+                            dialog.dismiss();
                         }
                     });
 
-                    alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
+                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
                         public void onClick(DialogInterface dialog, int id) {
                             //do nothing
+                            dialog.dismiss();
                         }
                     });
-                    AlertDialog alert = alertBuilder.create();
-                    alert.show();
+                    if (!this.isFinishing())
+                    {
+                        builder.show();
+                    }
+
                 }
                 else
                 {
@@ -271,9 +281,9 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

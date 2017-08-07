@@ -13,10 +13,20 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
 
-/**
- * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
- * last access 27th October 2016
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 

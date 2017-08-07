@@ -3,8 +3,8 @@ package org.secuso.privacyfriendlyludo.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -35,13 +35,25 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import static java.lang.Integer.valueOf;
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 public class GameSettingActivity extends AppCompatActivity {
 
-    private RecyclerView mPlayerList;
     RecyclerViewCollectionAdapter adapter;
-    private ArrayList<Player> player = new ArrayList<Player>();
+    private ArrayList<Player> player = new ArrayList<>();
     List<Integer> mList = new ArrayList<>();
     int listposition;
     int color;
@@ -70,18 +82,15 @@ public class GameSettingActivity extends AppCompatActivity {
                 color_changed = true;
                 player = intent.getParcelableArrayListExtra("Players");
                 // no players saved
-            } else if (intent.getParcelableArrayListExtra("Players")==null) {
-            }
-            else
-            {
+            } else if (intent.getParcelableArrayListExtra("Players") != null) {
                 // when color changed and when setting loaded
                 player = intent.getParcelableArrayListExtra("Players");
             }
         } else {
-            player.add(new Player(1, getResources().getColor(R.color.white), "", false));
+            player.add(new Player(1, ContextCompat.getColor(getBaseContext(), R.color.white), "", false));
         }
 
-        mPlayerList = (RecyclerView) findViewById(R.id.playerList);
+        RecyclerView mPlayerList = (RecyclerView) findViewById(R.id.playerList);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mPlayerList.setHasFixedSize(true);
@@ -113,10 +122,10 @@ public class GameSettingActivity extends AppCompatActivity {
         }
     }
 
-    class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-        public static final int PLAYER = 0;
-        public static final int ADDPLAYER = 1;
+        static final int PLAYER = 0;
+        static final int ADDPLAYER = 1;
 
         @Override
         public int getItemCount() {
@@ -274,7 +283,7 @@ public class GameSettingActivity extends AppCompatActivity {
                             if ((player!=null) && (player.size() == max_players)) {
                                 Toast.makeText(GameSettingActivity.this, getString(R.string.max_player_reached), Toast.LENGTH_SHORT).show();
                             } else {
-                                player.add(new Player(3, getResources().getColor(R.color.white), "", false));
+                                player.add(new Player(3, ContextCompat.getColor(getBaseContext(), R.color.white), "", false));
                              //   mPlayerList.setAdapter(adapter);
                             }
                             adapter.notifyDataSetChanged();
@@ -302,31 +311,31 @@ public class GameSettingActivity extends AppCompatActivity {
     }
 
     abstract class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
         }
-    };
+    }
 
-    class AddPlayerViewHolder extends ViewHolder {
+    private class AddPlayerViewHolder extends ViewHolder {
 
         ImageButton addPlayer;
         Button start_game;
 
-        public AddPlayerViewHolder(View itemView) {
+        AddPlayerViewHolder(View itemView) {
             super(itemView);
             addPlayer = (ImageButton) itemView.findViewById(R.id.button_add_player);
             start_game = (Button) itemView.findViewById(R.id.button_game_start);
         }
     }
 
-    class PlayerViewHolder extends ViewHolder {
+    private class PlayerViewHolder extends ViewHolder {
 
         ImageButton playerColor;
         ImageButton playertype;
         ImageButton delete_player;
-        public EditText playerName;
+        EditText playerName;
 
-        public PlayerViewHolder(final View itemView) {
+        PlayerViewHolder(final View itemView) {
             super(itemView);
             playertype = (ImageButton) itemView.findViewById(R.id.button_player_type);
             playerColor = (ImageButton) itemView.findViewById(R.id.button_player_color);
@@ -352,7 +361,7 @@ public class GameSettingActivity extends AppCompatActivity {
         boolean white_inUse = false;
         for (int i = 0; i < player.size(); i++) {
             generated.add(player.get(i).getColor());
-            if (player.get(i).getColor() == getResources().getColor(R.color.white)) {
+            if (player.get(i).getColor() == ContextCompat.getColor(getBaseContext(), R.color.white)) {
                 white_inUse = true;
             }
         }
@@ -396,19 +405,20 @@ public class GameSettingActivity extends AppCompatActivity {
         }
 
         gridView.setAdapter(new ArrayAdapter<Integer>(this, R.layout.color_list, mList) {
+            @NonNull
             @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
                 View v = convertView;
                 if (v == null) {
-                    LayoutInflater vi = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
-                    v = vi.inflate(R.layout.color_list, null);
+                    getContext();
+                    LayoutInflater vi = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    v = vi.inflate(R.layout.color_list, parent, false);
                 }
                 Integer item = mList.get(position);
                 if (item != 0) {
                     Button button = (Button) v.findViewById(R.id.button_colors);
                     button.setTag(item);
                     // button.setText(String.valueOf(item));
-                    TypedArray ta = getResources().obtainTypedArray(R.array.playerColors);
                     int colorToUse = androidColors[item-1];
                    // int backgroundColor = getResources().getColor(colorToUse);
                     button.setBackgroundColor(colorToUse);
@@ -416,7 +426,6 @@ public class GameSettingActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             // save information in local variable, before they will be deleted
-                            int pos = listPosition;
                             ArrayList<Player> recent_player = player;
                             Intent intent = new Intent(getContext(), GameSettingActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -437,7 +446,9 @@ public class GameSettingActivity extends AppCompatActivity {
         // Set grid view to alertDialog
         builder.setView(gridView);
         builder.setTitle(getString(R.string.choose_color));
-        builder.show();
+        if(!isFinishing()) {
+            builder.show();
+        }
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -447,6 +458,12 @@ public class GameSettingActivity extends AppCompatActivity {
         savedInstanceState.putBoolean("useOwnDice", useOwnDice);
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
 }

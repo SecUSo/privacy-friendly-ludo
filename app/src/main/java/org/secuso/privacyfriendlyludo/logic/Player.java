@@ -6,8 +6,18 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by Julchen on 28.05.2017.
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 public class Player implements Parcelable, Serializable{
@@ -16,18 +26,18 @@ public class Player implements Parcelable, Serializable{
         return isFinished;
     }
 
-    public void setFinished(boolean finished) {
+    void setFinished(boolean finished) {
         isFinished = finished;
     }
 
     private boolean isFinished;
-    ArrayList <Figure> figures = new ArrayList<>();
-    int id;
-    int color;
-    String name;
-    int[] statistics = new int[6];
+    private ArrayList <Figure> figures = new ArrayList<>();
+    private int id;
+    private int color;
+    private String name;
+    private int[] statistics = new int[6];
 
-    public void setStatistics(int dice_result) {
+    void setStatistics(int dice_result) {
 
         statistics[dice_result-1] = statistics[dice_result-1] + 1;
     }
@@ -42,7 +52,7 @@ public class Player implements Parcelable, Serializable{
         return statistics;
     }
 
-    public Player()
+    Player()
 
     {
 
@@ -82,10 +92,6 @@ public class Player implements Parcelable, Serializable{
 
     public ArrayList<Figure> getFigures() {
         return figures;
-    }
-
-    public void setFigures(ArrayList<Figure> figures) {
-        this.figures = figures;
     }
 
     public void setColor(int color) {

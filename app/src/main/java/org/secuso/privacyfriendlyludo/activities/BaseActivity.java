@@ -20,12 +20,21 @@ import android.view.View;
 
 import org.secuso.privacyfriendlyludo.R;
 
-/**
- * @author Chris
- * @version 20161225
- * This class is a parent class of all activities that can be accessed from the
- * Navigation Drawer (example see MainActivity.java)
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 public abstract class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
     // delay to launch nav drawer item, to allow close animation to play

@@ -16,10 +16,23 @@ import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.util.ArrayList;
 
+/*
+  @author: Julia Schneider
+
+  This file is part of the Game Ludo.
+
+ Ludo is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ You should have received a copy of the GNU General Public License
+ along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 public class WinActivity extends AppCompatActivity {
 
-    private RecyclerView mPlayerList;
-    private RecyclerView.Adapter adapter;
     private ArrayList<Player> players;
     private ArrayList<Integer> WinnerOrder;
 
@@ -36,20 +49,20 @@ public class WinActivity extends AppCompatActivity {
         Intent intent = getIntent();
         players =  intent.getParcelableArrayListExtra("Players");
         WinnerOrder =  intent.getIntegerArrayListExtra("WinnerOrder");
-        mPlayerList = (RecyclerView) findViewById(R.id.winDetailsList);
+        RecyclerView mPlayerList = (RecyclerView) findViewById(R.id.winDetailsList);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        adapter = new WinActivity.RecyclerViewCollectionAdapter();
+        RecyclerView.Adapter adapter = new RecyclerViewCollectionAdapter();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mPlayerList.setLayoutManager(mLayoutManager);
         mPlayerList.setItemAnimator(new DefaultItemAnimator());
         mPlayerList.setAdapter(adapter);
     }
 
-    class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<WinActivity.ViewHolder> {
+    private class RecyclerViewCollectionAdapter extends RecyclerView.Adapter<WinActivity.ViewHolder> {
 
-        public static final int TITLE = 0;
-        public static final int PLAYER = 1;
+        static final int TITLE = 0;
+        static final int PLAYER = 1;
 
         @Override
         public int getItemCount() {
@@ -78,7 +91,7 @@ public class WinActivity extends AppCompatActivity {
                 case PLAYER:
                     // initializing
                     // check the order of winners
-                    int playerid=0;
+                    int playerid;
                     playerid = WinnerOrder.get(position-1);
 
                     WinActivity.PlayerViewHolder playerViewHolder = (WinActivity.PlayerViewHolder)vh;
@@ -93,7 +106,6 @@ public class WinActivity extends AppCompatActivity {
                     playerViewHolder.rank_number.setText("" + position + "");
                     break;
                 case TITLE:
-                    WinActivity.TitleViewHolder titleViewHolder = (WinActivity.TitleViewHolder) vh;
                     break;
                 default:
                     // nix :)
@@ -108,19 +120,19 @@ public class WinActivity extends AppCompatActivity {
     }
 
     abstract class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(View itemView) {
-            super(itemView);
-        }
-    };
-
-    class TitleViewHolder extends WinActivity.ViewHolder {
-
-        public TitleViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    class PlayerViewHolder extends WinActivity.ViewHolder {
+    private class TitleViewHolder extends WinActivity.ViewHolder {
+
+        TitleViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    private class PlayerViewHolder extends WinActivity.ViewHolder {
 
         TextView playerName;
         TextView rank_number;
@@ -131,7 +143,7 @@ public class WinActivity extends AppCompatActivity {
         TextView dice5;
         TextView dice6;
 
-        public PlayerViewHolder(final View itemView) {
+        PlayerViewHolder(final View itemView) {
             super(itemView);
             playerName = (TextView) itemView.findViewById(R.id.textView_player_name);
             dice1 = (TextView) itemView.findViewById(R.id.textView_d1);

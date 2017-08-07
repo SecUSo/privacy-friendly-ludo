@@ -14,7 +14,7 @@
         android:title="@string/header_change_settings">
         <SwitchPreference
             android:id="@+id/keepScreenOn"
-            android:key="switch_dice_3times"
+            android:key="keepScreenOn"
             android:title="@string/pref_keepScreenOn_switch"
             android:summary="@string/pref_keepScreenOn_switch_summary"
             android:defaultValue="false"/>
