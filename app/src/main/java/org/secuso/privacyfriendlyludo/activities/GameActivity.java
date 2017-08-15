@@ -74,7 +74,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         isCounterRunning=false;
-        timer=10;
+        timer=1000;
         setContentView(R.layout.activity_game);
 
         ActionBar ab = getSupportActionBar();
@@ -464,8 +464,9 @@ public class GameActivity extends AppCompatActivity {
                         showTask = (TextView) findViewById(R.id.showTask);
                         showTask.setText(R.string.Task_Roll_Dice);
                     }
-                    else
+                    else if (player_changed)
                     {
+                        showTask.setText("");
                         handler.postDelayed(doAIActions, timer);
                     }
         }

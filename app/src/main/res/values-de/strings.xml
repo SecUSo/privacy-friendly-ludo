@@ -64,14 +64,15 @@
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen</string>
-    <string name="slide1_text"> Diese App ermöglicht das Spielen des Brettspiels "Mensch Ärgere Dich nicht" auf dem Handy. </string>
+    <string name="slide1_text"> Diese App ermöglicht das Spielen des Brettspiels "Mensch Ärgere Dich nicht". </string>
 
     <string name="slide2_heading">Schlüsselelemente</string>
-    <string name="slide2_text">Es können Spiele mit bis zu 4 Personen gespielt werden. Angefangene Spiele können gespeichert werden.
-    Farbe und Name der Spieler kann frei gewählt werden.</string>
+    <string name="slide2_text">Es gibt 2 verschiedene Spielfelder. Einmal mit bis zu 4 Perosnen und eines für bis zu 6 Personen. Angefangene Spiele können gespeichert werden.
+    Farbe und Name der Spieler kann frei gewählt werden, sowie ob es ein Compuergegner sein soll.</string>
 
-    <string name="slide3_heading">Github</string>
-    <string name="slide3_text">Der Quellcode dieser App ist auf GitHub verfügbar.</string>
+    <string name="slide3_heading">Spielen mit eigenem Würfel und eigenen Regeln.</string>
+    <string name="slide3_text">Zusätzlich ist es möglich ein Spiel mit eigenen Regeln zu spielen. Dafür wird eine Figur ausgewählt und das Zielfeld im Anschluss ausgewählt. </string>
+
 
     <string name="next">Weiter</string>
     <string name="skip">Überspringen</string>

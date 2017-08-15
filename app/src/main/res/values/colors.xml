@@ -38,19 +38,19 @@
 
     <array name="playerColors">
         <item>#2E64FE</item>
-        <item>#FF0000</item>
-        <item>#40FF00</item>
-        <item>#642EFE</item>
-        <item>#FF00FF</item>
-        <item>#00FFFF</item>
+        <item>#FF0009</item>
+        <item>#00FF00</item>
+        <item>#5660FF</item>
+        <item>#FF0066</item>
+        <item>#0BF</item>
     </array>
 
     <array name="highlightColors">
         <item>@color/darkblue</item>
         <item>@color/red</item>
-        <item>@color/green</item>
+        <item>#007711</item>
         <item>#380B61</item>
-        <item>#B4045F</item>
+        <item>#dd6699</item>
         <item>#088A85</item>
     </array>
 
