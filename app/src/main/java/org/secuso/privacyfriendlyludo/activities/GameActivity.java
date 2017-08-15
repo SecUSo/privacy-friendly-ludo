@@ -467,6 +467,7 @@ public class GameActivity extends AppCompatActivity {
                     else if (player_changed)
                     {
                         showTask.setText("");
+                        handler.removeCallbacks(doAIActions);
                         handler.postDelayed(doAIActions, timer);
                     }
         }
