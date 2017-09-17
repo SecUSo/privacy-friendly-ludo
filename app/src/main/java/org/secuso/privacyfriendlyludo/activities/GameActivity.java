@@ -84,7 +84,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("keepScreenOn", false))
+        if (prefs.getBoolean("keepScreenOn", true))
         {
             // keep screen on
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -560,7 +560,7 @@ public class GameActivity extends AppCompatActivity {
                 // Setting Dialog Message
                 alertBuilder.setMessage(R.string.LeaveWinDialog);
 
-                alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(GameActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -570,7 +570,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                 });
 
-                alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
+                alertBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()     {
                     public void onClick(DialogInterface dialog, int id) {
                         //do nothing
                         dialog.dismiss();
@@ -660,14 +660,14 @@ public class GameActivity extends AppCompatActivity {
         // Setting Dialog Message
         alertBuilder.setMessage(R.string.LeaveGame);
 
-        alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 finish();
                 GameActivity.super.onBackPressed();
             }
         });
 
-        alertBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()     {
+        alertBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()     {
             public void onClick(DialogInterface dialog, int id) {
                 //do nothing
             }

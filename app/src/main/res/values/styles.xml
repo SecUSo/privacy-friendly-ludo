@@ -37,4 +37,9 @@
 
     </style>
 
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/darkblue</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
 </resources>

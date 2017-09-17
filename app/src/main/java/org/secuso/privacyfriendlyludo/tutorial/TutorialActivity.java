@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
+import org.secuso.privacyfriendlyludo.activities.BaseActivity;
 import org.secuso.privacyfriendlyludo.activities.MainActivity;
 
 /*
@@ -44,15 +45,20 @@ public class TutorialActivity extends AppCompatActivity {
     private Button btnSkip, btnNext;
     private PrefManager prefManager;
 
+    private static final String TAG = TutorialActivity.class.getSimpleName();
+    public static final String ACTION_SHOW_ANYWAYS = TAG + ".ACTION_SHOW_ANYWAYS";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Checking for first time launch - before calling setContentView()
         prefManager = new PrefManager(this);
-        if (!prefManager.isFirstTimeLaunch()) {
+        Intent i = getIntent();
+        if (!prefManager.isFirstTimeLaunch() && (i == null || !ACTION_SHOW_ANYWAYS.equals(i.getAction()))) {
             launchHomeScreen();
-            finish();
+            return;
         }
 
         // Making notification bar transparent
@@ -133,7 +139,9 @@ public class TutorialActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(TutorialActivity.this, MainActivity.class));
+        Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 

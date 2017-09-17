@@ -80,7 +80,7 @@ public class BoardModel implements Parcelable, Serializable {
         this.useOwnDice = useOwnDice;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        this.switch_dice_3times = prefs.getBoolean("switch_dice_3times", false);
+        this.switch_dice_3times = prefs.getBoolean("switch_dice_3times", true);
         // define variables depending on gametype
         switch (game_type) {
             case Four_players:

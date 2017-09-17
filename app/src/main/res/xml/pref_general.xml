@@ -8,7 +8,7 @@
             android:key="keepScreenOn"
             android:title="@string/pref_keepScreenOn_switch"
             android:summary="@string/pref_keepScreenOn_switch_summary"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
         <!-- <Preference android:title="Test Setting"
              android:summary="Text Summary"/> -->
     </PreferenceCategory>
@@ -20,7 +20,7 @@
             android:key="switch_dice_3times"
             android:title="@string/pref_rollDice3times_switch"
             android:summary="@string/pref_rollDice3times_switch_summary"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
     </PreferenceCategory>
 
 

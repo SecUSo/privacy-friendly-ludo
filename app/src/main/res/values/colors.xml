@@ -2,21 +2,21 @@
 <resources>
     <color name="colorPrimary">#024265</color>
     <color name="colorPrimaryDark">#024265</color>
-    <color name="colorAccent">#0274B2</color>
+    <color name="colorAccent">#0274b2</color>
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="lightblue">#0274B2</color>
     <color name="middleblue">#8aa5ce</color>
     <color name="darkblue">#024265</color>
-    <color name="middlegrey">#A8A8A8</color>
+    <color name="middlegrey">#a8a8a8</color>
     <color name="yellow">#f6d126</color>
     <color name="red">#b71c1c</color>
     <color name="green">#388E3C</color>
-    <color name="pink">#E3C</color>
+    <color name="pink">#ee33cc</color>
 
     <!-- lighter colors -->
-    <color name="lightred">#D23B3B</color>
+    <color name="lightred">#d23b3b</color>
 
     <!-- dots inactive colors -->
     <color name="dot_dark_screen">#026499</color>
@@ -37,21 +37,15 @@
     </array>
 
     <array name="playerColors">
-        <item>#2E64FE</item>
-        <item>#FF0009</item>
-        <item>#00FF00</item>
-        <item>#5660FF</item>
-        <item>#FF0066</item>
-        <item>#0BF</item>
-    </array>
-
-    <array name="highlightColors">
-        <item>@color/darkblue</item>
-        <item>@color/red</item>
-        <item>#007711</item>
-        <item>#380B61</item>
-        <item>#dd6699</item>
-        <item>#088A85</item>
+        <item>#D32F2F</item>
+        <item>#E91E63</item>
+        <item>#9C27B0</item>
+        <item>#3F51B5</item>
+        <item>#4CAF50</item>
+        <item>#00BCD4</item>
+        <item>#FFEB3B </item>
+        <item>#FF9800</item>
+        <item>#795548 </item>
     </array>
 
 

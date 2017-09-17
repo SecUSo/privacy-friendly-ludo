@@ -68,15 +68,62 @@
         tools:context="tu_darmstadt.sudoku.ui.MainActivity"
         tools:gravity="center_vertical">
 
-        <Switch
-            android:id="@+id/switch_own_dice"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:defaultValue="false"
-            android:key="switch"
-            android:text="@string/play_with_own_dice"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:textSize="22sp" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="71dp"
+            tools:layout_editor_absoluteY="30dp"
+            tools:layout_editor_absoluteX="16dp">
+
+            <Switch
+                android:id="@+id/switch_own_dice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:defaultValue="false"
+                android:key="switch"
+                android:textSize="22sp"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/text_own_dice"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@+id/switch_own_dice"
+                android:text="@string/play_with_own_dice"
+                app:layout_constraintRight_toLeftOf="@+id/Info_own_dice"
+                android:layout_marginRight="8dp"
+                app:layout_constraintLeft_toRightOf="@+id/switch_own_dice"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp" />
+
+            <ImageButton
+                android:id="@+id/Info_own_dice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="-10dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@+id/text_own_dice"
+                android:backgroundTint="@color/transparent"
+                android:onClick="onClick"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.454"
+                app:srcCompat="@drawable/ic_menu_info" />
+        </android.support.constraint.ConstraintLayout>
 
         <Button
             android:id="@+id/game_button_start"
