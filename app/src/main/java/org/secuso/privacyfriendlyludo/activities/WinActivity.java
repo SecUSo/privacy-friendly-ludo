@@ -44,7 +44,7 @@ public class WinActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
+            ab.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         }
         Intent intent = getIntent();
         players =  intent.getParcelableArrayListExtra("Players");

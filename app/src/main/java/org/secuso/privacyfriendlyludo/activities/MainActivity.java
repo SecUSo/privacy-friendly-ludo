@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
@@ -60,7 +62,7 @@ public class MainActivity extends BaseActivity {
         {
             // no saved game available
             game_continuable = false;
-            game_continue.setClickable(false);
+            game_continue.setClickable(true);
             game_continue.setBackgroundColor(ContextCompat.getColor(getBaseContext(),(R.color.middlegrey)));
         }
         else
@@ -124,20 +126,20 @@ public class MainActivity extends BaseActivity {
         {
             // no saved game available
             game_continuable = false;
-            game_continue.setClickable(false);
-            game_continue.setBackgroundColor(ContextCompat.getColor(getBaseContext(),(R.color.middlegrey)));
+            game_continue.setClickable(true);
+            game_continue.setBackgroundResource(R.drawable.button_disabled);
         }
         else
         {
             game_continuable = true;
             game_continue.setClickable(true);
-            game_continue.setBackgroundColor(ContextCompat.getColor(getBaseContext(),R.color.colorPrimary));
+            game_continue.setBackgroundResource(R.drawable.button_fullwidth);
         }
     }
 
     @Override
     protected int getNavigationDrawerID() {
-        return R.id.nav_example;
+        return R.id.nav_home;
     }
 
     public void onClick(View view) {
@@ -195,6 +197,7 @@ public class MainActivity extends BaseActivity {
                 }
                 else
                 {
+                    int index = mSharedPreferences.getInt("lastChosenPage", 0);
                     Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
                     // check if switch is activated and save it for later
                     Switch own_dice = (Switch) findViewById(R.id.switch_own_dice);
@@ -214,14 +217,29 @@ public class MainActivity extends BaseActivity {
 
                 break;
             case R.id.game_button_continue:
-                Intent myintent = new Intent(MainActivity.this, GameActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("BoardModel", model);
-                myintent.putExtras(bundle);
-                myintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(myintent);
+                if (game_continuable)
+                {
+                    Intent myintent = new Intent(MainActivity.this, GameActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("BoardModel", model);
+                    myintent.putExtras(bundle);
+                    myintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(myintent);
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, getString(R.string.no_resumable_game), Toast.LENGTH_LONG).show();
+                }
+
+                break;
+            case R.id.Info_own_dice:
+                        AlertDialog.Builder infoBbuilder = new AlertDialog.Builder(MainActivity.this);
+                        infoBbuilder.setTitle(getString(R.string.info_own_dice_question));
+                        infoBbuilder.setMessage(R.string.info_own_dice_answer);
+                        infoBbuilder.show();
                 break;
             default:
+                break;
         }
     }
 

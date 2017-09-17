@@ -84,7 +84,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("keepScreenOn", false))
+        if (prefs.getBoolean("keepScreenOn", true))
         {
             // keep screen on
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

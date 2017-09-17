@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.secuso.privacyfriendlyludo.R;
+import org.secuso.privacyfriendlyludo.tutorial.TutorialActivity;
 
 /*
   @author: Julia Schneider
@@ -143,7 +144,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Intent intent;
 
         switch(itemId) {
-            case R.id.nav_example:
+            case R.id.nav_home:
                 intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -162,7 +163,13 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, true );
                 createBackStack(intent);
                 break;
+            case R.id.nav_tutorial:
+                intent = new Intent(this, TutorialActivity.class);
+                intent.setAction(TutorialActivity.ACTION_SHOW_ANYWAYS);
+                createBackStack(intent);
+                break;
             default:
+
         }
     }
 

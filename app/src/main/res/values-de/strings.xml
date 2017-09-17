@@ -8,6 +8,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="action_main">Hauptmenü</string>
     <string name="action_game">Spiel</string>
+    <string name="action_tutorial">Tutorial</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -38,9 +39,9 @@
     <string name="help_whatis">Was ist Privacy Friendly Mensch Ärgere Dich nicht?</string>
     <string name="help_whatis_answer">Privacy Friendly Mensch Ärgere Dich nicht ist eine App um das gleichnamige Brettspiel zu spielen.</string>
     <string name="help_playerNumber">Wieviele Personen können maximal spielen?</string>
-    <string name="help_playerNumber_answer">Das Spiel kann mit maximal 4 Spielern gespielt werden.</string>
+    <string name="help_playerNumber_answer">Auf dem kleinen Spielbrett können maximal 4 Spieler spielen und auf dem großen Spielbrett maximal 6 Spieler.</string>
     <string name="help_privacy">Was macht die App privatsphäre-freundlich?</string>
-    <string name="help_privacy_answer">Diese App erfordert keine Berechtigungen. Außerrdem enthält sie keine Werbung.</string>
+    <string name="help_privacy_answer">Diese App erfordert keine Berechtigungen. Außerdem enthält sie keine Werbung.</string>
     <string name="help_permission">Welche Berechtigungen braucht die App?</string>
     <string name="help_permission_answer">Privacy Friendly App benötigt keine Berechtigungen.</string>
 
@@ -68,7 +69,7 @@
 
     <string name="slide2_heading">Schlüsselelemente</string>
     <string name="slide2_text">Es gibt 2 verschiedene Spielfelder. Einmal mit bis zu 4 Perosnen und eines für bis zu 6 Personen. Angefangene Spiele können gespeichert werden.
-    Farbe und Name der Spieler kann frei gewählt werden, sowie ob es ein Compuergegner sein soll.</string>
+    Farbe und Name der Spieler kann frei gewählt werden, sowie ob es ein Computergegner sein soll.</string>
 
     <string name="slide3_heading">Spielen mit eigenem Würfel und eigenen Regeln.</string>
     <string name="slide3_text">Zusätzlich ist es möglich ein Spiel mit eigenen Regeln zu spielen. Dafür wird eine Figur ausgewählt und das Zielfeld im Anschluss ausgewählt. </string>
@@ -84,8 +85,8 @@
     <string name="start_game">Spiel starten</string>
     <string name="finished_Game">Spiel ist beendet.</string>
     <string name="game_type">%max Spieler</string>
-    <string name="Missing_playername">Spielername fehlt.</string>
-    <string name="color_uniqueness">Farben sind nicht eindeutig oder Grau.</string>
+    <string name="Missing_playername">Bitte geben Sie jedem Spieler einen Namen.</string>
+    <string name="color_uniqueness">Bitte wählen Sie eindeutige Farben für jeden Spieler aus.</string>
     <string name="choose_color">Farben</string>
     <string name="max_player_reached">Maximale Anzahl an Spielern erreicht.</string>
     <string name="header_change_rules">Spezialregeln</string>
@@ -102,12 +103,15 @@
     <string name="pref_keepScreenOn_switch_summary">Während des kompletten Spiels bleibt der Bildschirm an.</string>
     <string name="OverwriteResumableGameTitle">Gespeichertes Spiel überschreiben?</string>
     <string name="Winner">Platz %n:</string>
-    <string name="enough_players">nicht genügend Spieler ausgewählt</string>
+    <string name="enough_players">Bitte wählen Sie mindestens 2 Spieler aus.</string>
     <string name="header_change_settings">Allgemeine Einstellungen</string>
     <string name="pref_keepScreenOn_switch">Bildschirm bleibt während des Spiels an.</string>
     <string name="pref_rollDice3times_switch">3 Mal würfeln ist erlaubt.</string>
-    <string name="pref_rollDice3times_switch_summary">Ein Spieler der keine Figuren im Spiel hat, hat 3 Versuche eine 6 zu würfeln.</string>
+    <string name="pref_rollDice3times_switch_summary">Ein Spieler der keine Figuren im Spiel hat, hat drei Versuche eine 6 zu würfeln.</string>
     <string name="play_with_own_dice">mit eigenem Würfel spielen.</string>
+    <string name="no_resumable_game">Kein Gespeichertes Spiel vorhanden. Bitte starten Sie ein neues Spiel.</string>
+    <string name="playername_default_value">Spieler</string>
+    <string name="computername_default_value">Computer</string>
 
 
 </resources>
