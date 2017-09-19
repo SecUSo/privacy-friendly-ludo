@@ -102,7 +102,7 @@
     <string name="OverwriteResumableGame">Wenn Sie fortfahren, wird das letzte gespeicherte Spiel überschrieben</string>
     <string name="pref_keepScreenOn_switch_summary">Während des kompletten Spiels bleibt der Bildschirm an.</string>
     <string name="OverwriteResumableGameTitle">Gespeichertes Spiel überschreiben?</string>
-    <string name="Winner">Platz %n:</string>
+    <string name="Winner">%n</string>
     <string name="enough_players">Bitte wählen Sie mindestens 2 Spieler aus.</string>
     <string name="header_change_settings">Allgemeine Einstellungen</string>
     <string name="pref_keepScreenOn_switch">Bildschirm bleibt während des Spiels an.</string>
@@ -116,6 +116,8 @@
     <string name="yes">Ja</string>
     <string name="info_own_dice_answer"></string>
     <string name="choose_playername">Bitte geben Sie einen Spielernamen ein.</string>
+    <string name="ContinueGameTitle">Ein Spieler hat das Spiel beendet. Wollen Sie das Spiel fortsetzen?</string>
+    <string name="no">Nein</string>
 
 
 </resources>

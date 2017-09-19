@@ -38,6 +38,7 @@ public class StartGameFieldPosition implements Parcelable, Serializable{
 
         switch (game_type) {
             case Four_players:
+                // 1, 3, 4, 2
                 //Home fields player 1 with figure 1 to 4
                 myGamefield.add(new GameField(100, 0, 0, 0, 1, colors.get(0)));
                 myGamefield.add(new GameField(101, 0, 1, 0, 2, colors.get(0)));
@@ -61,6 +62,7 @@ public class StartGameFieldPosition implements Parcelable, Serializable{
                 break;
             case Six_players:
                 //home fields player1 with figure 1 to 4
+                // 1,3, 5, 2, 4, 6
                 myGamefield.add(new GameField(100, 0, 3, 0, 1, colors.get(0)));
                 myGamefield.add(new GameField(101, 0, 4, 0, 2, colors.get(0)));
                 myGamefield.add(new GameField(102, 0, 5, 0, 3, colors.get(0)));
@@ -102,9 +104,9 @@ public class StartGameFieldPosition implements Parcelable, Serializable{
         {
             for (int j=0; j< model.getPlayers().get(i).getFigures().size(); j++)
             {
-                int index = model.getPlayers().get(i).getFigures().get(j).getField_position_index();
-                myGamefield.get((index) %100).setFigure_id(j+1);
-                myGamefield.get((index) % 100).setPlayer_id(i+1);
+                    int index = model.getPlayers().get(i).getFigures().get(j).getField_position_index();
+                    myGamefield.get((index) %100).setFigure_id(j+1);
+                    myGamefield.get((index) % 100).setPlayer_id(i+1);
             }
         }
     }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyludo.R;
+import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.Player;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class WinActivity extends AppCompatActivity {
 
     private ArrayList<Player> players;
     private ArrayList<Integer> WinnerOrder;
+    private BoardModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +46,13 @@ public class WinActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
+            // ab.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         }
-        Intent intent = getIntent();
-        players =  intent.getParcelableArrayListExtra("Players");
-        WinnerOrder =  intent.getIntegerArrayListExtra("WinnerOrder");
+
+        Intent old_intent = getIntent();
+        WinnerOrder =  old_intent.getIntegerArrayListExtra("WinnerOrder");
+        model = old_intent.getParcelableExtra("BoardModel");
+        players =  model.getPlayers();
         RecyclerView mPlayerList = (RecyclerView) findViewById(R.id.winDetailsList);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -154,5 +158,16 @@ public class WinActivity extends AppCompatActivity {
             dice6 = (TextView) itemView.findViewById(R.id.textView_d6);
             rank_number = (TextView) itemView.findViewById(R.id.textView_rank);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // open new dialog with statistic information
+        Intent myintent = new Intent(WinActivity.this, GameActivity.class);
+        myintent.putIntegerArrayListExtra("WinnerOrder", model.getOrder_of_winners());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("BoardModel", model);
+        myintent.putExtras(bundle);
     }
 }

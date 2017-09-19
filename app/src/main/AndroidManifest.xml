@@ -63,13 +63,14 @@
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.GameActivity"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlyludo.activities.MainActivity" />
         </activity>
         <activity android:name=".activities.WinActivity"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.GameActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlyludo.activities.MainActivity" />

@@ -46,15 +46,19 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
         super(context, attrs);
         this.myColor = myColor;
         Drawable[] layers = new Drawable[3];
-        layers[0] = ContextCompat.getDrawable(context, R.drawable.field2);
-        layers[1] = ContextCompat.getDrawable(context, R.drawable.figure);
-        layers[2] = ContextCompat.getDrawable(context, R.drawable.field2);
+        // field border
+        layers[0] = ContextCompat.getDrawable(context, R.drawable.field_color_border);
+        // field content
+        layers[1] = ContextCompat.getDrawable(context, R.drawable.field);
+        layers[2] = ContextCompat.getDrawable(context, R.drawable.figure);
         layersDrawable = new LayerDrawable(layers);
 
         layersDrawable.mutate();
         layersDrawable.setLayerInset(0, 0, 0, 0, 0);
-        layersDrawable.setLayerInset(1, 150, 200, 150, 100);
-        layersDrawable.setLayerInset(2, 400, 130, 400, 670);
+        //layersDrawable.setLayerInset(1, 0, 0, 0, 0);
+        layersDrawable.setLayerInset(1, 15, 15, 15, 15);
+        layersDrawable.setLayerInset(2, 5, 5, 5, 5);
+        //layersDrawable.setLayerInset(2, 400, 130, 400, 670);
         this.setImageDrawable(layersDrawable);
 
             if (d == null) {
@@ -64,33 +68,23 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
                 layersDrawable.getDrawable(2).setAlpha(0);
             }
             if (myColor != 0) {
-                layersDrawable.getDrawable(0).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
-                layersDrawable.getDrawable(1).setAlpha(0);
-                layersDrawable.getDrawable(2).setAlpha(0);
-                //calculate opposite color
-                float[] myhsv = new float[3];
-                int new_color;
-                new_color = myColor;
-                Color.colorToHSV(new_color, myhsv);
-                float hue = myhsv[0];
-                if (myhsv[2] == 1)
+                if(myColor==Color.WHITE)
                 {
-                    myhsv[2] = 0;
+                    layersDrawable.getDrawable(0).setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
                 }
                 else
                 {
-                    hue = (hue + 180) % 360;
-                    myhsv[0] = hue;
+                    layersDrawable.getDrawable(0).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
                 }
-                new_color = Color.HSVToColor(myhsv);
-                // new_color = getResources().getColor(new_color);
-                layersDrawable.getDrawable(2).setColorFilter(new_color, PorterDuff.Mode.MULTIPLY);
+
+                layersDrawable.getDrawable(1).setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                layersDrawable.getDrawable(2).setAlpha(0);
             }
             this.add_player = add_player;
-            if (add_player) {
-            layersDrawable.getDrawable(1).setAlpha(255);
-            layersDrawable.getDrawable(2).setAlpha(0);
-           // layersDrawable.getDrawable(1).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
+            if (add_player)
+            {
+            layersDrawable.getDrawable(2).setAlpha(255);
+            layersDrawable.getDrawable(2).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
             }
 
     }
@@ -98,22 +92,12 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
     public void markPossibleFigure(int color) {
 
         this.myColor = color;
-        int[] androidColors = getResources().getIntArray(R.array.playerColors);
-       // int[] highlightColors = getResources().getIntArray(R.array.highlightColors);
-       // int neonColor=0;
-       /* for(int i=0; i<androidColors.length; i++)
-        {
-            if ( color == androidColors[i])
-            {
-                 neonColor = highlightColors[i];
-            }
-        }
-        layersDrawable.getDrawable(1).setColorFilter(neonColor, PorterDuff.Mode.MULTIPLY); */
+       layersDrawable.getDrawable(1).setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         //layersDrawable.getDrawable(2).setAlpha(255);
     }
 
-    public void hidePossibleFigure(int color) {
-        layersDrawable.getDrawable(1).setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+    public void hidePossibleFigure() {
+        layersDrawable.getDrawable(1).setColorFilter(ContextCompat.getColor(getContext(), R.color.white), PorterDuff.Mode.SRC_ATOP);
     }
 
 

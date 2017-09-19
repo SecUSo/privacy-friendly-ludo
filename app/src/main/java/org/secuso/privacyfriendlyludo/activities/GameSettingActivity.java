@@ -378,7 +378,7 @@ public class GameSettingActivity extends AppCompatActivity {
                                         generated.add(colorToUse);
                                     }
                                 String playername =  getResources().getString(R.string.playername_default_value);
-                                player.add(new Player(3, colorToUse, playername, false));
+                                player.add(new Player(3, colorToUse, playername, false, 1));
                                 //save shadowcopy of playername in another array
                                 playername_saved.add(playername);
                             }
@@ -456,14 +456,11 @@ public class GameSettingActivity extends AppCompatActivity {
     }
 
     public boolean checkColorUniqueness() {
-        boolean grey_inUse = false;
+        generated.clear();
         for (int i = 0; i < player.size(); i++) {
             generated.add(player.get(i).getColor());
-            if (player.get(i).getColor() == ContextCompat.getColor(getBaseContext(), R.color.middlegrey)) {
-                grey_inUse = true;
-            }
         }
-        if (generated.size() == player.size() && !grey_inUse) {
+        if (generated.size() == player.size()) {
             return true;
         } else {
 

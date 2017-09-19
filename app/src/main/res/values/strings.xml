@@ -106,7 +106,7 @@
     <string name="enough_players">Please select at least 2 players to play.</string>
     <string name="GameFinished">The game is finished.</string>
     <string name="Congrats">Congratulation!</string>
-    <string name="Winner">Rank %n: </string>
+    <string name="Winner">%n</string>
     <string name="LeaveWinDialogTitle">Do you want to leave this dialog?</string>
     <string name="LeaveWinDialog">If you continue it is not possible to go back, are you sure?</string>
     <string name="header_change_settings">General Settings</string>
@@ -119,5 +119,8 @@
     <string name="yes">yes</string>
     <string name="cancel">cancel</string>
     <string name="choose_playername">Please type in a playername.</string>
+    <string name="no">no</string>
+    <string name="ContinueGameTitle">Player has finished. Do you want to continue the game?</string>
+    <string name="action_showStatistics">Show statistics</string>
 
 </resources>

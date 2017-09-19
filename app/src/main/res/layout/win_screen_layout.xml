@@ -50,7 +50,7 @@
             android:weightSum="5">
 
             <LinearLayout
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
@@ -81,6 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:elevation="0dp"
                     android:maxLines="1"
                     android:textColor="@color/white" />
 
@@ -181,7 +182,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/button_disabled"
+            android:background="@drawable/button_highlighted"
             android:text="mehr Infos"
             android:textColor="@color/white" />
 

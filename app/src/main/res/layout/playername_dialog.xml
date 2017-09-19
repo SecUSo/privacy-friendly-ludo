@@ -19,9 +19,9 @@
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="8"
         android:inputType="textPersonName"
-        android:maxLength="15"
+        android:maxLength="8"
         android:maxLines="1"
         android:text="" />
 

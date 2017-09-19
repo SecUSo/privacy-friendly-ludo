@@ -1,58 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LayoutGame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:fitsSystemWindows="true"
     tools:context="org.secuso.privacyfriendlyludo.activities.GameActivity">
 
-    <org.secuso.privacyfriendlyludo.activities.BoardView
-        android:id="@+id/board"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@color/middlegrey"
-        android:clickable="true">
+    <include layout="@layout/toolbar" />
+    <include layout="@layout/content_game"/>
 
-    </org.secuso.privacyfriendlyludo.activities.BoardView>
+</android.support.design.widget.CoordinatorLayout>
 
-    <ImageView
-        android:id="@+id/resultOne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/board"
-        android:layout_marginLeft="@dimen/slide_actions"
-        android:layout_marginTop="@dimen/slide_actions"
-        android:background="@drawable/dice"
-        android:visibility="invisible"
-        tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/changePlayerMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textSize="25sp"
-        android:text=""
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/resultOne"
-        android:layout_below="@+id/board"/>
 
-    <TextView
-        android:id="@+id/showTask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/changePlayerMessage"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_toRightOf="@+id/resultOne"
-        android:textColor="@color/black"
-        android:textSize="25sp" />
-
-</RelativeLayout>

@@ -35,6 +35,7 @@ public class Player implements Parcelable, Serializable{
     private int id;
     private int color;
     private String name;
+    private int order;
     private int[] statistics = new int[6];
 
     void setStatistics(int dice_result) {
@@ -62,8 +63,13 @@ public class Player implements Parcelable, Serializable{
         isAI = AI;
     }
 
-    public Player(int id, int playercolor, String name, boolean isAI)
+    public int getOrder() {
+        return order;
+    }
+
+    public Player(int id, int playercolor, String name, boolean isAI, int order)
     {
+        this.order = order;
         this.name = name;
         this.id = id;
         this.color = playercolor;
@@ -72,7 +78,9 @@ public class Player implements Parcelable, Serializable{
         //create 4 figures
         for (int i=0; i<4; i++)
         {
-            int index = 100 + i + (4*(id-1));
+
+          //  int index = 100 + i + (4*(id-1));
+            int index = 100 + i + (4*(order-1));
          //   int index = i + 4*(id-1);
             figures.add(new Figure(i+1, index));
         }

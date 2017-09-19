@@ -84,18 +84,19 @@ public class BoardView extends GridLayout{
             {
                 // add player
                 int player_color = model.getPlayers().get(player_id-1).getColor();
-                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), true);
-                board[x][y].getLayersDrawable().getDrawable(1).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field), true);
+                board[x][y].getLayersDrawable().getDrawable(2).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
             }
             else
             {
                 // build normal field
                 // no player on this field
-                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), false);
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field), false);
             }
             board[x][y].setTag("true");
             board[x][y].setId(field_index);
         }
+
         //add figures and start fields
         for(int i=0; i<model.getStart_player_map().getMyGamefield().size(); i++)
         {
@@ -108,19 +109,20 @@ public class BoardView extends GridLayout{
             {
                 // add player
                 int player_color = model.getPlayers().get(player_id-1).getColor();
-                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), true);
-                board[x][y].getLayersDrawable().getDrawable(1).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field), true);
+                board[x][y].getLayersDrawable().getDrawable(2).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
             }
             else
             {
                 // build normal field
                 // no player on this field
-                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field2), false);
+                board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field), false);
             }
 
             board[x][y].setId(field_index);
             board[x][y].setTag("true");
         }
+
 
         //add design of imageviews to the board
         // add it after all colors are set
@@ -189,7 +191,7 @@ public class BoardView extends GridLayout{
         int x = (getFigurePositionOnBoard(mymodel, figure_id)).get(0);
         int y = (getFigurePositionOnBoard(mymodel, figure_id)).get(1);
         int color = mymodel.getRecent_player().getColor();
-        board[x][y].hidePossibleFigure(color);
+        board[x][y].hidePossibleFigure();
         board[x][y].setClickable(false);
     }
 
@@ -212,7 +214,7 @@ public class BoardView extends GridLayout{
         if (marked)
         {
 
-            board[x][y].hidePossibleFigure(color);
+            board[x][y].hidePossibleFigure();
         }
         else
         {
@@ -257,7 +259,7 @@ public void removeOldFigure(BoardModel mymodel, int old_position)
         y=model.getMy_game_field().getMyGamefield().get(old_position-1).getY();
     }
     //remove figure layer
-    board[x][y].getLayersDrawable().getDrawable(1).setAlpha(0);
+    board[x][y].getLayersDrawable().getDrawable(2).setAlpha(0);
 }
 
     public ArrayList<Integer> getPlayerInfos(BoardModel mymodel, int fieldindex)
@@ -308,8 +310,8 @@ public void removeOldFigure(BoardModel mymodel, int old_position)
                 color = model.getPlayers().get(player_id-1).getColor();
             }
         //add figure layer
-        board[x][y].getLayersDrawable().getDrawable(1).setAlpha(255);
-        board[x][y].getLayersDrawable().getDrawable(1).setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        board[x][y].getLayersDrawable().getDrawable(2).setAlpha(255);
+        board[x][y].getLayersDrawable().getDrawable(2).setColorFilter(color, PorterDuff.Mode.MULTIPLY);
     }
 
     @Override

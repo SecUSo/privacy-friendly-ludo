@@ -220,9 +220,6 @@ public class MainActivity extends BaseActivity {
                 if (game_continuable)
                 {
                     Intent myintent = new Intent(MainActivity.this, GameActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("BoardModel", model);
-                    myintent.putExtras(bundle);
                     myintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(myintent);
                 }
