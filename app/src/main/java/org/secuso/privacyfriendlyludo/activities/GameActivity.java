@@ -85,10 +85,10 @@ public class GameActivity extends AppCompatActivity {
         no_cup_showing = false;
         stop = false;
         isCounterRunning=false;
-        timer=1000;
+        timer=100;
         setContentView(R.layout.activity_game);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle(R.string.app_name_long);
+        myToolbar.setTitle(R.string.app_name);
         myToolbar.inflateMenu(R.menu.showstatistics);
         myToolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
@@ -96,7 +96,6 @@ public class GameActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         no_cup_showing = true;
                         ShowStatistics();
-                        no_cup_showing = false;
                         return false;
                     }
                 });
@@ -122,7 +121,7 @@ public class GameActivity extends AppCompatActivity {
             if (savedInstanceState != null) {
                 model = savedInstanceState.getParcelable("BoardModel");
             }
-            else if (savedInstanceState == null && (model==null || model.isGame_finished() || getIntent().getExtras()!=null))
+            else if (savedInstanceState == null && (model==null || getIntent().getExtras()!=null))
             {
                 // new Game
                 Intent intent = getIntent();
@@ -236,13 +235,17 @@ public class GameActivity extends AppCompatActivity {
             };
 
         // start routine automatically --> first time
-        if (model.getRecent_player().isAI() && !model.useOwnDice) {
+        if (model.getRecent_player().isAI() && !model.useOwnDice && !model.isGame_finished()) {
 
             handler.postDelayed(doAIActions, timer);
         }
         else if (model.useOwnDice)
         {
             boardView.makeAllFieldsClickable(myOnlyhandler);
+        }
+        else if (!model.useOwnDice && model.isGame_finished())
+        {
+            ShowStatistics();
         }
     }
 
@@ -413,12 +416,12 @@ public class GameActivity extends AppCompatActivity {
         rollDice.setImageDrawable(layersDrawable);
         // check if it is a AI
         if (!model.getRecent_player().isAI()) {
-            handler.removeCallbacks(doAIActions);
+            //handler.removeCallbacks(doAIActions);
             stop=true;
             rollDice.setClickable(true);
             showTask = (TextView) findViewById(R.id.showTask);
             showTask.setText(R.string.Task_Roll_Dice);
-        } else if (player_changed) {
+        } else if (player_changed && !stop) {
             showTask.setText("");
             handler.postDelayed(doAIActions, timer);
             stop = false;
@@ -428,6 +431,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void continueGame()
     {
+       // handler.removeCallbacks(doAIActions);
         //show dialog if game should be continued
         // show alertDialog
         int help_counter=0;
@@ -474,11 +478,15 @@ public class GameActivity extends AppCompatActivity {
         }
         else if (help_counter == (model.getPlayers().size()-1))
         {
+            stop=true;
             // game is finished
             model.setGame_finished(true);
-            //handler.removeCallbacks(doAIActions);
-            stop=true;
             ShowStatistics();
+        }
+        else
+        {
+            //stop=false;
+           // handler.postDelayed(doAIActions, timer);
         }
     }
 
@@ -503,6 +511,9 @@ public class GameActivity extends AppCompatActivity {
         TextView name5 = (TextView) windialog.findViewById(R.id.textView_name5);
         TextView name6 = (TextView) windialog.findViewById(R.id.textView_name6);
 
+        model.order_of_unsorted_players.clear();
+        model.order_of_unsorted_players.addAll(model.order_of_winners);
+
         int rank_undefined = (model.order_of_winners.size()+1);
         // add last player to winnerlist
         for(int i=0; i<model.getPlayers().size(); i++)
@@ -510,37 +521,42 @@ public class GameActivity extends AppCompatActivity {
             if (!model.getPlayers().get(i).isFinished() && model.order_of_winners.size() < model.getPlayers().size())
             {
                 int playerid = model.getPlayers().get(i).getId();
-                model.order_of_winners.add(playerid);
-                model.rank.add(rank_undefined);
+                model.order_of_unsorted_players.add(playerid);
             }
         }
 
         // set text in correct order
-        for (int i = 0; i < model.order_of_winners.size(); i++) {
-            int player_id = model.order_of_winners.get(i);
+        for (int i = 0; i < model.order_of_unsorted_players.size(); i++) {
+            int player_id = model.order_of_unsorted_players.get(i);
             String winnerString = getString(R.string.Winner);
             String playerName = " " + model.getPlayers().get(player_id-1).getName();
-            winnerString = winnerString.replace("%n", "" + model.rank.get(i) + ". " + playerName);
-            String concatenate = winnerString;
+            if (i < model.order_of_winners.size())
+            {
+                winnerString = winnerString.replace("%n", "" + model.rank.get(i) + ". " + playerName);
+            }
+            else
+            {
+                winnerString = winnerString.replace("%n", "" + rank_undefined + ". " + playerName);
+            }
 
             switch (i) {
                 case 0:
-                    name1.setText(concatenate);
+                    name1.setText(winnerString);
                     break;
                 case 1:
-                    name2.setText(concatenate);
+                    name2.setText(winnerString);
                     break;
                 case 2:
-                    name3.setText(concatenate);
+                    name3.setText(winnerString);
                     break;
                 case 3:
-                    name4.setText(concatenate);
+                    name4.setText(winnerString);
                     break;
                 case 4:
-                    name5.setText(concatenate);
+                    name5.setText(winnerString);
                     break;
                 case 5:
-                    name6.setText(concatenate);
+                    name6.setText(winnerString);
                     break;
                 default:
                     break;
@@ -551,7 +567,7 @@ public class GameActivity extends AppCompatActivity {
         {
             // open new dialog with statistic information
             Intent intent = new Intent(GameActivity.this, WinActivity.class);
-            intent.putExtra("WinnerOrder", model.getOrder_of_winners());
+            intent.putExtra("WinnerOrder", model.order_of_unsorted_players);
             Bundle bundle = new Bundle();
             bundle.putParcelable("BoardModel", model);
             intent.putExtras(bundle);
@@ -566,8 +582,7 @@ public class GameActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // open new dialog with statistic information
                     Intent intent = new Intent(GameActivity.this, WinActivity.class);
-                    intent.putParcelableArrayListExtra("Players", model.getPlayers());
-                    intent.putExtra("WinnerOrder", model.getOrder_of_winners());
+                    intent.putExtra("WinnerOrder", model.order_of_unsorted_players);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("BoardModel", model);
                     intent.putExtras(bundle);
@@ -597,6 +612,16 @@ public class GameActivity extends AppCompatActivity {
     private final Runnable doAIActions = new Runnable() {
         @Override
         public void run() {
+
+            if (stop)
+            {
+                handler.removeCallbacks(this);
+            }
+            else if (!stop && model.getRecent_player().isAI())
+            {
+                handler.removeCallbacks(this);
+                handler.postDelayed(this, timer);
+            }
             // List of movable Figures is empty
             // for first move
             if (model.getMovable_figures() == null || (model.getMovable_figures().size() <= 1)) {
@@ -614,15 +639,6 @@ public class GameActivity extends AppCompatActivity {
                 continueGame();
                 //give control to next player
                 Next_player();
-            }
-            if (!stop && model.getRecent_player().isAI())
-            {
-                handler.removeCallbacks(this);
-                handler.postDelayed(this, timer);
-            }
-            else if (stop)
-            {
-                handler.removeCallbacks(this);
             }
 
         }
@@ -714,7 +730,7 @@ public class GameActivity extends AppCompatActivity {
         {
             dialog.dismiss();
         }
-        handler.removeCallbacks(doAIActions);
+        //handler.removeCallbacks(doAIActions);
         stop=true;
         //state will be saved in a file
         FileOutputStream fos = null;

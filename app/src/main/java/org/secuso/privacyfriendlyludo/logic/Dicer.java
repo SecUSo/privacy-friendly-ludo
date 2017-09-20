@@ -16,24 +16,26 @@ import java.security.SecureRandom;
  along with Ludo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class Dicer {
 
-    int rollDice()
+
+    int rollDice(boolean mydice)
     {
        int dice;
-      /*   if (mydice)
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[6];
+        random.nextBytes(bytes);
+
+       /*  if (mydice)
         {
-            dice = 5;
+            dice = 6;
         }
         else
         {
             dice=6;
         }
-*/
-        SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[6];
-        random.nextBytes(bytes);
+        */
+
         dice = random.nextInt(6) +1;
 
         return dice;
