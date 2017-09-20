@@ -41,6 +41,8 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import android.os.Handler;
 
+import static android.os.SystemClock.sleep;
+
 /*  @author: Julia Schneider
 
   This file is part of the Game Ludo.
@@ -85,7 +87,7 @@ public class GameActivity extends AppCompatActivity {
         no_cup_showing = false;
         stop = false;
         isCounterRunning=false;
-        timer=100;
+        timer=1000;
         setContentView(R.layout.activity_game);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         myToolbar.setTitle(R.string.app_name);
@@ -228,7 +230,9 @@ public class GameActivity extends AppCompatActivity {
                     // clear old movable figures list
                     model.getMovable_figures().clear();
                     continueGame();
-                    Next_player();
+                    if (!model.isGame_finished()) {
+                        Next_player();
+                    }
                 }
 
                 }
@@ -249,8 +253,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void rollDice()
-    {
+    private void rollDice(){
         // count all number of roll dice of one player
         model.countRollDice =  model.countRollDice + 1;
         model.setMovable_figures(model.processDiceResult());
@@ -260,9 +263,6 @@ public class GameActivity extends AppCompatActivity {
 
         if(model.getMovable_figures().size()==1) {
             // no movable Figures
-            //wait some seconds
-            //********************************************************************************************************
-
             // choose next player
             continueGame();
             Next_player();
@@ -395,13 +395,17 @@ public class GameActivity extends AppCompatActivity {
 
     private void Next_player()
     {
+        int new_color = model.getRecent_player().getColor();
+        layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
+        rollDice.setImageDrawable(layersDrawable);
+        rollDice.setClickable(false);
         boolean player_changed = model.playerChanged(model.countRollDice);
         // change player until playerstate is not finished
         while (model.getRecent_player().isFinished()) {
             player_changed = model.playerChanged(-1);
         }
-        // change message for next player and reset countRollDice
-        if (player_changed) {
+        if (player_changed)
+        {
             // show a message for player changed
             String playername = model.getRecent_player().getName();
             String playerMessageString = getString(R.string.player_name);
@@ -409,23 +413,48 @@ public class GameActivity extends AppCompatActivity {
             playermessage.setText(playerMessageString);
             //reset counter of roll dice
             model.countRollDice = 0;
+
+            handler=new Handler();
+            final boolean finalPlayer_changed = player_changed;
+            Runnable r=new Runnable() {
+                public void run() {
+                    //what ever you do here will be done after 1 seconds delay.
+                    //change color of dice
+                    int new_color = model.getRecent_player().getColor();
+                    layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
+                    rollDice.setImageDrawable(layersDrawable);
+                    // check if it is a AI
+                    if (!model.getRecent_player().isAI()) {
+                        //handler.removeCallbacks(doAIActions);
+                        stop=true;
+                        rollDice.setClickable(true);
+                        showTask = (TextView) findViewById(R.id.showTask);
+                        showTask.setText(R.string.Task_Roll_Dice);
+                    } else if (finalPlayer_changed && !stop) {
+                        showTask.setText("");
+                        handler.postDelayed(doAIActions, timer);
+                        stop = false;
+                    }
+                }
+            };
+            handler.postDelayed(r, 1000);
         }
-        //change color of dice
-        int new_color = model.getRecent_player().getColor();
-        layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
-        rollDice.setImageDrawable(layersDrawable);
-        // check if it is a AI
-        if (!model.getRecent_player().isAI()) {
-            //handler.removeCallbacks(doAIActions);
-            stop=true;
-            rollDice.setClickable(true);
-            showTask = (TextView) findViewById(R.id.showTask);
-            showTask.setText(R.string.Task_Roll_Dice);
-        } else if (player_changed && !stop) {
-            showTask.setText("");
-            handler.postDelayed(doAIActions, timer);
-            stop = false;
+        else
+        {
+            // check if it is a AI
+            if (!model.getRecent_player().isAI()) {
+                //handler.removeCallbacks(doAIActions);
+                stop=true;
+                rollDice.setClickable(true);
+                showTask = (TextView) findViewById(R.id.showTask);
+                showTask.setText(R.string.Task_Roll_Dice);
+            } else if (player_changed && !stop) {
+                showTask.setText("");
+                handler.postDelayed(doAIActions, timer);
+                stop = false;
+            }
         }
+
 
     }
 
@@ -485,8 +514,6 @@ public class GameActivity extends AppCompatActivity {
         }
         else
         {
-            //stop=false;
-           // handler.postDelayed(doAIActions, timer);
         }
     }
 
@@ -622,23 +649,31 @@ public class GameActivity extends AppCompatActivity {
                 handler.removeCallbacks(this);
                 handler.postDelayed(this, timer);
             }
-            // List of movable Figures is empty
-            // for first move
-            if (model.getMovable_figures() == null || (model.getMovable_figures().size() <= 1)) {
-                rollDice();
-            }
-            // there are movable Figures
-            else {
 
-                // integer between  zero and max_figures
-                int figure_id = model.getMovable_figures().get(1);
-                int position_id = model.getRecent_player().getFigures().get(figure_id - 1).getField_position_index();
-                // move figure
-                setFigures(position_id);
-                model.getMovable_figures().clear();
-                continueGame();
-                //give control to next player
-                Next_player();
+            if (model.isGame_finished())
+            {
+
+            }
+            else
+            {
+                // List of movable Figures is empty
+                // for first move
+                if (model.getMovable_figures() == null || (model.getMovable_figures().size() <= 1)) {
+                    rollDice();
+                }
+                // there are movable Figures
+                else {
+
+                    // integer between  zero and max_figures
+                    int figure_id = model.getMovable_figures().get(1);
+                    int position_id = model.getRecent_player().getFigures().get(figure_id - 1).getField_position_index();
+                    // move figure
+                    setFigures(position_id);
+                    model.getMovable_figures().clear();
+                    continueGame();
+                    //give control to next player
+                    Next_player();
+                }
             }
 
         }
@@ -716,13 +751,6 @@ public class GameActivity extends AppCompatActivity {
             old_figure_index = new_figure_index;
         }
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        finish();
-    }
-
 
     public void onPause()
     {

@@ -28,13 +28,13 @@ class Dicer {
 
        /*  if (mydice)
         {
-            dice = 6;
+            dice = 3;
         }
         else
         {
-            dice=6;
-        }
-        */
+            dice=4;
+        } */
+
 
         dice = random.nextInt(6) +1;
 

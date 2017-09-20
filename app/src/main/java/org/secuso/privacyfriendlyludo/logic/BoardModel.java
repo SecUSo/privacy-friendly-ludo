@@ -582,7 +582,7 @@ public class BoardModel implements Parcelable, Serializable {
             return true;
         } else {
             // no movable figures, 3 times roll dice not done but allowed acccording to settings, move is not finished
-            if (dice_number != 6 && (count_Calls < 3 && switch_dice_3times) && movable_figures.size() == 1) {
+            if (dice_number != 6 && (count_Calls < 3 && switch_dice_3times) && movable_figures.size() == 1 && !checkHouseisFree()) {
                 // update information on recent player
                 //recent_player = players.get(recent_player.getId() - 1);
                 return false;
