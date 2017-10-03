@@ -1,10 +1,6 @@
-## Privacy Friendly App Example
+## Privacy Friendly App Ludo
 
-This application contains the basic design of a Privacy Friendly App without any other functionality. It includes a Navigation Drawer, examples for buttons, a help page and the about page. It further shows an example of the main menu for a Privacy Friendly Game App. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
-
-## Motivation
-
-This application has been developed to be used as a basis for a Privacy Friendly App. Privacy Friendly Apps are group of Android applications which are optimized regarding privacy. Further information can be found on secuso.org/pfa
+This application contains the german game "Mensch ärgere dich nicht. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
 
 ## Download and more Information
 
@@ -17,7 +13,7 @@ Target SDK: 24
 
 ## License
 
-Privacy Friendly App Example is licensed under the GPLv3.
+Privacy Friendly Ludo is licensed under the GPLv3.
 Copyright (C) 2017  Julia Schneider
 
 This program is free software: you can redistribute it and/or modify
