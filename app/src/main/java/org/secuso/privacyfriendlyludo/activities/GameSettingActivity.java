@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,11 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.colorpicker.ColorPickerDialog;
 import com.android.colorpicker.ColorPickerSwatch;
+import com.turkialkhateeb.materialcolorpicker.ColorChooserDialog;
+import com.turkialkhateeb.materialcolorpicker.ColorListener;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.Player;
@@ -33,6 +40,9 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+
+import static org.secuso.privacyfriendlyludo.R.color.red;
+import static org.secuso.privacyfriendlyludo.R.color.transparent;
 
 /*
   @author: Julia Schneider
@@ -63,6 +73,12 @@ public class GameSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
         if (savedInstanceState != null) {
             player = savedInstanceState.getParcelable("Players");
             playername_saved = savedInstanceState.getStringArrayList("Playernames_saved");
@@ -78,6 +94,7 @@ public class GameSettingActivity extends AppCompatActivity {
                 player = intent.getParcelableArrayListExtra("Players");
                for (int i=0; i<player.size(); i++)
                {
+                   // initialize playername_saved with "player"
                    if (!player.get(i).isAI())
                    {
                        playername_saved.add(player.get(i).getName());
@@ -89,7 +106,22 @@ public class GameSettingActivity extends AppCompatActivity {
 
                }
             }
-            // initialize playername_saved with "player"
+            if (intent.getBooleanExtra("own_dice", false))
+            {
+                // own dice is used, all players can only be real player
+                for (int i=0; i<player.size(); i++)
+                {
+                    player.get(i).setAI(false);
+                    if (playername_saved.get(i).equals(""))
+                    {
+                        playername_saved.set(i,getResources().getString(R.string.playername_default_value));
+                        player.get(i).setName(getResources().getString(R.string.playername_default_value));
+                    }
+                    else {
+                        player.get(i).setName(playername_saved.get(i));
+                    }
+                }
+            }
         }
 
         RecyclerView mPlayerList = (RecyclerView) findViewById(R.id.playerList);
@@ -219,10 +251,21 @@ public class GameSettingActivity extends AppCompatActivity {
                     final PlayerViewHolder playerViewHolder = (PlayerViewHolder)vh;
                     playerViewHolder.playerColor.setBackgroundColor(player.get(position).getColor());
                     playerViewHolder.playerName.setText(player.get(position).getName());
-                    if (player.get(position).isAI()) {
-                        playerViewHolder.playertype.setBackgroundResource(R.drawable.ic_computer_black_24dp);
-                    } else {
-                        playerViewHolder.playertype.setBackgroundResource(R.drawable.ic_person_black_24dp);
+                    if (useOwnDice)
+                    {
+                        playerViewHolder.playertype.setVisibility(View.INVISIBLE);
+                        playerViewHolder.person.setVisibility(View.VISIBLE);
+                            player.get(position).setAI(false);
+                    }
+                    else {
+                        playerViewHolder.playertype.setVisibility(View.VISIBLE);
+                        playerViewHolder.person.setVisibility(View.INVISIBLE);
+                        playerViewHolder.playertype.getThumbDrawable().setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.darkblue), PorterDuff.Mode.SRC_ATOP);
+                        if (player.get(position).isAI()) {
+                            playerViewHolder.playertype.setChecked(false);
+                        } else {
+                            playerViewHolder.playertype.setChecked(true);
+                        }
                     }
 
                     //on click DeletePlayer
@@ -243,9 +286,10 @@ public class GameSettingActivity extends AppCompatActivity {
                     {
                         @Override
                         public void onClick(final View view) {
+
                             ColorPickerDialog colorPickerDialog = new ColorPickerDialog();
                             colorPickerDialog.initialize(
-                                    R.string.choose_color, getResources().getIntArray(R.array.playerColors), R.color.black, 3, getResources().getIntArray(R.array.playerColors).length);
+                                   R.string.choose_color, getResources().getIntArray(R.array.playerColors), R.color.black, 3, getResources().getIntArray(R.array.playerColors).length);
                             colorPickerDialog.show(getFragmentManager(),"tag");
                             colorPickerDialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
 
@@ -266,7 +310,6 @@ public class GameSettingActivity extends AppCompatActivity {
                                     adapter.notifyDataSetChanged();
                                 }
                             });
-
                         }
                     });
 
@@ -276,15 +319,13 @@ public class GameSettingActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             int listPosition = vh.getAdapterPosition();
-                            if (!useOwnDice)
-                            {
-                                player.get(listPosition).setAI(!player.get(listPosition).isAI());
+                            player.get(listPosition).setAI(!player.get(listPosition).isAI());
                                 adapter.notifyItemChanged(listPosition);
                                 if (player.get(listPosition).isAI())
                                 {
                                     // change playername
                                     player.get(listPosition).setName(getResources().getString(R.string.computername_default_value));
-                                    view.setBackgroundResource( R.drawable.ic_computer_black_24dp);
+                                    //view.setBackgroundResource( R.drawable.ic_computer_black_24dp);
                                 }
                                 else
                                 {
@@ -296,11 +337,19 @@ public class GameSettingActivity extends AppCompatActivity {
                                     {
                                         player.get(listPosition).setName(playername_saved.get(listPosition));
                                     }
-                                    view.setBackgroundResource( R.drawable.ic_person_black_24dp );
                                 }
-                            }
+
                         }
                     });
+
+                    // only visible in own_dice_mode
+                    playerViewHolder.person.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(GameSettingActivity.this, getString(R.string.only_person_player), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    );
 
                     playerViewHolder.playerName.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -328,12 +377,12 @@ public class GameSettingActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    if (playername_typed.getText().toString().equals("")) {
-                                    }
-                                    else
-                                    {
+                                    if (!playername_typed.getText().toString().equals("")) {
                                         player.get(listPosition).setName(playername_typed.getText().toString());
-                                        playername_saved.set(listPosition, playername_typed.getText().toString());
+                                        if(!player.get(listPosition).isAI())
+                                        {
+                                            playername_saved.set(listPosition, playername_typed.getText().toString());
+                                        }
                                         adapter.notifyDataSetChanged();
                                     }
                                     dialog.dismiss();
@@ -429,13 +478,15 @@ public class GameSettingActivity extends AppCompatActivity {
     private class PlayerViewHolder extends ViewHolder {
 
         ImageButton playerColor;
-        ImageButton playertype;
+        Switch playertype;
         ImageButton delete_player;
         TextView playerName;
+        ImageView person;
 
         PlayerViewHolder(final View itemView) {
             super(itemView);
-            playertype = (ImageButton) itemView.findViewById(R.id.button_player_type);
+            person = (ImageView) itemView.findViewById(R.id.image_player_type);
+            playertype = (Switch) itemView.findViewById(R.id.switch_player_type);
             playerColor = (ImageButton) itemView.findViewById(R.id.button_player_color);
             playerName = (TextView) itemView.findViewById(R.id.textView_player_name);
             delete_player = (ImageButton) itemView.findViewById(R.id.button_delete_player);

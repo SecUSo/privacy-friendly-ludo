@@ -37,6 +37,7 @@ public class WinActivity extends AppCompatActivity {
     private ArrayList<Player> players;
     private ArrayList<Integer> WinnerOrder;
     private BoardModel model;
+    private int rank_undefined;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class WinActivity extends AppCompatActivity {
 
         Intent old_intent = getIntent();
         WinnerOrder =  old_intent.getIntegerArrayListExtra("WinnerOrder");
+        rank_undefined = old_intent.getIntExtra("lastRank", 1);
         model = old_intent.getParcelableExtra("BoardModel");
         players =  model.getPlayers();
         RecyclerView mPlayerList = (RecyclerView) findViewById(R.id.winDetailsList);
@@ -107,7 +109,13 @@ public class WinActivity extends AppCompatActivity {
                     playerViewHolder.dice4.setText("" + stats[3] + "");
                     playerViewHolder.dice5.setText("" + stats[4] + "");
                     playerViewHolder.dice6.setText("" + stats[5] + "");
-                    playerViewHolder.rank_number.setText("" + position + "");
+                    if (rank_undefined <position)
+                    {
+                        playerViewHolder.rank_number.setText("" + rank_undefined + "");
+                    }
+                    else {
+                        playerViewHolder.rank_number.setText("" + position + "");
+                    }
                     break;
                 case TITLE:
                     break;

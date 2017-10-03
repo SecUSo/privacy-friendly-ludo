@@ -71,7 +71,7 @@ public class BoardModel implements Parcelable, Serializable {
     private transient Set<Integer> unsorted = new LinkedHashSet<>();
     private ArrayList<Integer> colors = new ArrayList<>();
     private transient Context context;
-    private ArrayList<Integer> movable_figures;
+    private ArrayList<Integer> movable_figures = new ArrayList<>();
     private int distance_between_2_colors;
     private int max_players;
     private GameType game_type;

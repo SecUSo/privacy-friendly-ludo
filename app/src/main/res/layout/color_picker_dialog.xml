@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:minHeight="170dp"
+    android:minWidth="300dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <android.support.v7.widget.GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/grid"
+            app:rowCount="4"
+            app:columnCount="5"
+            app:useDefaultMargins="true"
+            app:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/b1"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b2"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+            <ImageButton
+                android:id="@+id/b3"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b4"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b5"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b6"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b7"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b8"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b9"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b10"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b11"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b12"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b13"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b14"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b15"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b16"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b17"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b18"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+            <ImageButton
+                android:id="@+id/b19"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+
+            <ImageButton
+                android:id="@+id/b20"
+                android:layout_width="58dp"
+                android:layout_height="58dp"/>
+
+
+
+
+        </android.support.v7.widget.GridLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="36dp"
+            android:id="@+id/b21"
+            android:background="@drawable/dialog_button"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:text="@string/white"/>
+    </LinearLayout>
+
+</ScrollView>

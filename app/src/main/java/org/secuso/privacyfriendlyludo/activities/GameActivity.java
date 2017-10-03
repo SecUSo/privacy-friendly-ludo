@@ -10,9 +10,9 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.icu.math.BigDecimal;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,8 +39,6 @@ import java.io.ObjectOutputStream;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import android.os.Handler;
-
-import static android.os.SystemClock.sleep;
 
 /*  @author: Julia Schneider
 
@@ -89,24 +86,6 @@ public class GameActivity extends AppCompatActivity {
         isCounterRunning=false;
         timer=1000;
         setContentView(R.layout.activity_game);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle(R.string.app_name);
-        myToolbar.inflateMenu(R.menu.showstatistics);
-        myToolbar.setOnMenuItemClickListener(
-                new Toolbar.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        no_cup_showing = true;
-                        ShowStatistics();
-                        return false;
-                    }
-                });
-
-      /*  ActionBar ab = getSupportActionBar();
-        if(ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
-        } */
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean("keepScreenOn", true))
@@ -121,7 +100,7 @@ public class GameActivity extends AppCompatActivity {
         // check if instancestate is empty
         // important for display orientation changes
             if (savedInstanceState != null) {
-                model = savedInstanceState.getParcelable("BoardModel");
+           //     model = savedInstanceState.getParcelable("BoardModel");
             }
             else if (savedInstanceState == null && (model==null || getIntent().getExtras()!=null))
             {
@@ -152,6 +131,31 @@ public class GameActivity extends AppCompatActivity {
                 model = new BoardModel(this, playerArrayList, game_typ, useOwnDice);
             }
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        myToolbar.setTitle(R.string.app_name);
+
+        if (!model.useOwnDice) {
+            myToolbar.inflateMenu(R.menu.showstatistics);
+            myToolbar.setOnMenuItemClickListener(
+                    new Toolbar.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            no_cup_showing = true;
+                            ShowStatistics();
+                            return false;
+                        }
+                    });
+        }
+        myToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
+
         //String textzeile = intent.getStringExtra("PlayerNames");
         boardView = null;
         boardView = (BoardView) findViewById(R.id.board);
@@ -171,14 +175,8 @@ public class GameActivity extends AppCompatActivity {
             playermessage.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.black));
             playermessage.setText(playerMessageString);
             showTask = (TextView) findViewById(R.id.showTask);
-            if (!model.getRecent_player().isAI()) {
-                showTask.setText(R.string.Task_Roll_Dice);
-            }
-        }
 
         // only build a dice if switch for use own dice is deactivated
-        if (!model.useOwnDice)
-        {
             rollDice = (ImageView) findViewById(R.id.resultOne);
             r  = getResources();
             layers[0] = ContextCompat.getDrawable(getBaseContext(), R.drawable.dice);
@@ -210,10 +208,9 @@ public class GameActivity extends AppCompatActivity {
 
             rollDice.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    rollDice();
+                    rollDice(false);
                 }
             });
-
         }
 
         myOnlyhandler = new View.OnClickListener() {
@@ -238,29 +235,40 @@ public class GameActivity extends AppCompatActivity {
                 }
             };
 
-        // start routine automatically --> first time
-        if (model.getRecent_player().isAI() && !model.useOwnDice && !model.isGame_finished()) {
-
-            handler.postDelayed(doAIActions, timer);
-        }
-        else if (model.useOwnDice)
+        if (model.useOwnDice)
         {
             boardView.makeAllFieldsClickable(myOnlyhandler);
         }
-        else if (!model.useOwnDice && model.isGame_finished())
+        else if ( model.isGame_finished())
         {
             ShowStatistics();
         }
+        // start routine automatically --> first time
+        else if (model.getRecent_player().isAI()) {
+
+            handler.postDelayed(doAIActions, timer);
+        }
+        // check if figures are already marked
+        else if (model.getMovable_figures().size()>1) {
+            rollDice(true);
+        }
+        else if (model.getMovable_figures().size()<=1)
+        {
+            showTask.setText(R.string.Task_Roll_Dice);
+        }
     }
 
-    private void rollDice(){
-        // count all number of roll dice of one player
-        model.countRollDice =  model.countRollDice + 1;
-        model.setMovable_figures(model.processDiceResult());
-        model.setDice_number(model.getMovable_figures().get(0));
-        initResultDiceViews(model.getDice_number(), rollDice);
-        flashDiceResult(rollDice);
+    private void rollDice(boolean second_time){
 
+        // only do when not allready figures marked --> for orientation change + continue game important
+        if (!second_time) {
+            // count all number of roll dice of one player
+            model.countRollDice = model.countRollDice + 1;
+            model.setMovable_figures(model.processDiceResult());
+            model.setDice_number(model.getMovable_figures().get(0));
+            initResultDiceViews(model.getDice_number(), rollDice);
+            flashDiceResult(rollDice);
+        }
         if(model.getMovable_figures().size()==1) {
             // no movable Figures
             // choose next player
@@ -288,11 +296,14 @@ public class GameActivity extends AppCompatActivity {
             layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
             rollDice.setImageDrawable(layersDrawable);
             // for AI randomly chose figure
-            if (!model.getRecent_player().isAI()) {
-                {
+            if (!model.getRecent_player().isAI()){
                     showTask = (TextView) findViewById(R.id.showTask);
                     showTask.setText(R.string.TaskSetFigure);
                 }
+
+            else
+            {
+                handler.postDelayed(doAIActions, timer);
             }
         }
     }
@@ -406,34 +417,32 @@ public class GameActivity extends AppCompatActivity {
         }
         if (player_changed)
         {
-            // show a message for player changed
-            String playername = model.getRecent_player().getName();
-            String playerMessageString = getString(R.string.player_name);
-            playerMessageString = playerMessageString.replace("%p", playername);
-            playermessage.setText(playerMessageString);
-            //reset counter of roll dice
-            model.countRollDice = 0;
-
             handler=new Handler();
             final boolean finalPlayer_changed = player_changed;
             Runnable r=new Runnable() {
                 public void run() {
+                    stop=true;
                     //what ever you do here will be done after 1 seconds delay.
+                    // show a message for player changed
+                    String playername = model.getRecent_player().getName();
+                    String playerMessageString = getString(R.string.player_name);
+                    playerMessageString = playerMessageString.replace("%p", playername);
+                    playermessage.setText(playerMessageString);
+                    //reset counter of roll dice
+                    model.countRollDice = 0;
                     //change color of dice
                     int new_color = model.getRecent_player().getColor();
                     layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
                     rollDice.setImageDrawable(layersDrawable);
                     // check if it is a AI
                     if (!model.getRecent_player().isAI()) {
-                        //handler.removeCallbacks(doAIActions);
-                        stop=true;
                         rollDice.setClickable(true);
                         showTask = (TextView) findViewById(R.id.showTask);
                         showTask.setText(R.string.Task_Roll_Dice);
-                    } else if (finalPlayer_changed && !stop) {
+                    } else {
                         showTask.setText("");
                         handler.postDelayed(doAIActions, timer);
-                        stop = false;
+
                     }
                 }
             };
@@ -443,15 +452,12 @@ public class GameActivity extends AppCompatActivity {
         {
             // check if it is a AI
             if (!model.getRecent_player().isAI()) {
-                //handler.removeCallbacks(doAIActions);
-                stop=true;
                 rollDice.setClickable(true);
                 showTask = (TextView) findViewById(R.id.showTask);
                 showTask.setText(R.string.Task_Roll_Dice);
-            } else if (player_changed && !stop) {
-                showTask.setText("");
+            } else{
                 handler.postDelayed(doAIActions, timer);
-                stop = false;
+                showTask.setText("");
             }
         }
 
@@ -460,7 +466,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void continueGame()
     {
-       // handler.removeCallbacks(doAIActions);
         //show dialog if game should be continued
         // show alertDialog
         int help_counter=0;
@@ -475,8 +480,6 @@ public class GameActivity extends AppCompatActivity {
         // check if another player has finished and counter < (player.size -1)
         if ((count_players_finished < help_counter) && (help_counter < (model.getPlayers().size()-1)))
         {
-            stop=true;
-            //handler.removeCallbacks(doAIActions);
             count_players_finished = help_counter;
             // stopp all services
             //*****************************************************************************
@@ -489,7 +492,6 @@ public class GameActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     if (model.getRecent_player().isAI())
                     {
-                        stop=false;
                         handler.postDelayed(doAIActions, timer);
                     }
                     dialog.dismiss();
@@ -499,6 +501,12 @@ public class GameActivity extends AppCompatActivity {
             alertBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();
+                    // game is finished
+                    model.setGame_finished(true);
+                    playermessage.setText(R.string.finished_Game);
+                    showTask = (TextView) findViewById(R.id.showTask);
+                    showTask.setText("");
+                    rollDice.setVisibility(View.INVISIBLE);
                     ShowStatistics();
 
                 }
@@ -510,6 +518,10 @@ public class GameActivity extends AppCompatActivity {
             stop=true;
             // game is finished
             model.setGame_finished(true);
+            playermessage.setText(R.string.finished_Game);
+            showTask = (TextView) findViewById(R.id.showTask);
+            showTask.setText("");
+            rollDice.setVisibility(View.INVISIBLE);
             ShowStatistics();
         }
         else
@@ -518,11 +530,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void ShowStatistics() {
-        //game is finished
-        playermessage.setText(R.string.finished_Game);
-        showTask = (TextView) findViewById(R.id.showTask);
-        showTask.setText("");
-        rollDice.setVisibility(View.INVISIBLE);
 
         windialog = new Dialog(GameActivity.this, R.style.WinDialog);
         windialog.setContentView(R.layout.win_screen_layout);
@@ -541,7 +548,7 @@ public class GameActivity extends AppCompatActivity {
         model.order_of_unsorted_players.clear();
         model.order_of_unsorted_players.addAll(model.order_of_winners);
 
-        int rank_undefined = (model.order_of_winners.size()+1);
+        final int rank_undefined = (model.order_of_winners.size()+1);
         // add last player to winnerlist
         for(int i=0; i<model.getPlayers().size(); i++)
         {
@@ -594,7 +601,8 @@ public class GameActivity extends AppCompatActivity {
         {
             // open new dialog with statistic information
             Intent intent = new Intent(GameActivity.this, WinActivity.class);
-            intent.putExtra("WinnerOrder", model.order_of_unsorted_players);
+            intent.putIntegerArrayListExtra("WinnerOrder", model.order_of_unsorted_players);
+            intent.putExtra("lastRank", rank_undefined);
             Bundle bundle = new Bundle();
             bundle.putParcelable("BoardModel", model);
             intent.putExtras(bundle);
@@ -610,6 +618,7 @@ public class GameActivity extends AppCompatActivity {
                     // open new dialog with statistic information
                     Intent intent = new Intent(GameActivity.this, WinActivity.class);
                     intent.putExtra("WinnerOrder", model.order_of_unsorted_players);
+                    intent.putExtra("lastRank", rank_undefined);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("BoardModel", model);
                     intent.putExtras(bundle);
@@ -644,11 +653,6 @@ public class GameActivity extends AppCompatActivity {
             {
                 handler.removeCallbacks(this);
             }
-            else if (!stop && model.getRecent_player().isAI())
-            {
-                handler.removeCallbacks(this);
-                handler.postDelayed(this, timer);
-            }
 
             if (model.isGame_finished())
             {
@@ -659,7 +663,7 @@ public class GameActivity extends AppCompatActivity {
                 // List of movable Figures is empty
                 // for first move
                 if (model.getMovable_figures() == null || (model.getMovable_figures().size() <= 1)) {
-                    rollDice();
+                    rollDice(false);
                 }
                 // there are movable Figures
                 else {
@@ -754,12 +758,11 @@ public class GameActivity extends AppCompatActivity {
 
     public void onPause()
     {
+        stop=true;
         if(dialog!=null && dialog.isShowing())
         {
             dialog.dismiss();
         }
-        //handler.removeCallbacks(doAIActions);
-        stop=true;
         //state will be saved in a file
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;

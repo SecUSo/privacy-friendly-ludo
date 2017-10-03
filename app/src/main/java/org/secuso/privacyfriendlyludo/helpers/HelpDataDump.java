@@ -33,25 +33,36 @@ public class HelpDataDump {
     public LinkedHashMap<String, List<String>> getDataGeneral() {
         LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<String, List<String>>();
 
+        List<String> general = new ArrayList<String>();
+        general.add(context.getResources().getString(R.string.help_whatis_answer));
+
+        expandableListDetail.put(context.getResources().getString(R.string.help_whatis), general);
+
+        List<String> rules = new ArrayList<String>();
+        rules.add(context.getResources().getString(R.string.help_rules_answer1));
+        rules.add(context.getResources().getString(R.string.help_rules_answer2));
+        rules.add(context.getResources().getString(R.string.help_rules_answer3));
+        rules.add(context.getResources().getString(R.string.help_rules_answer4));
+        rules.add(context.getResources().getString(R.string.help_rules_answer5));
+        rules.add(context.getResources().getString(R.string.help_rules_answer6));
+
+        expandableListDetail.put(context.getResources().getString(R.string.help_rules), rules);
+
         List<String> GameTyp = new ArrayList<String>();
         GameTyp.add(context.getResources().getString(R.string.help_playerNumber_answer));
 
         expandableListDetail.put(context.getResources().getString(R.string.help_playerNumber), GameTyp);
 
-        List<String> general = new ArrayList<String>();
-        general.add(context.getResources().getString(R.string.help_whatis_answer));
+        List<String> own_dice = new ArrayList<String>();
+        own_dice.add(context.getResources().getString(R.string.info_own_dice_answer));
 
-        expandableListDetail.put(context.getResources().getString(R.string.help_whatis), general);
+        expandableListDetail.put(context.getResources().getString(R.string.info_own_dice_question), own_dice);
 
         List<String> privacy = new ArrayList<String>();
         privacy.add(context.getResources().getString(R.string.help_privacy_answer));
 
         expandableListDetail.put(context.getResources().getString(R.string.help_privacy), privacy);
 
-        List<String> permissions = new ArrayList<String>();
-        permissions.add(context.getResources().getString(R.string.help_permission_answer));
-
-        expandableListDetail.put(context.getResources().getString(R.string.help_permission), permissions);
 
         return expandableListDetail;
     }

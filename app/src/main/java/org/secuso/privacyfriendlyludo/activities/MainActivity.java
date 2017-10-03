@@ -277,6 +277,7 @@ public class MainActivity extends BaseActivity {
             ois = new ObjectInputStream(fis);
             last_players = (ArrayList<Player>) ois.readObject();
             // change isAI state for all players to false if ownDice is used
+            /*
             if (useOwnDice)
             {
                 for (int i=0; i<last_players.size(); i++)
@@ -284,6 +285,7 @@ public class MainActivity extends BaseActivity {
                     last_players.get(i).setAI(false);
                 }
             }
+            */
             return last_players;
         }
         catch (IOException | ClassNotFoundException e) {

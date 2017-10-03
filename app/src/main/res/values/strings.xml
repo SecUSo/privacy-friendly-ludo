@@ -43,9 +43,27 @@
     <string name="help_playerNumber_answer">On the small Gamefield it is possible to play with up to 4 players. On the big field with up to 6 players.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Ludo does not require any permission. It further does not include any tracking mechanisms or advertisement.</string>
-    <string name="help_permission">Which permissions requires the app?</string>
-    <string name="help_permission_answer">Privacy Friendly Ludo does not require any permission.</string>
-
+    <string name="help_rules">What are the rules of Privacy Friendly Ludo?</string>
+    <string name="help_rules_answer1">
+        Das würfeln einer Sechs verpflichtet zum Setzen einer Figur vom Haus (Startposition) auf das farblich gekennzeichnete Startfeld.
+    </string>
+    <string name="help_rules_answer2">
+        Ist das Startfeld besetzt, muss dies schnellstmöglich wieder freigemacht werden.
+        </string>
+    <string name="help_rules_answer3">
+        Sind keine Figuren mehr im Haus, kann eine gewürfelte 6 auf alle anderen Figuren angewandt werden.
+        Auch das Startfeld muss in diesem Fall nicht freigeräumt werden.
+        </string>
+    <string name="help_rules_answer4">
+        Kommt eine Figur auf ein Feld auf dem eine generische Figur steht, wird diese "geschlagen" und muss in ihr Haus zurückkehren.
+        </string>
+    <string name="help_rules_answer5">
+        Würde eine Figur auf ein Feld kommen auf dem die eigene Figur steht, darf der Spielzug nicht ausgeführt werden.
+        Wenn möglich wird dann eine andere Figur gewählt oder der Spielzug muss ohne das Setzen einer Figur beendet werden.
+        </string>
+    <string name="help_rules_answer6">
+        Es ist dem Spieler freigestellt mit welcher der erlaubten Figuren er ziehen will. Die Augenzahl des Würfels darf nur nicht auf mehrere Figuren aufgeteilt werden.
+        </string>
 
     <!--###ABOUT###-->
     <string name="about">About</string>
@@ -114,7 +132,6 @@
     <string name="TaskSetFigure">Please move desired figure.</string>
     <string name="play_with_own_dice">Play with own dice</string>
     <string name="no_resumable_game">No resumable Game. Please start a new game</string>
-    <string name="info_own_dice_question">Question?</string>
     <string name="info_own_dice_answer">answer</string>
     <string name="yes">yes</string>
     <string name="cancel">cancel</string>
@@ -122,5 +139,7 @@
     <string name="no">no</string>
     <string name="ContinueGameTitle">Player has finished. Do you want to continue the game?</string>
     <string name="action_showStatistics">Show statistics</string>
+    <string name="info_own_dice_question">What means \"play with own dice\"?</string>
+    <string name="only_person_player">To play with computer, you have to deactivate the \"use own dice mode\".</string>
 
 </resources>

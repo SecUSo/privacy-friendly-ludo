@@ -42,8 +42,28 @@
     <string name="help_playerNumber_answer">Auf dem kleinen Spielbrett können maximal 4 Spieler spielen und auf dem großen Spielbrett maximal 6 Spieler.</string>
     <string name="help_privacy">Was macht die App privatsphäre-freundlich?</string>
     <string name="help_privacy_answer">Diese App erfordert keine Berechtigungen. Außerdem enthält sie keine Werbung.</string>
-    <string name="help_permission">Welche Berechtigungen braucht die App?</string>
-    <string name="help_permission_answer">Privacy Friendly App benötigt keine Berechtigungen.</string>
+    <string name="help_rules">Was sind die Regeln von Mensch ärgere Dich nicht?</string>
+    <string name="help_rules_answer1">
+        Das würfeln einer Sechs verpflichtet zum Setzen einer Figur vom Haus (Startposition) auf das farblich gekennzeichnete Startfeld.
+    </string>
+    <string name="help_rules_answer2">
+        Ist das Startfeld besetzt, muss dies schnellstmöglich wieder freigemacht werden.
+        </string>
+    <string name="help_rules_answer3">
+        Sind keine Figuren mehr im Haus, kann eine gewürfelte 6 auf alle anderen Figuren angewandt werden.
+        Auch das Startfeld muss in diesem Fall nicht freigeräumt werden.
+        </string>
+    <string name="help_rules_answer4">
+        Kommt eine Figur auf ein Feld auf dem eine generische Figur steht, wird diese "geschlagen" und muss in ihr Haus zurückkehren.
+        </string>
+    <string name="help_rules_answer5">
+        Würde eine Figur auf ein Feld kommen auf dem die eigene Figur steht, darf der Spielzug nicht ausgeführt werden.
+        Wenn möglich wird dann eine andere Figur gewählt oder der Spielzug muss ohne das Setzen einer Figur beendet werden.
+        </string>
+    <string name="help_rules_answer6">
+        Es ist dem Spieler freigestellt mit welcher der erlaubten Figuren er ziehen will. Die Augenzahl des Würfels darf nur nicht auf mehrere Figuren aufgeteilt werden.
+        </string>
+
 
 
     <!--###ABOUT###-->
@@ -114,10 +134,12 @@
     <string name="computername_default_value">Computer</string>
     <string name="cancel">Abbruch</string>
     <string name="yes">Ja</string>
-    <string name="info_own_dice_answer"></string>
     <string name="choose_playername">Bitte geben Sie einen Spielernamen ein.</string>
     <string name="ContinueGameTitle">Ein Spieler hat das Spiel beendet. Wollen Sie das Spiel fortsetzen?</string>
     <string name="no">Nein</string>
-
+    <string name="action_showStatistics">Statistik anzeigen</string>
+    <string name="info_own_dice_question">Was bedeutet \"mit eigenen Würfel spielen\"?</string>
+    <string name="info_own_dice_answer">Mit eigenem Würfel spielen bedeutet, das die Figuren durch anklicken markiert werden und
+        dann durch Anklicken eines Zielfeldes an diesen Platz gesetzt werden. Somit ist ein Spiel mit einem externen Würfel und eigenen Regeln möglich.</string>
 
 </resources>
