@@ -58,7 +58,7 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
         //layersDrawable.setLayerInset(1, 0, 0, 0, 0);
         //layersDrawable.setLayerInset(1, 15, 15, 15, 15);
         layersDrawable.setLayerInset(1, 25, 25, 25, 25);
-        layersDrawable.setLayerInset(2, 5, 5, 5, 5);
+        layersDrawable.setLayerInset(2, 10, 10, 10, 10);
         //layersDrawable.setLayerInset(2, 400, 130, 400, 670);
         this.setImageDrawable(layersDrawable);
 

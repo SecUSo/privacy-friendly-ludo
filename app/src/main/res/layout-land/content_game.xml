@@ -43,12 +43,13 @@
         android:id="@+id/changePlayerMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/board"
         android:layout_below="@+id/resultOne"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
-        android:textSize="25sp"
-        android:text="" />
+        android:layout_toRightOf="@+id/board"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/showTask"

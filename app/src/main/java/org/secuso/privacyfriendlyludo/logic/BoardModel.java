@@ -83,6 +83,18 @@ public class BoardModel implements Parcelable, Serializable {
     public ArrayList<Integer> order_of_unsorted_players = new ArrayList<>();
     public ArrayList<Integer> rank = new ArrayList<>();
     int count_rank = 0;
+    int count_players_finished=0;
+
+    public void setCount_players_finished(int count_players_finished) {
+        this.count_players_finished = count_players_finished;
+    }
+
+    public int getCount_players_finished() {
+        return count_players_finished;
+    }
+
+
+
 
     public BoardModel(Context context, ArrayList<Player> settingplayers, GameType type, Boolean useOwnDice) {
         this.context = context;
@@ -205,8 +217,9 @@ public class BoardModel implements Parcelable, Serializable {
             in.readList(rank, Integer.class.getClassLoader());
         } else {
 
-            order_of_winners = null;
+            rank = null;
         }
+        count_players_finished = in.readInt();
     }
 
     public GameType getGame_type() {
@@ -738,8 +751,19 @@ public class BoardModel implements Parcelable, Serializable {
         dest.writeInt(countRollDice);
         dest.writeByte((byte) (useOwnDice ? 0x01 : 0x00));
         dest.writeByte((byte) (switch_dice_3times ? 0x01 : 0x00));
-        dest.writeList(order_of_winners);
-        dest.writeList(rank);
+        if (order_of_winners== null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(order_of_winners);
+        }
+        if (rank== null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(rank);
+        }
+        dest.writeInt(count_players_finished);
     }
 }
 

@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlyludo.activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -72,7 +73,6 @@ public class GameActivity extends AppCompatActivity {
     LayerDrawable layersDrawable;
     boolean isCounterRunning;
     Handler handler = new Handler();
-    int count_players_finished;
     boolean stop;
     Dialog windialog;
     boolean no_cup_showing;
@@ -94,6 +94,10 @@ public class GameActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
+        boolean useOwnDice = prefs.getBoolean("own_dice", false);
+        // determine gametype
+        int type = prefs.getInt("lastChosenPage", -1);
+
         model = loadFile();
 
 
@@ -107,10 +111,7 @@ public class GameActivity extends AppCompatActivity {
                 // new Game
                 Intent intent = getIntent();
                 ArrayList<Player> playerArrayList = intent.getParcelableArrayListExtra("Players");
-                boolean useOwnDice = intent.getBooleanExtra("own_dice", false);
-                // determine gametype
-                SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                int type = mSharedPreferences.getInt("lastChosenPage", -1);
+
                 // repair id if necessary
                 for (int i=0; i<playerArrayList.size(); i++)
                 {
@@ -141,6 +142,8 @@ public class GameActivity extends AppCompatActivity {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             no_cup_showing = true;
+                            stop=true;
+                            handler.removeCallbacks(doAIActions);
                             ShowStatistics();
                             return false;
                         }
@@ -165,19 +168,20 @@ public class GameActivity extends AppCompatActivity {
         //Preferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
+        showTask = (TextView) findViewById(R.id.showTask);
+        playermessage = (TextView) findViewById(R.id.changePlayerMessage);
+        rollDice = (ImageView) findViewById(R.id.resultOne);
         // only show info about recent player if Own dice is not used
         if (!model.useOwnDice)
         {
             String playername = model.getRecent_player().getName();
             String playerMessageString = getString(R.string.player_name);
             playerMessageString = playerMessageString.replace("%p", playername);
-            playermessage = (TextView) findViewById(R.id.changePlayerMessage);
+
             playermessage.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.black));
             playermessage.setText(playerMessageString);
-            showTask = (TextView) findViewById(R.id.showTask);
 
         // only build a dice if switch for use own dice is deactivated
-            rollDice = (ImageView) findViewById(R.id.resultOne);
             r  = getResources();
             layers[0] = ContextCompat.getDrawable(getBaseContext(), R.drawable.dice);
             if (model.getDice_number() == 0)
@@ -199,13 +203,6 @@ public class GameActivity extends AppCompatActivity {
             layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
             rollDice.setImageDrawable(layersDrawable);
             rollDice.setVisibility(View.VISIBLE);
-            Point size = new Point();
-            this.getWindowManager().getDefaultDisplay().getSize(size);
-            android.view.ViewGroup.LayoutParams layoutParams = rollDice.getLayoutParams();
-            layoutParams.width = size.x / 6;
-            layoutParams.height = size.x / 6;
-            rollDice.setLayoutParams(layoutParams);
-
             rollDice.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     rollDice(false);
@@ -235,8 +232,17 @@ public class GameActivity extends AppCompatActivity {
                 }
             };
 
+        Point size = new Point();
+        this.getWindowManager().getDefaultDisplay().getSize(size);
+        android.view.ViewGroup.LayoutParams layoutParams = rollDice.getLayoutParams();
+        layoutParams.width = size.x / 6;
+        layoutParams.height = size.x / 6;
+        rollDice.setLayoutParams(layoutParams);
+
         if (model.useOwnDice)
         {
+            rollDice.setVisibility(View.INVISIBLE);
+            playermessage.setText(getResources().getString(R.string.play_with_own_dice));
             boardView.makeAllFieldsClickable(myOnlyhandler);
         }
         else if ( model.isGame_finished())
@@ -421,7 +427,6 @@ public class GameActivity extends AppCompatActivity {
             final boolean finalPlayer_changed = player_changed;
             Runnable r=new Runnable() {
                 public void run() {
-                    stop=true;
                     //what ever you do here will be done after 1 seconds delay.
                     // show a message for player changed
                     String playername = model.getRecent_player().getName();
@@ -478,12 +483,13 @@ public class GameActivity extends AppCompatActivity {
             }
         }
         // check if another player has finished and counter < (player.size -1)
-        if ((count_players_finished < help_counter) && (help_counter < (model.getPlayers().size()-1)))
+        if ((model.getCount_players_finished() < help_counter) && (help_counter < (model.getPlayers().size()-1)))
         {
-            count_players_finished = help_counter;
+            model.setCount_players_finished(help_counter);
             // stopp all services
             //*****************************************************************************
-
+            handler.removeCallbacks(doAIActions);
+            stop=true;
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
             // Setting Dialog Title
             alertBuilder.setTitle(R.string.ContinueGameTitle);
@@ -492,6 +498,7 @@ public class GameActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     if (model.getRecent_player().isAI())
                     {
+                        stop=false;
                         handler.postDelayed(doAIActions, timer);
                     }
                     dialog.dismiss();
@@ -511,11 +518,13 @@ public class GameActivity extends AppCompatActivity {
 
                 }
             });
-            alertBuilder.show();
+            if(!GameActivity.this.isFinishing() && !GameActivity.this.isDestroyed()) {
+                alertBuilder.show();
+            }
         }
         else if (help_counter == (model.getPlayers().size()-1))
         {
-            stop=true;
+            handler.removeCallbacks(doAIActions);
             // game is finished
             model.setGame_finished(true);
             playermessage.setText(R.string.finished_Game);
@@ -634,7 +643,12 @@ public class GameActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            windialog.show();
+                if(!GameActivity.this.isFinishing() && !GameActivity.this.isDestroyed())
+                {
+                    //show dialog
+                    windialog.show();
+                }
+
         }
     }
 
@@ -649,12 +663,8 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void run() {
 
-            if (stop)
-            {
-                handler.removeCallbacks(this);
-            }
 
-            if (model.isGame_finished())
+            if (model.isGame_finished() || stop)
             {
 
             }
@@ -758,7 +768,6 @@ public class GameActivity extends AppCompatActivity {
 
     public void onPause()
     {
-        stop=true;
         if(dialog!=null && dialog.isShowing())
         {
             dialog.dismiss();
@@ -797,5 +806,12 @@ public class GameActivity extends AppCompatActivity {
             if (fis != null) try { fis.close(); } catch (IOException e) { e.printStackTrace();}
         }
         return null;
+    }
+
+    public void onBackPressed() {
+        Intent mainActivity = new Intent(GameActivity.this, MainActivity.class);
+        mainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mainActivity);
+        finish();
     }
 }

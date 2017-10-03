@@ -8,37 +8,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
         android:gravity="center_horizontal"
+        android:layout_centerVertical="true"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/slide2_heading"
+            android:text="@string/slide4_heading"
             android:textColor="@android:color/white"
             android:textSize="@dimen/slide_title"
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/dp"
+            android:id="@+id/imageView2"
             android:layout_width="240dp"
-            android:layout_height="120dp"
-            android:background="@drawable/gamefield_tutorial" />
+            android:layout_height="60dp"
+            android:background="@drawable/game_setting_example" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
+            android:layout_marginTop="20dp"
             android:paddingLeft="@dimen/desc_padding"
             android:paddingRight="@dimen/desc_padding"
-            android:text="@string/slide2_text"
+            android:text="@string/slide4_text"
             android:textAlignment="center"
+            android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="@dimen/slide_desc" />
 
     </LinearLayout>
-
 
 </RelativeLayout>

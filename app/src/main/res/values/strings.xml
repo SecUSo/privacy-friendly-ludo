@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+        tools:locale="en" tools:ignore="MissingTranslation">
     <string name="app_name">Ludo</string>
     <string name="app_name_long">Privacy Friendly Ludo</string>
     <string name="app_prefix" translatable="false">Privacy Friendly</string>
@@ -40,29 +41,29 @@
     <string name="help_whatis">What is Privacy Friendly Ludo?</string>
     <string name="help_whatis_answer">Privacy Friendly Ludo is an app to play the german game \"Mensch ärgere Dich nicht\".</string>
     <string name="help_playerNumber">How many Players can play the Game?</string>
-    <string name="help_playerNumber_answer">On the small Gamefield it is possible to play with up to 4 players. On the big field with up to 6 players.</string>
+    <string name="help_playerNumber_answer">On the small gamefield it is possible to play with up to 4 players. On the big gamefield with up to 6 players.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Ludo does not require any permission. It further does not include any tracking mechanisms or advertisement.</string>
     <string name="help_rules">What are the rules of Privacy Friendly Ludo?</string>
     <string name="help_rules_answer1">
-        Das würfeln einer Sechs verpflichtet zum Setzen einer Figur vom Haus (Startposition) auf das farblich gekennzeichnete Startfeld.
+        Rolling a six means that you have to set a figure from home field (start position) to the colored start field.
     </string>
     <string name="help_rules_answer2">
-        Ist das Startfeld besetzt, muss dies schnellstmöglich wieder freigemacht werden.
+        If the start field is occupied, you have to make it free as soon as possible.
         </string>
     <string name="help_rules_answer3">
-        Sind keine Figuren mehr im Haus, kann eine gewürfelte 6 auf alle anderen Figuren angewandt werden.
-        Auch das Startfeld muss in diesem Fall nicht freigeräumt werden.
+        Are no more figures on the home field and a six was rolled all other figures can be used.
+        Also the startfield has not to be free.
         </string>
     <string name="help_rules_answer4">
-        Kommt eine Figur auf ein Feld auf dem eine generische Figur steht, wird diese "geschlagen" und muss in ihr Haus zurückkehren.
+        If the target field of a figure is occupied by an opponent figure, the opponent figure will be beaten and send back to the home field.
         </string>
     <string name="help_rules_answer5">
-        Würde eine Figur auf ein Feld kommen auf dem die eigene Figur steht, darf der Spielzug nicht ausgeführt werden.
-        Wenn möglich wird dann eine andere Figur gewählt oder der Spielzug muss ohne das Setzen einer Figur beendet werden.
+        If the target field of a figure is occupied by another figure of the same player, the turn is not allowed.
+        Therefore another figure will be chosen or the turn will be finished without moving a figure.
         </string>
     <string name="help_rules_answer6">
-        Es ist dem Spieler freigestellt mit welcher der erlaubten Figuren er ziehen will. Die Augenzahl des Würfels darf nur nicht auf mehrere Figuren aufgeteilt werden.
+        It is the choice of the recent player which allowed figure he wants to move. The dice number cannot be spreaded on more than one figure.
         </string>
 
     <!--###ABOUT###-->
@@ -80,21 +81,25 @@
     <!-- ###SETTINGS### -->
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General</string>
-    <string name="pref_rollDice3times_switch">Roll Dice three times is allowed</string>
-    <string name="pref_rollDice3times_switch_summary"> A player who has no pieces in the game has 3 tries to throw a six</string>
-    <string name="pref_keepScreenOn_switch">Screen stays on during Game</string>
+    <string name="pref_rollDice3times_switch">Roll dice three times is allowed</string>
+    <string name="pref_rollDice3times_switch_summary"> A player who has no figures in the game has 3 tries to throw a six.</string>
+    <string name="pref_keepScreenOn_switch">Screen stays on during game</string>
     <string name="pref_keepScreenOn_switch_summary">" During the whole game the screen stays active."</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
-    <string name="slide1_text">This App Ludo is a possibility to play the german game \"Mensch Ärgere Dich Nicht\".</string>
+    <string name="slide1_text">This app Ludo is a possibility to play the german game \"Mensch ärgere dich nicht\".</string>
 
-    <string name="slide2_heading">Key Elements</string>
+    <string name="slide2_heading">Gamefields</string>
     <string name="slide2_text">There are 2 different gamefields. One with up to 4 players and one with up to 6 players.
-        Started Games kann be saved. The Color and name of the players can be free chosen. Additionally it can be chosen if a computer is the opponent. </string>
+        Started games can be saved. </string>
 
-    <string name="slide3_heading">Play with own dice and rules</string>
-    <string name="slide3_text">Additionally it is possible to play the Game with own rules by choosing a figure and selecting the goal field. </string>
+    <string name="slide3_heading">Rules of the game</string>
+    <string name="slide3_text">The rules are explained in the help section. Additionally it is possible to play the game with own rules by choosing a figure and selecting the target field.
+    This mode is called "play with own dice".</string>
+
+    <string name="slide4_heading">Game settings</string>
+    <string name="slide4_text">The color and name of the players can be free chosen. Additionally it can be chosen if a computer is the opponent.</string>
 
     <string name="okay">Okay</string>
     <string name="viewhelp">View Help</string>
@@ -115,7 +120,7 @@
     <string name="max_player_reached">Maximum number of player reached.</string>
     <string name="Missing_playername">Please give every player a name</string>
     <string name="color_uniqueness">Please select unique colors for each player.</string>
-    <string name="header_change_rules">Special Rules</string>
+    <string name="header_change_rules">Special rules</string>
     <string name="initial_name_field">name</string>
     <string name="OverwriteResumableGame">The resumable game will be overwritten if you continue.</string>
     <string name="OverwriteResumableGameTitle">Overwrite resumable game?</string>
@@ -132,7 +137,6 @@
     <string name="TaskSetFigure">Please move desired figure.</string>
     <string name="play_with_own_dice">Play with own dice</string>
     <string name="no_resumable_game">No resumable Game. Please start a new game</string>
-    <string name="info_own_dice_answer">answer</string>
     <string name="yes">yes</string>
     <string name="cancel">cancel</string>
     <string name="choose_playername">Please type in a playername.</string>
@@ -140,6 +144,12 @@
     <string name="ContinueGameTitle">Player has finished. Do you want to continue the game?</string>
     <string name="action_showStatistics">Show statistics</string>
     <string name="info_own_dice_question">What means \"play with own dice\"?</string>
+    <string name="info_own_dice_answer">To play with own dice means that the figure will be marked if you click on it and set to the clicked goalfield.
+    Therefore playing a game with own rules and an external dice is possible.</string>
     <string name="only_person_player">To play with computer, you have to deactivate the \"use own dice mode\".</string>
+    <string name="playername">Playername</string>
+    <string name="number" translatable="false">Nr</string>
+    <string name="max_text_length">Hint: The maximum length for a name is 8 characters.</string>
+
 
 </resources>

@@ -26,8 +26,6 @@ import android.widget.Toast;
 
 import com.android.colorpicker.ColorPickerDialog;
 import com.android.colorpicker.ColorPickerSwatch;
-import com.turkialkhateeb.materialcolorpicker.ColorChooserDialog;
-import com.turkialkhateeb.materialcolorpicker.ColorListener;
 
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.Player;
@@ -40,9 +38,6 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
-
-import static org.secuso.privacyfriendlyludo.R.color.red;
-import static org.secuso.privacyfriendlyludo.R.color.transparent;
 
 /*
   @author: Julia Schneider
@@ -69,6 +64,7 @@ public class GameSettingActivity extends AppCompatActivity {
     private int max_players;
     int gametyp;
     boolean useOwnDice;
+    protected SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -84,11 +80,12 @@ public class GameSettingActivity extends AppCompatActivity {
             playername_saved = savedInstanceState.getStringArrayList("Playernames_saved");
         }
         setContentView(R.layout.activity_game_setting);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        useOwnDice = mSharedPreferences.getBoolean("own_dice", false);
         Intent intent = getIntent();
         Bundle mybundle = intent.getExtras();
         if (mybundle != null) {
             // save it for later
-            useOwnDice = intent.getBooleanExtra("own_dice", false);
            if (intent.getParcelableArrayListExtra("Players") != null) {
                 // when setting loaded
                 player = intent.getParcelableArrayListExtra("Players");
@@ -106,7 +103,7 @@ public class GameSettingActivity extends AppCompatActivity {
 
                }
             }
-            if (intent.getBooleanExtra("own_dice", false))
+            if (useOwnDice)
             {
                 // own dice is used, all players can only be real player
                 for (int i=0; i<player.size(); i++)
@@ -156,7 +153,6 @@ public class GameSettingActivity extends AppCompatActivity {
                 if (min_player_reached() && checkColorUniqueness() && checkPlayerNames()) {
 
                     Intent intent = new Intent(GameSettingActivity.this, GameActivity.class);
-                    intent.putExtra("own_dice", useOwnDice);
                     intent.putParcelableArrayListExtra("Players", player);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     saveSettings();
@@ -355,9 +351,6 @@ public class GameSettingActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             final int listPosition = vh.getAdapterPosition();
-                          /*  FragmentManager fm = getFragmentManager();
-                            MyDialogFragment dialogFragment = new MyDialogFragment ();
-                            dialogFragment.show(fm, "Sample Fragment"); */
                             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(GameSettingActivity.this);
                             View Dialogview = getLayoutInflater().inflate(R.layout.playername_dialog, null);
                             builder.setView(Dialogview);

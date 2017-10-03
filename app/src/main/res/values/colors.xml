@@ -28,9 +28,11 @@
         <item>@color/dot_light_screen</item>
         <item>@color/dot_light_screen</item>
         <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
     </array>
 
     <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen</item>
         <item>@color/dot_dark_screen</item>
         <item>@color/dot_dark_screen</item>
         <item>@color/dot_dark_screen</item>
@@ -38,7 +40,6 @@
 
     <array name="playerColors">
         <item>#D32F2F</item>
-        <item>#E91E63</item>
         <item>#9C27B0</item>
         <item>#3F51B5</item>
         <item>#4CAF50</item>

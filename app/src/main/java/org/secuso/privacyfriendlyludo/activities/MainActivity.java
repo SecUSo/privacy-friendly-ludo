@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -52,6 +53,8 @@ public class MainActivity extends BaseActivity {
     private ImageView mArrowRight;
     private BoardModel model;
     private Boolean game_continuable;
+    Boolean switchState;
+    Switch own_dice;
 
     @Override
     protected void onRestart() {
@@ -88,7 +91,18 @@ public class MainActivity extends BaseActivity {
         }
 
         int index = mSharedPreferences.getInt("lastChosenPage", 0);
+        switchState = mSharedPreferences.getBoolean("own_dice", false);
+        own_dice = (Switch) findViewById(R.id.switch_own_dice);
 
+        if (switchState)
+        {
+            own_dice.setChecked(true);
+            // activate switch
+        }
+        else
+        {
+            own_dice.setChecked(false);
+        }
         mViewPager.setCurrentItem(index);
         mArrowLeft = (ImageView) findViewById(R.id.arrow_left);
         mArrowRight = (ImageView) findViewById(R.id.arrow_right);
@@ -151,6 +165,14 @@ public class MainActivity extends BaseActivity {
                 mViewPager.arrowScroll(View.FOCUS_RIGHT);
                 break;
             case R.id.game_button_start:
+                if (own_dice.isChecked())
+                {
+                    switchState = true;
+                }
+                else
+                {
+                    switchState = false;
+                }
                 if (game_continuable)
                 {
                     // show alertDialog
@@ -167,8 +189,6 @@ public class MainActivity extends BaseActivity {
                             // open Settings
                             Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
                             // check if switch is activated and save it for later
-                            Switch own_dice = (Switch) findViewById(R.id.switch_own_dice);
-                            Boolean switchState = own_dice.isChecked();
 
                             ArrayList<Player> last_players = loadSettings(switchState);
                             if (last_players != null)
@@ -176,7 +196,10 @@ public class MainActivity extends BaseActivity {
                                 intent.putParcelableArrayListExtra("Players", last_players);
 
                             }
-                            intent.putExtra("own_dice", switchState);
+                            //save owndice_state in settings
+                            SharedPreferences.Editor editor = mSharedPreferences.edit();
+                            editor.putBoolean("own_dice", switchState);
+                            editor.apply();
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             dialog.dismiss();
@@ -200,8 +223,6 @@ public class MainActivity extends BaseActivity {
                     int index = mSharedPreferences.getInt("lastChosenPage", 0);
                     Intent intent = new Intent(MainActivity.this, GameSettingActivity.class);
                     // check if switch is activated and save it for later
-                    Switch own_dice = (Switch) findViewById(R.id.switch_own_dice);
-                    Boolean switchState = own_dice.isChecked();
 
                     ArrayList<Player> last_players = loadSettings(switchState);
                     if (last_players != null)
@@ -209,7 +230,10 @@ public class MainActivity extends BaseActivity {
                         intent.putParcelableArrayListExtra("Players", last_players);
 
                     }
-                    intent.putExtra("own_dice", switchState);
+                    //save own_dice_state in settings
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putBoolean("own_dice", switchState );
+                    editor.apply();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
@@ -217,6 +241,14 @@ public class MainActivity extends BaseActivity {
 
                 break;
             case R.id.game_button_continue:
+                if (own_dice.isChecked())
+                {
+                    switchState = true;
+                }
+                else
+                {
+                    switchState = false;
+                }
                 if (game_continuable)
                 {
                     Intent myintent = new Intent(MainActivity.this, GameActivity.class);

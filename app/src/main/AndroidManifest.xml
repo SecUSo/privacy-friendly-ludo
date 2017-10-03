@@ -61,7 +61,8 @@
         <activity
             android:name=".activities.GameSettingActivity"
             android:parentActivityName=".activities.MainActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan">
+        </activity>
         <activity
             android:name=".activities.GameActivity"
             android:theme="@style/AppTheme.NoActionBar"
