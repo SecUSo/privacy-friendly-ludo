@@ -679,6 +679,9 @@ public class GameActivity extends AppCompatActivity {
                 else {
 
                     // integer between  zero and max_figures
+                   // SecureRandom random = new SecureRandom();
+                   // int random_num = random.nextInt(model.getMovable_figures().size()-1) + 1;
+                   // int figure_id = model.getMovable_figures().get(random_num);
                     int figure_id = model.getMovable_figures().get(1);
                     int position_id = model.getRecent_player().getFigures().get(figure_id - 1).getField_position_index();
                     // move figure

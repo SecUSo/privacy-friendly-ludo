@@ -346,7 +346,7 @@ public class BoardModel implements Parcelable, Serializable {
         // check first field figure has to be moved
         if (!freeHouse && !freeFirstField) {
             // move figure on free first field
-            int position = 1 + (recent_player.getOrder() - 1) * 10;
+            int position = 1 + (recent_player.getOrder()-1) * distance_between_2_colors;
             figure_id = getMy_game_field().getMyGamefield().get(position - 1).getFigure_id();
             new_position = getNewPosition(figure_id, dice_number);
 
@@ -391,7 +391,7 @@ public class BoardModel implements Parcelable, Serializable {
 
     private boolean checkFirstFieldFree() {
         boolean freeField;
-        int position = 1 + (recent_player.getOrder() - 1) * 10;
+        int position = 1 + (recent_player.getOrder()-1) * distance_between_2_colors;
         freeField = isEmptyofSamePlayer(position, recent_player.getId());
         return freeField;
     }
