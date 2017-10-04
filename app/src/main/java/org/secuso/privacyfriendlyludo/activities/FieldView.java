@@ -3,10 +3,12 @@ package org.secuso.privacyfriendlyludo.activities;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.View;
 
 
 import org.secuso.privacyfriendlyludo.R;
@@ -50,15 +52,16 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
         layers[0] = ContextCompat.getDrawable(context, R.drawable.field_color_border);
         // field content
         layers[1] = ContextCompat.getDrawable(context, R.drawable.field);
-        layers[2] = ContextCompat.getDrawable(context, R.drawable.figure);
+        layers[2] = ContextCompat.getDrawable(context, R.drawable.figure4);
         layersDrawable = new LayerDrawable(layers);
 
         layersDrawable.mutate();
         layersDrawable.setLayerInset(0, 0, 0, 0, 0);
         //layersDrawable.setLayerInset(1, 0, 0, 0, 0);
         //layersDrawable.setLayerInset(1, 15, 15, 15, 15);
-        layersDrawable.setLayerInset(1, 25, 25, 25, 25);
-        layersDrawable.setLayerInset(2, 10, 10, 10, 10);
+        layersDrawable.setLayerInset(1, 50, 50, 50, 50);
+        layersDrawable.setLayerInset(2, 200, 115, 200, 115);
+        //layersDrawable.setLayerInset(2, 10, 10, 10, 10);
         //layersDrawable.setLayerInset(2, 400, 130, 400, 670);
         this.setImageDrawable(layersDrawable);
 
@@ -84,8 +87,7 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
             this.add_player = add_player;
             if (add_player)
             {
-            layersDrawable.getDrawable(2).setAlpha(255);
-            layersDrawable.getDrawable(2).setColorFilter(myColor, PorterDuff.Mode.MULTIPLY);
+                layersDrawable.getDrawable(2).setAlpha(255);
             }
 
     }
@@ -93,12 +95,17 @@ public class FieldView extends android.support.v7.widget.AppCompatImageView {
     public void markPossibleFigure(int color) {
 
         this.myColor = color;
-       layersDrawable.getDrawable(1).setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+       layersDrawable.getDrawable(1).setColorFilter(color, PorterDuff.Mode. SRC_IN );
+        layersDrawable.getDrawable(2).setColorFilter(color, PorterDuff.Mode.DST_ATOP);
         //layersDrawable.getDrawable(2).setAlpha(255);
     }
 
-    public void hidePossibleFigure() {
+    public void hidePossibleFigure(int color) {
         layersDrawable.getDrawable(1).setColorFilter(ContextCompat.getColor(getContext(), R.color.white), PorterDuff.Mode.SRC_ATOP);
+        layersDrawable.getDrawable(2).clearColorFilter();
+        layersDrawable.getDrawable(2).setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+
+
     }
 
 

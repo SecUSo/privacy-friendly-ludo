@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlyludo.activities;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -111,6 +112,7 @@ public class BoardView extends GridLayout{
                 int player_color = model.getPlayers().get(player_id-1).getColor();
                 board[x][y] = new FieldView(getContext(), this.attrs, mycolor, ContextCompat.getDrawable(getContext(), R.drawable.field), true);
                 board[x][y].getLayersDrawable().getDrawable(2).setColorFilter(player_color, PorterDuff.Mode.MULTIPLY);
+
             }
             else
             {
@@ -191,7 +193,7 @@ public class BoardView extends GridLayout{
         int x = (getFigurePositionOnBoard(mymodel, figure_id)).get(0);
         int y = (getFigurePositionOnBoard(mymodel, figure_id)).get(1);
         int color = mymodel.getRecent_player().getColor();
-        board[x][y].hidePossibleFigure();
+        board[x][y].hidePossibleFigure(color);
         board[x][y].setClickable(false);
     }
 
@@ -214,7 +216,7 @@ public class BoardView extends GridLayout{
         if (marked)
         {
 
-            board[x][y].hidePossibleFigure();
+            board[x][y].hidePossibleFigure(color);
         }
         else
         {
