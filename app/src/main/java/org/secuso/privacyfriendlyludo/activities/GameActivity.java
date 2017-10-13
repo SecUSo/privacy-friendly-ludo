@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlyludo.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +10,6 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.icu.math.BigDecimal;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -60,7 +58,6 @@ public class GameActivity extends AppCompatActivity {
     private TextView playermessage;
     private TextView showTask;
     SharedPreferences sharedPreferences;
-    Bundle mybundle;
     Dialog dialog;
     private BoardView boardView;
     BoardModel model;
@@ -103,10 +100,8 @@ public class GameActivity extends AppCompatActivity {
 
         // check if instancestate is empty
         // important for display orientation changes
-            if (savedInstanceState != null) {
-           //     model = savedInstanceState.getParcelable("BoardModel");
-            }
-            else if (savedInstanceState == null && (model==null || getIntent().getExtras()!=null))
+        if (savedInstanceState == null) {
+            if ((model==null || getIntent().getExtras()!=null))
             {
                 // new Game
                 Intent intent = getIntent();
@@ -131,6 +126,8 @@ public class GameActivity extends AppCompatActivity {
                 }
                 model = new BoardModel(this, playerArrayList, game_typ, useOwnDice);
             }
+        }
+       //     model = savedInstanceState.getParcelable("BoardModel");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         myToolbar.setTitle(R.string.app_name);
@@ -287,7 +284,7 @@ public class GameActivity extends AppCompatActivity {
                 // choose randomly a figureid of movablefigures
                 SecureRandom random = new SecureRandom();
                 // -2 because of zero and dice_number
-                ArrayList<Integer> help_movable_figures = new ArrayList<Integer>();
+                ArrayList<Integer> help_movable_figures = new ArrayList<>();
                 help_movable_figures.addAll(model.getMovable_figures());
                 int max_figures = help_movable_figures.size() - 1;
                 int random_num = random.nextInt(max_figures) + 1;
@@ -424,7 +421,6 @@ public class GameActivity extends AppCompatActivity {
         if (player_changed)
         {
             handler=new Handler();
-            final boolean finalPlayer_changed = player_changed;
             Runnable r=new Runnable() {
                 public void run() {
                     //what ever you do here will be done after 1 seconds delay.
@@ -532,9 +528,6 @@ public class GameActivity extends AppCompatActivity {
             showTask.setText("");
             rollDice.setVisibility(View.INVISIBLE);
             ShowStatistics();
-        }
-        else
-        {
         }
     }
 
@@ -664,12 +657,7 @@ public class GameActivity extends AppCompatActivity {
         public void run() {
 
 
-            if (model.isGame_finished() || stop)
-            {
-
-            }
-            else
-            {
+            if (!model.isGame_finished() && !stop) {
                 // List of movable Figures is empty
                 // for first move
                 if (model.getMovable_figures() == null || (model.getMovable_figures().size() <= 1)) {

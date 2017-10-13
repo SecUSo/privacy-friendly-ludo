@@ -1,27 +1,21 @@
 package org.secuso.privacyfriendlyludo.logic;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import org.secuso.privacyfriendlyludo.Map.GameFieldPosition;
 import org.secuso.privacyfriendlyludo.Map.StartGameFieldPosition;
 import org.secuso.privacyfriendlyludo.R;
-import org.secuso.privacyfriendlyludo.activities.GameActivity;
-import org.secuso.privacyfriendlyludo.activities.MainActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -82,8 +76,8 @@ public class BoardModel implements Parcelable, Serializable {
     public ArrayList<Integer> order_of_winners = new ArrayList<>();
     public ArrayList<Integer> order_of_unsorted_players = new ArrayList<>();
     public ArrayList<Integer> rank = new ArrayList<>();
-    int count_rank = 0;
-    int count_players_finished=0;
+    private int count_rank = 0;
+    private int count_players_finished=0;
 
     public void setCount_players_finished(int count_players_finished) {
         this.count_players_finished = count_players_finished;
@@ -277,7 +271,7 @@ public class BoardModel implements Parcelable, Serializable {
         int[] androidColors = context.getResources().getIntArray(R.array.playerColors);
         int white = ContextCompat.getColor(context, R.color.white);
         int order = 1;
-        int count = 0;
+        int count;
         boolean empty_color;
 
         for (int i=0; i<players.size(); i++)
@@ -399,7 +393,7 @@ public class BoardModel implements Parcelable, Serializable {
     private boolean checkHouseisFree() {
         boolean freeHouse = true;
         for (int i = 0; i < recent_player.getFigures().size(); i++) {
-            if (Objects.equals(recent_player.getFigures().get(i).getState(), "start")) {
+            if (recent_player.getFigures().get(i).getState().equals("start")) {
                 freeHouse = false;
             }
         }
@@ -433,16 +427,57 @@ public class BoardModel implements Parcelable, Serializable {
                         } else if (count_steps + dice_result > (last_field_index + 4)) {
                             // new position not possible because end of field
                             return 0;
-                        } else {
-                            new_index = last_field_index + (((count_steps + dice_result) - last_field_index) +
-                                    (4 * (recent_player.getOrder() - 1)));
-                            return new_index;
+                        } else
+                        {
+                            boolean jump_other_figure=false;
+                          //  new_index = last_field_index + (((count_steps + dice_result) - last_field_index) +
+                           //         (4 * (recent_player.getOrder() - 1)));
+                            new_index = ((count_steps + dice_result) + (4 * (recent_player.getOrder()-1)));
+
+                            int first_index_end = (last_field_index + 1) + (recent_player.getOrder() - 1) * 4;
+                            for (int i=(new_index); i>=first_index_end; i--)
+                            {
+                                // check if there is already a figure between recent field and new field
+                                // jump over in end field not possible
+                                if (my_game_field.getMyGamefield().get(i-1).getFigure_id()!=0)
+                                {
+                                    jump_other_figure = true;
+                                }
+                            }
+
+                            if (jump_other_figure)
+                            {
+                                return 0;
+                            }
+                            else
+                            {
+                                return new_index;
+                            }
                         }
                         return new_index;
                     case "end":
                         new_index = (recent_index + dice_result);
-                        if (new_index <= (last_field_index + 4) + (recent_player.getOrder() - 1) * 4) {
-                            return new_index;
+                        boolean jump_other_figure=false;
+                        if (new_index <= (last_field_index + 4) + (recent_player.getOrder() - 1) * 4)
+                        {
+                            for (int i=(recent_index+1); i<(recent_index+1 + dice_result); i++)
+                            {
+                                // check if there is already a figure between recent field and new field
+                                // jump over in end field not possible
+                               if (my_game_field.getMyGamefield().get(i-1).getFigure_id()!=0)
+                               {
+                                    jump_other_figure = true;
+                               }
+                            }
+
+                            if (jump_other_figure)
+                            {
+                                return 0;
+                            }
+                            else
+                            {
+                                return new_index;
+                            }
                         } else {
                             return 0;
                         }
@@ -461,7 +496,7 @@ public class BoardModel implements Parcelable, Serializable {
     private boolean figureIsAllowedToMove(int dice_result, int figure_id, boolean freeFirstField, boolean freeHouse) {
         String figureState = recent_player.getFigures().get(figure_id - 1).getState();
         //dice_result != 6 &&
-        return freeHouse || (dice_result == 6 && Objects.equals(figureState, "start")) || (freeFirstField && !Objects.equals(figureState,"start") && dice_result != 6) || (!freeFirstField && !Objects.equals(figureState, "start"));
+        return freeHouse || (dice_result == 6 && (figureState.equals("start"))) || (freeFirstField && !(figureState.equals("start")) && dice_result != 6) || (!freeFirstField && !(figureState.equals("start")));
     }
 
     //checks if already a figure of this player is there
@@ -513,7 +548,7 @@ public class BoardModel implements Parcelable, Serializable {
                 count_steps = 0;
             }
             // if figure comes out to the gamefield
-            else if (Objects.equals(moved_figure.getState(), "start")) {
+            else if (moved_figure.getState().equals("start")) {
                 count_steps = 1;
             } else {
                 count_steps = (recent_player.getFigures().get(figure_id - 1).getCount_steps()) + dice_result;
@@ -594,14 +629,25 @@ public class BoardModel implements Parcelable, Serializable {
             recent_player = next_player;
             return true;
         } else {
+            // check if minimum one figure is in state "end" but figure is not finished
+            // only one time roll dice is allowes
+            boolean not_finished =false;
+
+            for (int i=0; i<recent_player.getFigures().size(); i++)
+            {
+                if ((recent_player.getFigures().get(i).getState().equals("end")) && !recent_player.getFigures().get(i).isFinished())
+                {
+                    not_finished=true;
+                }
+            }
             // no movable figures, 3 times roll dice not done but allowed acccording to settings, move is not finished
-            if (dice_number != 6 && (count_Calls < 3 && switch_dice_3times) && movable_figures.size() == 1 && !checkHouseisFree()) {
+            if (dice_number != 6 && (count_Calls < 3 && switch_dice_3times && !not_finished) && movable_figures.size() == 1 && !checkHouseisFree()) {
                 // update information on recent player
                 //recent_player = players.get(recent_player.getId() - 1);
                 return false;
             }
             // no movable figures, 3 times roll dice done or not allowed according to settings, move is finished
-            if (dice_number != 6 && (count_Calls >= 3 || switch_dice_3times) && movable_figures.size() == 1) {
+            if (dice_number != 6 && (count_Calls >= 3 || switch_dice_3times && !not_finished) && movable_figures.size() == 1) {
                 recent_player = next_player;
                 return true;
             }
@@ -631,7 +677,6 @@ public class BoardModel implements Parcelable, Serializable {
         int figure_id;
         int player_id;
         int player_order;
-
         try
         {
             if (figure_index >= 100) {
@@ -671,9 +716,11 @@ public class BoardModel implements Parcelable, Serializable {
 
     private void updateFinishFlag(int player_id) {
 
+
+        int player_order = players.get(player_id-1).getOrder();
         // figure is in Goal fields
         // check finish state of all other figures --> because jumping is possible
-        int max_possible_fieldindex = (last_field_index + 4) + (4 * (player_id - 1));
+        int max_possible_fieldindex = (last_field_index + 4) + (4 * (player_order - 1));
         int count_empty_fields = 0;
         for (int count_figures = 0; count_figures < 4; count_figures++) {
             int figure_pos = players.get(player_id - 1).getFigures().get(count_figures).getField_position_index();
@@ -700,7 +747,6 @@ public class BoardModel implements Parcelable, Serializable {
                     count_figures_finished = count_figures_finished + 1;
                 }
             }
-            int count_players_finished = 0;
             if (count_figures_finished == 4) {
                 count_rank = count_rank + 1;
                 // all figures from one player are in the house

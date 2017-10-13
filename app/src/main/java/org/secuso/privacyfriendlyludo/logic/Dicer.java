@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlyludo.logic;
 
+import android.util.Log;
+
 import java.security.SecureRandom;
 
 /*

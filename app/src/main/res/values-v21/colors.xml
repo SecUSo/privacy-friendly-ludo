@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#024265</color>
+    <color name="colorPrimaryDark">#024265</color>
+    <color name="colorAccent">#0274b2</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="lightblue">#0274B2</color>
+    <color name="middleblue">#8aa5ce</color>
+    <color name="darkblue">#024265</color>
+    <color name="middlegrey">#a8a8a8</color>
+    <color name="yellow">#f6d126</color>
+    <color name="red">#b71c1c</color>
+    <color name="green">#388E3C</color>
+    <color name="pink">#ee33cc</color>
+
+    <!-- lighter colors -->
+    <color name="lightred">#d23b3b</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen">#026499</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen">#448bb2</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen</item>
+        <item>@color/dot_dark_screen</item>
+        <item>@color/dot_dark_screen</item>
+        <item>@color/dot_dark_screen</item>
+    </array>
+
+    <array name="playerColors">
+        <item>#D32F2F</item>
+        <item>#9C27B0</item>
+        <item>#3F51B5</item>
+        <item>#4CAF50</item>
+        <item>#00BCD4</item>
+        <item>#FFD700 </item>
+        <item>#FF9800</item>
+        <item>#795548 </item>
+    </array>
+
+
+</resources>

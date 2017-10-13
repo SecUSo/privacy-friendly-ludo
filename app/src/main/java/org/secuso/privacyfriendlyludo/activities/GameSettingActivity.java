@@ -325,7 +325,7 @@ public class GameSettingActivity extends AppCompatActivity {
                                 }
                                 else
                                 {
-                                    if (Objects.equals(playername_saved.get(listPosition), ""))
+                                    if (playername_saved.get(listPosition) == "")
                                     {
                                         player.get(listPosition).setName(getResources().getString(R.string.playername_default_value));
                                     }
