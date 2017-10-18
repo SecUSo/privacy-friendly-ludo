@@ -45,6 +45,7 @@ public class HelpDataDump {
         rules.add(context.getResources().getString(R.string.help_rules_answer4));
         rules.add(context.getResources().getString(R.string.help_rules_answer5));
         rules.add(context.getResources().getString(R.string.help_rules_answer6));
+        rules.add(context.getResources().getString(R.string.help_rules_answer7));
 
         expandableListDetail.put(context.getResources().getString(R.string.help_rules), rules);
 

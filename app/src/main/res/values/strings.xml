@@ -65,6 +65,11 @@
     <string name="help_rules_answer6">
         It is the choice of the recent player which allowed figure he wants to move. The dice number cannot be spreaded on more than one figure.
         </string>
+    <string name="help_rules_answer7">
+        In the 4 endfields of each player there exists 2 special rules.
+        First: It is not allowed to jump over other figures in the endfield.
+        Second: You can only roll dice once if a figure is on the endfield but not in the goal position.
+    </string>
 
     <!--###ABOUT###-->
     <string name="about">About</string>

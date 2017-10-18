@@ -287,7 +287,29 @@ public class GameActivity extends AppCompatActivity {
                 ArrayList<Integer> help_movable_figures = new ArrayList<>();
                 help_movable_figures.addAll(model.getMovable_figures());
                 int max_figures = help_movable_figures.size() - 1;
-                int random_num = random.nextInt(max_figures) + 1;
+
+                int new_pos = 0;
+                int random_num =0;
+                boolean kick_out_possible=false;
+                // if a figure of opponent can be beaten choose this figure first
+                for (int i=1; i<model.getMovable_figures().size(); i++)
+                {
+                    int recent_figure_id = model.getMovable_figures().get(i);
+                    new_pos = model.getNewPosition(recent_figure_id, model.getDice_number());
+                    // check if on new position is an opponent
+                    if (!model.no_player_on_field(new_pos))
+                    {
+                        random_num = i;
+                        kick_out_possible = true;
+
+                    }
+                }
+                if (!kick_out_possible)
+                {
+                    random_num = random.nextInt(max_figures) + 1;
+
+                }
+
                 model.getMovable_figures().clear();
                 model.getMovable_figures().add(help_movable_figures.get(0));
                 model.getMovable_figures().add(help_movable_figures.get(random_num));
@@ -665,11 +687,6 @@ public class GameActivity extends AppCompatActivity {
                 }
                 // there are movable Figures
                 else {
-
-                    // integer between  zero and max_figures
-                   // SecureRandom random = new SecureRandom();
-                   // int random_num = random.nextInt(model.getMovable_figures().size()-1) + 1;
-                   // int figure_id = model.getMovable_figures().get(random_num);
                     int figure_id = model.getMovable_figures().get(1);
                     int position_id = model.getRecent_player().getFigures().get(figure_id - 1).getField_position_index();
                     // move figure

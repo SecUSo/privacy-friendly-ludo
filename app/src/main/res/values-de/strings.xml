@@ -63,8 +63,11 @@
     <string name="help_rules_answer6">
         Es ist dem Spieler freigestellt mit welcher der erlaubten Figuren er ziehen will. Die Augenzahl des Würfels darf nur nicht auf mehrere Figuren aufgeteilt werden.
         </string>
-
-
+    <string name="help_rules_answer7">
+        In den Endfeldern jedes Spielers gibt es 2 spezielle Regeln zu beachten.
+        1. Ein überspringen von Figuren ist hier nicht möglich.
+        2. Man darf nur einmal würfeln, sobald eine Figur im Endfeld ist aber nicht in der Zielposition.
+    </string>
 
     <!--###ABOUT###-->
     <string name="about">Über</string>
