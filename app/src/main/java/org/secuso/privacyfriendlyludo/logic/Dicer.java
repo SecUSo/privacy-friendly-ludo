@@ -21,24 +21,24 @@ import java.security.SecureRandom;
 class Dicer {
 
 
-    int rollDice(boolean mydice)
+    int rollDice(BoardModel model)
     {
        int dice;
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[6];
         random.nextBytes(bytes);
 
-       /*  if (mydice)
+        // if (model.getRecent_player().getId()==1 || model.getRecent_player().getId()==3)
         {
-            dice = 3;
+            dice = random.nextInt(6) +1;
         }
-        else
-        {
-            dice=4;
-        } */
+        //else
+        //{
+        //    dice = 3;
+        //}
 
 
-        dice = random.nextInt(6) +1;
+
 
         return dice;
     }

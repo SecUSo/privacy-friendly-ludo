@@ -35,7 +35,7 @@ public class Figure implements Parcelable, Serializable{
 
     private int id;
 
-    int getCount_steps() {
+    public int getCount_steps() {
         return count_steps;
     }
 

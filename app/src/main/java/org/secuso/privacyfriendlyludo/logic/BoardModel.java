@@ -598,7 +598,7 @@ public class BoardModel implements Parcelable, Serializable {
         //roll Dice
         Dicer dicer = new Dicer();
         dice = !dice;
-        dice_number = dicer.rollDice(dice);
+        dice_number = dicer.rollDice(this);
         // save dice_result for statistik reasons
         recent_player.setStatistics(dice_number);
 

@@ -70,6 +70,7 @@ public class GameActivity extends AppCompatActivity {
     LayerDrawable layersDrawable;
     boolean isCounterRunning;
     Handler handler = new Handler();
+    Handler delayhandler = new Handler();
     boolean stop;
     Dialog windialog;
     boolean no_cup_showing;
@@ -291,6 +292,7 @@ public class GameActivity extends AppCompatActivity {
                 int new_pos = 0;
                 int random_num =0;
                 boolean kick_out_possible=false;
+                boolean figure_in_house = false;
                 // if a figure of opponent can be beaten choose this figure first
                 for (int i=1; i<model.getMovable_figures().size(); i++)
                 {
@@ -303,8 +305,14 @@ public class GameActivity extends AppCompatActivity {
                         kick_out_possible = true;
 
                     }
+                    // set figure in house first if no figure to beaten
+                    else if ((model.getRecent_player().getFigures().get(recent_figure_id-1).getCount_steps() + model.getDice_number())>model.getLast_field_index() && !kick_out_possible)
+                    {
+                        random_num = i;
+                        figure_in_house = true;
+                    }
                 }
-                if (!kick_out_possible)
+                if (!kick_out_possible && !figure_in_house)
                 {
                     random_num = random.nextInt(max_figures) + 1;
 
@@ -442,34 +450,7 @@ public class GameActivity extends AppCompatActivity {
         }
         if (player_changed)
         {
-            handler=new Handler();
-            Runnable r=new Runnable() {
-                public void run() {
-                    //what ever you do here will be done after 1 seconds delay.
-                    // show a message for player changed
-                    String playername = model.getRecent_player().getName();
-                    String playerMessageString = getString(R.string.player_name);
-                    playerMessageString = playerMessageString.replace("%p", playername);
-                    playermessage.setText(playerMessageString);
-                    //reset counter of roll dice
-                    model.countRollDice = 0;
-                    //change color of dice
-                    int new_color = model.getRecent_player().getColor();
-                    layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
-                    rollDice.setImageDrawable(layersDrawable);
-                    // check if it is a AI
-                    if (!model.getRecent_player().isAI()) {
-                        rollDice.setClickable(true);
-                        showTask = (TextView) findViewById(R.id.showTask);
-                        showTask.setText(R.string.Task_Roll_Dice);
-                    } else {
-                        showTask.setText("");
-                        handler.postDelayed(doAIActions, timer);
-
-                    }
-                }
-            };
-            handler.postDelayed(r, 1000);
+            delayhandler.postDelayed(delaytimer, timer);
         }
         else
         {
@@ -506,7 +487,7 @@ public class GameActivity extends AppCompatActivity {
             model.setCount_players_finished(help_counter);
             // stopp all services
             //*****************************************************************************
-            handler.removeCallbacks(doAIActions);
+            //handler.removeCallbacks(doAIActions);
             stop=true;
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(GameActivity.this);
             // Setting Dialog Title
@@ -514,9 +495,9 @@ public class GameActivity extends AppCompatActivity {
 
             alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    stop=false;
                     if (model.getRecent_player().isAI())
                     {
-                        stop=false;
                         handler.postDelayed(doAIActions, timer);
                     }
                     dialog.dismiss();
@@ -698,6 +679,33 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
 
+        }
+    };
+
+    private final Runnable delaytimer = new Runnable() {
+        @Override
+        public void run() {
+            //what ever you do here will be done after 1 seconds delay.
+            // show a message for player changed
+            String playername = model.getRecent_player().getName();
+            String playerMessageString = getString(R.string.player_name);
+            playerMessageString = playerMessageString.replace("%p", playername);
+            playermessage.setText(playerMessageString);
+            //reset counter of roll dice
+            model.countRollDice = 0;
+            //change color of dice
+            int new_color = model.getRecent_player().getColor();
+            layersDrawable.getDrawable(0).setColorFilter(new_color, PorterDuff.Mode.SRC);
+            rollDice.setImageDrawable(layersDrawable);
+            // check if it is a AI
+            if (!model.getRecent_player().isAI()) {
+                rollDice.setClickable(true);
+                showTask = (TextView) findViewById(R.id.showTask);
+                showTask.setText(R.string.Task_Roll_Dice);
+            } else {
+                showTask.setText("");
+                handler.postDelayed(doAIActions, timer);
+            }
         }
     };
 
