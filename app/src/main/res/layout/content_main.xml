@@ -28,6 +28,7 @@
             android:id="@+id/scroller"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <ImageView
@@ -40,7 +41,6 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:onClick="onClick"
-            android:padding="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_keyboard_arrow_left_black_24dp" />
 
         <ImageView
@@ -72,7 +72,6 @@
             android:layout_marginTop="8dp"
             android:defaultValue="false"
             android:key="switch"
-            android:maxWidth="40dp"
             android:textOff=""
             android:textOn=""
             app:layout_constraintBottom_toBottomOf="parent"

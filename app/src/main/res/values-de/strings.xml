@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Mensch ärgere dich nicht</string>
-    <string name="app_name_long">Privacy Friendly Mensch ärgere dich nicht</string>
+    <string name="app_name">Ärgern lohnt nicht</string>
+    <string name="app_name_long">Privacy Friendly Ärgern lohnt nicht</string>
 
     <!-- ###DRAWER###-->
     <string name="action_help">Hilfe</string>
@@ -36,13 +36,13 @@
     <!--###HELP###-->
     <string name="help">Help</string>
 
-    <string name="help_whatis">Was ist Privacy Friendly Mensch Ärgere Dich nicht?</string>
-    <string name="help_whatis_answer">Privacy Friendly Mensch Ärgere Dich nicht ist eine App um das gleichnamige Brettspiel zu spielen.</string>
+    <string name="help_whatis">Was ist Privacy Friendly Ärgern lohnt nicht?</string>
+    <string name="help_whatis_answer">Privacy Friendly Ärgern lohnt nicht ist eine App um das gleichnamige Brettspiel zu spielen.</string>
     <string name="help_playerNumber">Wieviele Personen können maximal spielen?</string>
     <string name="help_playerNumber_answer">Auf dem kleinen Spielbrett können maximal 4 Spieler spielen und auf dem großen Spielbrett maximal 6 Spieler.</string>
     <string name="help_privacy">Was macht die App privatsphäre-freundlich?</string>
     <string name="help_privacy_answer">Diese App erfordert keine Berechtigungen. Außerdem enthält sie keine Werbung.</string>
-    <string name="help_rules">Was sind die Regeln von Mensch ärgere Dich nicht?</string>
+    <string name="help_rules">Was sind die Regeln von Ärgern lohnt nicht?</string>
     <string name="help_rules_answer1">
         Das würfeln einer Sechs verpflichtet zum Setzen einer Figur vom Haus (Startposition) auf das farblich gekennzeichnete Startfeld.
     </string>
