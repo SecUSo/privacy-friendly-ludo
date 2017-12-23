@@ -88,7 +88,7 @@
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen</string>
-    <string name="slide1_text"> Diese App ermöglicht das Spielen des Brettspiels "Mensch ärgere dich nicht". </string>
+    <string name="slide1_text">Diese App ermöglicht das Spielen eines Brettspiels mit 1–6 Spielern.</string>
 
     <string name="slide2_heading">Spielbretter</string>
     <string name="slide2_text">Es gibt 2 verschiedene Spielfelder. Einmal mit bis zu 4 Personen und eines für bis zu 6 Personen. Angefangene Spiele können gespeichert werden.</string>
