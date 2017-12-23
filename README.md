@@ -1,6 +1,6 @@
 ## Privacy Friendly App Ludo
 
-This application contains the german game "Mensch ärgere dich nicht. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
+This Android app is a boardgame for 1 up to 6 players. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
 
 ## Download and more Information
 
@@ -9,7 +9,7 @@ Further development requires Android Studio, we recommend to use at least versio
 ### API Reference
 
 Mininum SDK: 21
-Target SDK: 24 
+Target SDK: 25 
 
 ## License
 
@@ -37,7 +37,7 @@ App-Icon: <br />
 Markus Hau<br />
 
 Github-Users: <br />
-Yonjuni (Karola Marky)<br />
+Yonjuni<br />
 Julchen_wsf 
 
 
