@@ -14,7 +14,7 @@ Target SDK: 25
 ## License
 
 Privacy Friendly Ludo is licensed under the GPLv3.
-Copyright (C) 2017  Julia Schneider
+Copyright (C) 2017-2018  Julia Schneider
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,13 +29,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-The icons used in the nagivation drawer are licensed under the [CC BY 2.5] (http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo and the header in the navigation drawer) copyright [Technische Universtität Darmstadt] (www.tu-darmstadt.de) (2016).
+The icons used in the nagivation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo and the app logo) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016-2018).
 
 ## Contributors
 
+App logo: <br />
+Tatjana Albrandt <br />
+
 Github-Users: <br />
-Yonjuni<br />
 Julchen_wsf <br />
+Yonjuni<br />
 Kamuno
 
 
