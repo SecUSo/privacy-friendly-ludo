@@ -2,6 +2,13 @@
 
 This Android app is a boardgame for 1 up to 6 players. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
 
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/packages/org.secuso.privacyfriendlyludo/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+      alt="Get it on Google Play"
+      height="80">](https://play.google.com/store/apps/details?id=org.secuso.privacyfriendlyludo)
+
 ## Download and more Information
 
 Further development requires Android Studio, we recommend to use at least version 2.2.2
