@@ -1,0 +1,11 @@
+"Privacy Friendly Ärgern lohnt nicht" ist ein Brettspiel für einen bis sechs Spieler (Personen oder Computergegner). Ziel des Spiels ist es die eigenen vier Figuren in die Endfelder zu führen. Dafür ist es wichtig den Gegner am Gewinnen zu hindern. Dies erfolgt durch Schlagen der gegnerischen Figuren mit den Eigenen.
+
+Was unterscheidet Privacy Friendly Ärgern lohnt nicht von anderen, ähnlichen Apps?
+
+1. Keine Berechtigungen
+Privacy Friendly Ärgern lohnt nicht benötigt keine Berechtigungen.
+
+2. Keine störende Werbung
+Viele andere kostenlose Apps im Google Play Store blenden störende Werbung ein, die unter anderem auch die Akkulaufzeit verkürzt und Datenvolumen verbrauchen kann.
+
+Die App gehört zur Gruppe der Privacy Friendly Apps, die von der Forschungsgruppe SECUSO der Technischen Universität Darmstadt entwickelt werden. Mehr Informationen unter: https://secuso.org/pfa

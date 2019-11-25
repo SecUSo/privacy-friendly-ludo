@@ -1,0 +1,11 @@
+Privacy Friendly Ludo is a boardgame for 4 up to 6 players (persons or computer opponents). The goal of the game is bringing four figures to the goal fields. Therefore, it is important to prevent opponent from winning the game by beatening the opponent figures with his own figures.
+
+How does Privacy Friendly Ludo differ from other similar apps?
+
+1. No permissions
+Privacy Friendly Ludo does not require any permissions.
+
+2. No advertisement
+Moreover, Privacy Friendly Ludo distinguishes from many other applications in the way that it completely relinquishes advertisements. Advertisement might track a user's actions. It could also shorten battery life or use mobile data.
+
+Privacy Friendly Ludo belongs to the Privacy Friendly Apps group developed by the research group SECUSO at Technische Universität Darmstadt. More information can be found at https://secuso.org/pfa
