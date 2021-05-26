@@ -1,0 +1,1 @@
+Brettspiel für einen bis sechs Spieler (Personen oder Computergegner).
