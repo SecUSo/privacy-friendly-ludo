@@ -1,1 +1,1 @@
-Boardgame for 4 up to 6 players (persons or computer opponents)
+(SECUSO) Boardgame for 4 up to 6 players (persons or computer opponents)
