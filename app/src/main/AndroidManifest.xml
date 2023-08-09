@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.secuso.privacyfriendlyludo">
 
     <supports-screens
@@ -18,7 +19,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,6 +79,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlyludo.activities.MainActivity" />
         </activity>
+
+        <service
+            android:name=".backup.PFABackupService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":backup"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="org.secuso.privacyfriendlybackup.api.pfa.PFAAuthService" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
     </application>
 
 </manifest>

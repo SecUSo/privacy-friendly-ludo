@@ -3,12 +3,10 @@ package org.secuso.privacyfriendlyludo.activities;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.View;
 
 
 import org.secuso.privacyfriendlyludo.R;
@@ -28,7 +26,7 @@ import org.secuso.privacyfriendlyludo.R;
  */
 
 
-public class FieldView extends android.support.v7.widget.AppCompatImageView {
+public class FieldView extends androidx.appcompat.widget.AppCompatImageView {
     int myColor;
     boolean add_player;
     LayerDrawable layersDrawable;

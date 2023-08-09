@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 
 import org.secuso.privacyfriendlyludo.Map.GameFieldPosition;
