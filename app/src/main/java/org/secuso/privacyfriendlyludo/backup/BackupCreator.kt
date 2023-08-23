@@ -7,6 +7,7 @@ import android.util.JsonWriter
 import android.util.Log
 import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil.getSupportSQLiteOpenHelper
 import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil.writeDatabase
+import org.secuso.privacyfriendlybackup.api.backup.FileUtil
 import org.secuso.privacyfriendlybackup.api.backup.PreferenceUtil.writePreferences
 import org.secuso.privacyfriendlybackup.api.pfa.IBackupCreator
 //import org.secuso.privacyfriendlyludo.database.PFASQLiteHelper
@@ -28,6 +29,13 @@ class BackupCreator : IBackupCreator {
 
             val pref = PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
             writePreferences(writer, pref)
+
+            Log.d(TAG, "Writing files")
+            writer.name("files")
+            writer.beginObject()
+            writer.name("savedata")
+            FileUtil.writeFile(writer, context.getFileStreamPath("savedata"))
+            writer.endObject()
 
             writer.endObject()
             writer.close()

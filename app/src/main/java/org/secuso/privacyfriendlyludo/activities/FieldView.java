@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 
 
 import org.secuso.privacyfriendlyludo.R;
@@ -43,7 +44,7 @@ public class FieldView extends androidx.appcompat.widget.AppCompatImageView {
     }
 
     public FieldView(Context context, AttributeSet attrs, int myColor, Drawable d, boolean add_player) {
-        super(context, attrs);
+        super(context);
         this.myColor = myColor;
         Drawable[] layers = new Drawable[3];
         // field border

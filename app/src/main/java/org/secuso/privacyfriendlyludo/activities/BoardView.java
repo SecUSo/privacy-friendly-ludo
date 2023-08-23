@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;

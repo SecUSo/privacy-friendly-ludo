@@ -19,6 +19,23 @@ import kotlin.system.exitProcess
 class BackupRestorer : IBackupRestorer {
 
     @Throws(IOException::class)
+    private fun readFiles(reader: JsonReader, context: Context) {
+        reader.beginObject()
+        while (reader.hasNext()) {
+            val name = reader.nextName()
+            when (name) {
+                "savedata" -> {
+                    val f = context.getFileStreamPath(name).parentFile!!
+                    FileUtil.readFile(reader, f)
+                }
+
+                else -> throw java.lang.RuntimeException("Unknown folder $name")
+            }
+        }
+        reader.endObject()
+    }
+
+    @Throws(IOException::class)
     private fun readPreferences(reader: JsonReader, preferences: SharedPreferences.Editor) {
         reader.beginObject()
         while (reader.hasNext()) {
@@ -26,6 +43,7 @@ class BackupRestorer : IBackupRestorer {
             Log.d("preference", name)
             when (name) {
                 "keepScreenOn",
+                "own_dice",
                 "switch_dice_3times" -> preferences.putBoolean(name, reader.nextBoolean())
                 else -> throw RuntimeException("Unknown preference $name")
             }
@@ -55,6 +73,7 @@ class BackupRestorer : IBackupRestorer {
             while (reader.hasNext()) {
                 when (val type: String = reader.nextName()) {
                     "preferences" -> readPreferences(reader, preferences)
+                    "files" -> readFiles(reader, context)
                     else -> throw RuntimeException("Can not parse type $type")
                 }
             }
