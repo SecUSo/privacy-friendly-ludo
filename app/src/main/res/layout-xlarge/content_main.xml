@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:layoutDirection="ltr">
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/scroller"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -25,7 +25,7 @@
             android:layout_marginRight="45dp"
             android:layout_marginTop="45dp">
 
-        </android.support.v4.view.ViewPager>
+        </androidx.viewpager.widget.ViewPager>
 
         <ImageView
             android:id="@+id/arrow_left"
@@ -71,7 +71,7 @@
         tools:context="tu_darmstadt.sudoku.ui.MainActivity"
         tools:gravity="center_vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="71dp"
             tools:layout_editor_absoluteX="16dp"
@@ -127,7 +127,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.454"
                 app:srcCompat="@drawable/ic_menu_info" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/game_button_start"

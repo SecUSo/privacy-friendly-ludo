@@ -11,11 +11,11 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +30,18 @@ import org.secuso.privacyfriendlyludo.logic.BoardModel;
 import org.secuso.privacyfriendlyludo.logic.GameType;
 import org.secuso.privacyfriendlyludo.logic.Player;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.os.Handler;
 
 /*  @author: Julia Schneider
@@ -808,18 +813,29 @@ public class GameActivity extends AppCompatActivity {
     private BoardModel loadFile() {
         ObjectInputStream ois = null;
         FileInputStream fis = null;
-        try {
-            fis = this.openFileInput("savedata");
-            ois = new ObjectInputStream(fis);
-            model = (BoardModel) ois.readObject();
-            model.setContext(getBaseContext());
-            return model;
+
+        String[] files = this.fileList();
+        boolean exists = false;
+        for (String file : files) {
+            if (file.equals("savedata")) {
+                exists = true;
+                break;
+            }
         }
-        catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            if (ois != null) try { ois.close(); } catch (IOException e) { e.printStackTrace();}
-            if (fis != null) try { fis.close(); } catch (IOException e) { e.printStackTrace();}
+        if (exists) {
+            try {
+                fis = this.openFileInput("savedata");
+                ois = new ObjectInputStream(fis);
+                model = (BoardModel) ois.readObject();
+                model.setContext(getBaseContext());
+                return model;
+            }
+            catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                if (ois != null) try { ois.close(); } catch (IOException e) { e.printStackTrace();}
+                if (fis != null) try { fis.close(); } catch (IOException e) { e.printStackTrace();}
+            }
         }
         return null;
     }
