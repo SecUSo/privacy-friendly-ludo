@@ -32,6 +32,10 @@ Further development requires Android Studio, we recommend to use at least versio
 Mininum SDK: 21
 Target SDK: 33
 
+## Application Data Backup
+
+This application does not natively have a data backup feature. Please install and use the [SECUSO Privacy Friendly Backup](https://github.com/SecUSo/privacy-friendly-backup) to backup and restore this application's data. This feature is required when a user migrates their data to a new phone.
+
 ## License
 
 Privacy Friendly Ludo is licensed under the GPLv3.
