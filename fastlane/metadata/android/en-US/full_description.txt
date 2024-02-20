@@ -1,5 +1,15 @@
 
 
+1. No permissions
+Privacy Friendly Ludo does not require any permissions.
+
+2. No advertisement
+Moreover, Privacy Friendly Ludo distinguishes from many other applications in the way that it completely relinquishes advertisements. Advertisement might track a user's actions. It could also shorten battery life or use mobile data.
+
+Privacy Friendly Ludo belongs to the Privacy Friendly Apps group developed by the research group SECUSO at Karlsruhe Institute of Technology. More information can be found at https://secuso.org/pfa
+
+
+Feel free to contact us via:
 Twitter - @SECUSOResearch https://twitter.com/secusoresearch
-Mastodon - @SECUSO_Research@baw  .social https://xn--baw-joa.social/@SECUSO_Research/
+Mastodon - @SECUSO_Research@bawü.social https://xn--baw-joa.social/@SECUSO_Research/
 Job opening - https://secuso.aifb.kit.edu/english/Job_Offers_1557.php
