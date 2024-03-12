@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -469,7 +469,7 @@ public class GameSettingActivity extends AppCompatActivity {
     private class PlayerViewHolder extends ViewHolder {
 
         ImageButton playerColor;
-        Switch playertype;
+        SwitchCompat playertype;
         ImageButton delete_player;
         TextView playerName;
         ImageView person;
@@ -477,7 +477,7 @@ public class GameSettingActivity extends AppCompatActivity {
         PlayerViewHolder(final View itemView) {
             super(itemView);
             person = (ImageView) itemView.findViewById(R.id.image_player_type);
-            playertype = (Switch) itemView.findViewById(R.id.switch_player_type);
+            playertype = (SwitchCompat) itemView.findViewById(R.id.switch_player_type);
             playerColor = (ImageButton) itemView.findViewById(R.id.button_player_color);
             playerName = (TextView) itemView.findViewById(R.id.textView_player_name);
             delete_player = (ImageButton) itemView.findViewById(R.id.button_delete_player);
