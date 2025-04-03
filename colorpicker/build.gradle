@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 33
-
+    namespace "com.android.colorpicker"
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 33

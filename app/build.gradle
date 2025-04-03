@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 34
+    namespace "org.secuso.privacyfriendlyludo"
     defaultConfig {
         applicationId "org.secuso.privacyfriendlyludo"
         minSdkVersion 17
@@ -16,11 +17,40 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
+    buildFeatures {
+        buildConfig true
     }
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_11
-        sourceCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    lintOptions {
+        checkReleaseBuilds true
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    lint {
+        lintConfig = file("lint.xml")
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+android.applicationVariants.all { variant ->
+    variant.outputs.all {
+        def appName = "pfa-pausing-healthily"
+        outputFileName = appName + "-${variant.name}-v${variant.versionName}.apk"
     }
 }
 
@@ -35,7 +65,7 @@ dependencies {
 
     // Backup
     implementation project(path: ':backup-api')
-    def work_version = "2.4.0"
+    def work_version = "2.5.0"
     implementation "androidx.work:work-runtime:$work_version"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     androidTestImplementation "androidx.work:work-testing:$work_version"

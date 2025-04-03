@@ -34,7 +34,7 @@ class PFLudo : Application(), Configuration.Provider {
         super.onCreate()
     }
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder().setMinimumLoggingLevel(Log.INFO).build()
+    override val workManagerConfiguration: Configuration by lazy {
+        Configuration.Builder().setMinimumLoggingLevel(Log.INFO).build()
     }
 }
