@@ -18,7 +18,7 @@
             android:src="@android:drawable/ic_dialog_alert"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             app:tint="@color/red"/>
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dialog_goodbye_google_title"
@@ -31,14 +31,14 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dialog_goodbye_google_desc"
             />
     </ScrollView>
-    <com.google.android.material.checkbox.MaterialCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/show_notice_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
