@@ -19,6 +19,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.secuso.privacyfriendlyludo.GoodbyeGoogleHelperKt;
 import org.secuso.privacyfriendlyludo.R;
 import org.secuso.privacyfriendlyludo.logic.BoardModel;
 
@@ -147,6 +148,7 @@ public class MainActivity extends BaseActivity {
             game_continue.setClickable(true);
             game_continue.setBackgroundResource(R.drawable.button_fullwidth);
         }
+        GoodbyeGoogleHelperKt.checkGoodbyeGoogle(this, getLayoutInflater());
     }
 
     @Override
