@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_help">Aiuto</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="navigation_drawer_open">Apri menu di navigazione</string>
+    <string name="action_about">Informazioni</string>
+    <string name="action_main">Principale</string>
+    <string name="navigation_drawer_close">Chiudi menu di navigazione</string>
+    <string name="app_name">Ludo</string>
+    <string name="action_tutorial">Tutorial</string>
+    <string name="main_button_1">1</string>
+    <string name="main_button_2">2</string>
+    <string name="main_text_fullwithbutton_desc">Un pulsante che usa l\'intera larghezza dello schermo si presenta così:</string>
+    <string name="help_rules_answer4">Se la casella di arrivo di una pedina è occupata da una pedina avversaria, la pedina avversaria viene azzerata e rimandata alla propria casa-base.</string>
+    <string name="help_rules_answer6">Il giocatore in corso può scegliere quale pedina muovere. Il valore del dado non può essere ripartito tra più pedine.</string>
+    <string name="about">Informazioni</string>
+    <string name="version_number">Versione</string>
+    <string name="about_author">Autori:</string>
+    <string name="about_affiliation">In affiliazione con</string>
+    <string name="help_playerNumber_answer">Sul tabellone piccolo possono giocare fino a 4 giocatori. Su quello grande, fino a 6 giocatori.</string>
+    <string name="about_author_contributors">e contributori.</string>
+    <string name="help_rules_answer7">Nelle 4 caselle finali di ogni giocatore ci sono 2 regole speciali. Primo: non è permesso scavalcare altre pedine. Secondo: puoi tirare il dado solo una volta, se la pedina si trova sulle caselle finali ma non nella posizione obiettivo.</string>
+    <string name="help_rules_answer3">Se non ci sono più pedine sulla casa-base e si ottiene un 6, può essere mossa una qualsiasi delle altre pedine. Inoltre, la casella di partenza non deve necessariamente venir liberata.</string>
+    <string name="help_rules_answer5">Se la casella di arrivo di una pedina è occupata da un\'altra pedina dello stesso giocatore, la mossa non è consentita. Quindi andrà scelta un\'altra pedina, oppure il turno terminerà senza muovere pedine.</string>
+    <string name="help_rules_answer2">Se la casella di partenza è occupata, devi liberarla il prima possibile.</string>
+    <string name="main_button_3">3</string>
+    <string name="main_button_5">5</string>
+    <string name="main_button_4">4</string>
+    <string name="main_text_disabledbutton_desc">Un pulsante disattivato si presenta così (di qualsiasi dimensione):</string>
+</resources>
