@@ -1,0 +1,17 @@
+Chińczyk (Ludo) Przyjazny Prywatności to gra planszowa dla 4 do 6 graczy (osób lub przeciwników komputerowych). Celem gry jest doprowadzenie czterech figurek do pól bramkowych. Dlatego ważne jest, aby uniemożliwić przeciwnikowi wygranie gry poprzez pokonanie figurek przeciwnika jego własnymi figurkami.
+
+Czym Chińczyk (Ludo) różni się od innych podobnych aplikacji?
+
+1. Brak uprawnień
+Chińczyk (Ludo) Przyjazny Prywatności nie wymaga żadnych uprawnień.
+
+2. Brak reklam
+Co więcej, Chińczyk (Ludo) wyróżnia się od wielu innych aplikacji tym, że całkowicie rezygnuje z reklam. Reklamy mogą śledzić działania użytkownika. Mogą również skracać żywotność baterii lub wykorzystywać dane mobilne.
+
+Przyjazny Prywatności Chińczyk (Ludo) należy do grupy Aplikacji Przyjaznych Prywatności opracowanej przez grupę badawczą SECUSO w Instytucie Technologii w Karlsruhe. Więcej informacji można znaleźć na stronie https://secuso.org/pfa
+
+Skontaktuj się z nami za pośrednictwem:
+Bluesky - @secusoresearch.bsky.social https://bsky.app/profile/secusoresearch.bsky.social
+Mastodon - @SECUSO_Research@bawü.social https://xn--baw-joa.social/@SECUSO_Research/
+Oferta pracy - https://secuso.aifb.kit.edu/english/Job_Offers.php
+Polska wersja: tomix86
