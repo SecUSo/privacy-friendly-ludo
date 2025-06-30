@@ -1,1 +1,1 @@
-(SECUSO) Brettspiel für einen bis sechs Spieler (Personen oder Computergegner).
+(SECUSO) Brettspiel für einen bis sechs Spieler (Personen oder Computergegner)
