@@ -1,5 +1,18 @@
 # Changelog
 
+<a id="v2.3.3"></a>
+## [Privacy Friendly Ludo v2.3.3](https://github.com/SecUSo/privacy-friendly-ludo/releases/tag/v2.3.3) - 2025-07-14
+
+## What's Changed
+* Updates changelog and adds ci workflow by [@coderPaddyS](https://github.com/coderPaddyS) in [#30](https://github.com/SecUSo/privacy-friendly-ludo/pull/30)
+* [update] Change versionCode to differentiate from last Google Play version by [@coderPaddyS](https://github.com/coderPaddyS) in [#31](https://github.com/SecUSo/privacy-friendly-ludo/pull/31)
+
+
+**Full Changelog**: https://github.com/SecUSo/privacy-friendly-ludo/compare/v2.3.2...v2.3.3
+
+[Changes][v2.3.3]
+
+
 <a id="v2.3.1"></a>
 ## [Privacy Friendly Ludo v2.3.1](https://github.com/SecUSo/privacy-friendly-ludo/releases/tag/v2.3.1) - 2024-03-12
 
@@ -44,6 +57,7 @@ Initial release of the application
 [Changes][v2.2]
 
 
+[v2.3.3]: https://github.com/SecUSo/privacy-friendly-ludo/compare/v2.3.1...v2.3.3
 [v2.3.1]: https://github.com/SecUSo/privacy-friendly-ludo/compare/v2.3...v2.3.1
 [v2.3]: https://github.com/SecUSo/privacy-friendly-ludo/compare/v2.2...v2.3
 [v2.2]: https://github.com/SecUSo/privacy-friendly-ludo/tree/v2.2
