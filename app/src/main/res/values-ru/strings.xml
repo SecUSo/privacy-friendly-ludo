@@ -23,7 +23,7 @@
     <string name="main_text_fullwithbutton_desc">Кнопка, использующая полную ширину экрана, выглядит так:</string>
     <string name="game_button_start">Новая игра</string>
     <string name="game_button_continue">Продолжить игру</string>
-    <string name="help">Справка</string>
+    <string name="help">Помощь</string>
     <string name="help_playerNumber">Сколько игроков могут играть в игру?</string>
     <string name="pref_keepScreenOn_switch">Экран остаётся включённым во время игры</string>
     <string name="pref_keepScreenOn_switch_summary">" Во время всей игры экран остаётся включённым."</string>
@@ -59,7 +59,7 @@
     <string name="help_playerNumber_answer">На малом игровом поле могут играть до 4 игроков. На большом игровом поле — до 6 игроков.</string>
     <string name="help_rules_answer2">Если стартовое поле занято, вы должны освободить его как можно скорее.</string>
     <string name="version_number">Версия</string>
-    <string name="about">О приложении</string>
+    <string name="about">О программе</string>
     <string name="about_affiliation">В сотрудничестве с</string>
     <string name="pref_rollDice3times_switch">Разрешено бросать кости три раза</string>
     <string name="slide2_text">Есть два разных игровых поля. Одно с количеством игроков до 4, а другое с количеством игроков до 6. Игры можно сохранять и продолжить позже.</string>
