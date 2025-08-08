@@ -31,11 +31,11 @@
     <string name="help_rules_answer2">Jeżeli pole startowe jest zajęte, należy je jak najszybciej zwolnić.</string>
     <string name="help_rules_answer4">Jeśli pole docelowe figurki jest zajęte przez figurkę przeciwnika, figurka przeciwnika zostanie pobita i odesłana na pole domowe.</string>
     <string name="help_rules_answer6">To ostatni gracz wybiera, którą figurę chce przesunąć. Liczba kostek nie może być rozłożona na więcej niż jedną figurę.</string>
-    <string name="about">O</string>
+    <string name="about">O aplikacji</string>
     <string name="version_number">Wersja</string>
     <string name="about_author">Autorzy:</string>
     <string name="about_author_contributors">i współtwórcy.</string>
-    <string name="more_info">Więcej informacji można znaleźć na stronie:</string>
+    <string name="more_info">Więcej informacji można znaleźć na:</string>
     <string name="about_affiliation">We współpracy z</string>
     <string name="pref_header_general">Ogólne</string>
     <string name="pref_rollDice3times_switch">Można rzucić kostką trzy razy</string>
@@ -97,7 +97,7 @@
     <string name="help_rules_answer7">W 4 polach końcowych każdego gracza obowiązują 2 specjalne zasady. Po pierwsze: Nie wolno przeskakiwać nad innymi figurami w polu końcowym. Po drugie: Możesz rzucić kostką tylko raz, jeśli figura znajduje się na polu końcowym, ale nie w pozycji bramkowej.</string>
     <string name="choose_color">Wybierz kolor gracza.</string>
     <string name="privacy_friendly">Ta aplikacja należy do grupy Aplikacji Przyjaznych Prywatności opracowanych przez Karlsruhe Institute of Technology. Kod źródłowy licencjonowany na zasadach GPLv3. Prawa autorskie do obrazów KIT i Google Inc.</string>
-    <string name="okay">Ok</string>
+    <string name="okay">OK</string>
     <string name="slide2_text">Istnieją 2 różne pola gry. Jedno z maksymalnie 4 graczami i jedno z maksymalnie 6 graczami. Rozpoczęte gry można zapisać.</string>
     <string name="slide4_text">Kolor i nazwa graczy mogą być dowolnie wybrane. Dodatkowo można wybrać, czy przeciwnikiem jest komputer.</string>
     <string name="playername_default_value">gracz</string>
@@ -105,5 +105,5 @@
     <string name="info_own_dice_answer">Granie z własnymi kośćmi oznacza, że figura zostanie oznaczona, jeśli klikniesz na nią i ustawisz ją na klikniętym polu bramkowym. Dlatego granie z własnymi zasadami i zewnętrzną kostką jest możliwe.</string>
     <string name="only_person_player">Aby grać z komputerem, musisz wyłączyć tryb „użyj własnych kości”.</string>
     <string name="navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
-    <string name="navigation_drawer_close">Zamknij szufladę nawigacyjną</string>
+    <string name="navigation_drawer_close">Zamknij szufladę nawigacji</string>
 </resources>
