@@ -16,7 +16,7 @@
     <string name="about">Informazioni</string>
     <string name="version_number">Versione</string>
     <string name="about_author">Autori:</string>
-    <string name="about_affiliation">In affiliazione con</string>
+    <string name="about_affiliation">Affiliato a</string>
     <string name="help_playerNumber_answer">Sul tabellone piccolo possono giocare fino a 4 giocatori. Su quello grande, fino a 6 giocatori.</string>
     <string name="about_author_contributors">e contributori.</string>
     <string name="help_rules_answer7">Nelle 4 caselle finali di ogni giocatore ci sono 2 regole speciali. Primo: non è permesso scavalcare altre pedine. Secondo: puoi tirare il dado solo una volta, se la pedina si trova sulle caselle finali ma non nella posizione obiettivo.</string>
@@ -27,4 +27,5 @@
     <string name="main_button_5">5</string>
     <string name="main_button_4">4</string>
     <string name="main_text_disabledbutton_desc">Un pulsante disattivato si presenta così (di qualsiasi dimensione):</string>
+    <string name="more_info">Ulteriori informazioni sono disponibili su:</string>
 </resources>
