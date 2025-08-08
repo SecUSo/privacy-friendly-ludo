@@ -64,8 +64,8 @@
     <string name="pref_rollDice3times_switch">Разрешено бросать кости три раза</string>
     <string name="slide2_text">Есть два разных игровых поля. Одно с количеством игроков до 4, а другое с количеством игроков до 6. Игры можно сохранять и продолжить позже.</string>
     <string name="next">Далее</string>
-    <string name="viewhelp">Смотреть Справку</string>
-    <string name="okay">Ладно</string>
+    <string name="viewhelp">Просмотр справки</string>
+    <string name="okay">Хорошо</string>
     <string name="slide4_text">Цвет и имя игроков можно выбирать. Кроме того, можно выбрать чтобы противником был компьютер.</string>
     <string name="skip">Пропустить</string>
     <string name="playername_default_value">игрок</string>
