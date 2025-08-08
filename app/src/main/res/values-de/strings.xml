@@ -1,7 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Ärgern lohnt nicht</string>
     <string name="app_name_long">Privacy Friendly Ärgern lohnt nicht</string>
-
     <!-- ###DRAWER###-->
     <string name="action_help">Hilfe</string>
     <string name="action_about">Über</string>
@@ -9,10 +9,8 @@
     <string name="action_main">Hauptmenü</string>
     <string name="action_game">Spiel</string>
     <string name="action_tutorial">Tutorial</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="navigation_drawer_open">Navigationsmenü öffnen</string>
+    <string name="navigation_drawer_close">Navigationsmenü schließen</string>
     <!-- ###MAIN### -->
     <string name="main_button_text">Button volle Breite</string>
     <string name="main_button_disabled_text">Inaktiver Button</string>
@@ -21,21 +19,18 @@
     <string name="main_button_3">3</string>
     <string name="main_button_4">4</string>
     <string name="main_button_5">5</string>
-    <string name="main_text_fullwithbutton_desc">Ein Button mit voller breite sieht folgendermaßen aus:</string>
+    <string name="main_text_fullwithbutton_desc">Ein Button mit voller Breite sieht folgendermaßen aus:</string>
     <string name="main_text_disabledbutton_desc">Ein inaktiver Button sieht folgendermaßen aus (jede Größe):</string>
     <string name="main_text_title">Das hier ist eine Beispiel-App zum das Design der Privacy Friendly Apps zu demonstrieren. Weitere Infos gibt es im Privacy Friendly App Guide.</string>
-    <string name="main_text_normalbutton_desc">Es gibt verschiedene Möglichkeiten, um einfache Buttons darzustellen. Button 1 entspricht der Basisform. Wenn Buttons visual abgetrennt werden sollen, ist Button 2 zu verwenden. Die Buttons 3&#8211;5 sind Beispiels für hevorgehobene Buttons. Je nach App können auch andere Farben zum Highlighten verwendet werden.</string>
+    <string name="main_text_normalbutton_desc">Es gibt verschiedene Möglichkeiten, um einfache Buttons darzustellen. Button 1 entspricht der Basisform. Wenn Buttons visual abgetrennt werden sollen, ist Button 2 zu verwenden. Die Buttons 3–5 sind Beispiels für hevorgehobene Buttons. Je nach App können auch andere Farben zum Highlighten verwendet werden.</string>
     <string name="main_button_welcomedialog_text">Der Button in der Ecke unten links öffnet einen Beispiel-Welcome Dialog.</string>
-
     <!-- ###GAME###-->
     <string name="title_activity_game">Spiel</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzen</string>
     <string name="game_desc">Dies ist das Standard-Menü für Spiele-Apps. Der Viewpager oben sollte verwendet werden, um zwischen verschiedenen Spielmodi zu wechseln.</string>
-
     <!--###HELP###-->
     <string name="help">Help</string>
-
     <string name="help_whatis">Was ist Privacy Friendly Ärgern lohnt nicht?</string>
     <string name="help_whatis_answer">Privacy Friendly Ärgern lohnt nicht ist ein Brettspiel, das mit 1 bis 6 Spielern gespielt werden kann.</string>
     <string name="help_playerNumber">Wieviele Personen können maximal spielen?</string>
@@ -68,7 +63,6 @@
         1. Ein überspringen von Figuren ist hier nicht möglich.
         2. Man darf nur einmal würfeln, sobald eine Figur im Endfeld ist aber nicht in der Zielposition.
     </string>
-
     <!--###ABOUT###-->
     <string name="about">Über</string>
     <string name="version_number">Version</string>
@@ -77,65 +71,56 @@
     <string name="about_affiliation">In Zusammenarbeit mit</string>
     <string name="privacy_friendly">Diese App gehört zur Gruppe der Privacy Friendly Apps entwickelt vom Karlsruher Institut für Technologie. Quelltext lizenziert unter GPLv3. Bilder copyright KIT und Google Inc.</string>
     <string name="more_info">Weitere Infos unter:</string>
-
     <!-- ###SETTINGS### -->
     <string name="title_activity_settings">Einstellungen</string>
     <string name="pref_header_general">Allgemein</string>
-
     <!-- ### WELCOME DIALOG ### -->
     <string name="okay">Okay</string>
-    <string name="viewhelp">Hilfe</string>
-
+    <string name="viewhelp">Hilfe anzeigen</string>
     <!-- ### TUTORIAL DIALOG ### -->
-    <string name="slide1_heading">Willkommen</string>
+    <string name="slide1_heading">Willkommen!</string>
     <string name="slide1_text">Diese App ermöglicht das Spielen eines Brettspiels mit 1–6 Spielern.</string>
-
     <string name="slide2_heading">Spielbretter</string>
     <string name="slide2_text">Es gibt 2 verschiedene Spielfelder. Einmal mit bis zu 4 Personen und eines für bis zu 6 Personen. Angefangene Spiele können gespeichert werden.</string>
-
     <string name="slide3_heading">Spielregeln</string>
     <string name="slide3_text">Die Spielregeln werden in der Hilfe genauer erläutert.
         Zusätzlich ist es möglich ein Spiel mit eigenen Regeln zu spielen. Dafür wird eine Figur ausgewählt und das Zielfeld im Anschluss ausgewählt.
         Dieser Modus heißt "mit eigenem Würfel spielen".  </string>
-
     <string name="slide4_heading">Spieleinstellungen</string>
     <string name="slide4_text"> Farbe und Name der Spieler können frei gewählt werden, sowie ob es ein Computergegner geben soll.</string>
-
     <string name="next">Weiter</string>
     <string name="skip">Überspringen</string>
     <string name="player_name">%p ist am Zug</string>
     <string name="add_player">Spieler hinzufügen</string>
-
-
     <string name="roll_dice">würfeln</string>
     <string name="start_game">Spiel starten</string>
     <string name="finished_Game">Spiel ist beendet.</string>
     <string name="game_type">%max Spieler</string>
-    <string name="Missing_playername">Bitte geben Sie jedem Spieler einen Namen.</string>
+    <string name="Missing_playername">Bitte geben Sie jedem Spieler einen Namen</string>
     <string name="color_uniqueness">Bitte wählen Sie eindeutige Farben für jeden Spieler aus.</string>
     <string name="choose_color">Bitte wählen Sie eine Spielerfarbe aus.</string>
     <string name="max_player_reached">Maximale Anzahl an Spielern erreicht.</string>
     <string name="header_change_rules">Spezialregeln</string>
     <string name="initial_name_field">Name</string>
-    <string name="Task_Roll_Dice">Bitte Würfeln</string>
+    <string name="Task_Roll_Dice">Bitte Würfeln.</string>
     <string name="TaskSetFigure">Bitte gewünschte Figur anklicken.</string>
     <string name="Congrats">Glückwunsch!</string>
     <string name="GameFinished">Das Spiel ist beendet.</string>
-    <string name="LeaveGame">Wenn Sie fortfahren, wird das aktuelle Spiel geschlossen.</string>
+    <string name="LeaveGame">Wenn Sie fortfahren, wird das aktuelle Spiel geschlossen</string>
     <string name="LeaveGameTitle">Aktuelle Spiel schließen?</string>
     <string name="LeaveWinDialog">Wenn Sie fortfahren, können Sie nicht zurückkehren, sind sie sicher?</string>
     <string name="LeaveWinDialogTitle">Sind sie sicher, das sie den Dialog verlassen wollen?</string>
-    <string name="OverwriteResumableGame">Wenn Sie fortfahren, wird das letzte gespeicherte Spiel überschrieben</string>
-    <string name="pref_keepScreenOn_switch_summary">Während des kompletten Spiels bleibt der Bildschirm an.</string>
+    <string name="OverwriteResumableGame">Wenn Sie fortfahren, wird das letzte gespeicherte Spiel überschrieben.</string>
+    <string name="pref_keepScreenOn_switch_summary">" Während des kompletten Spiels bleibt der Bildschirm an."</string>
     <string name="OverwriteResumableGameTitle">Gespeichertes Spiel überschreiben?</string>
     <string name="Winner">%n</string>
     <string name="enough_players">Bitte wählen Sie mindestens 2 Spieler aus.</string>
     <string name="header_change_settings">Allgemeine Einstellungen</string>
-    <string name="pref_keepScreenOn_switch">Bildschirm bleibt während des Spiels an.</string>
-    <string name="pref_rollDice3times_switch">3 Mal würfeln ist erlaubt.</string>
-    <string name="pref_rollDice3times_switch_summary">Ein Spieler der keine Figuren im Spiel hat, hat drei Versuche eine 6 zu würfeln.</string>
-    <string name="play_with_own_dice">mit eigenem Würfel spielen.</string>
-    <string name="no_resumable_game">Kein Gespeichertes Spiel vorhanden. Bitte starten Sie ein neues Spiel.</string>
+    <string name="pref_keepScreenOn_switch">Bildschirm bleibt während des Spiels an</string>
+    <string name="pref_rollDice3times_switch">3 Mal würfeln ist erlaubt</string>
+    <string name="pref_rollDice3times_switch_summary">Ein Spieler, der keine Figuren im Spiel hat, hat drei Versuche eine 6 zu würfeln.</string>
+    <string name="play_with_own_dice">Mit eigenem Würfel spielen</string>
+    <string name="no_resumable_game">Kein gespeichertes Spiel vorhanden. Bitte starten Sie ein neues Spiel</string>
     <string name="playername_default_value">Spieler</string>
     <string name="computername_default_value">Computer</string>
     <string name="cancel">Abbruch</string>
@@ -150,5 +135,4 @@
     <string name="only_person_player">Um mit einem Computer zu spielen, muss der Modus \"mit eigenem Würfel spielen\" deaktiviert sein.</string>
     <string name="playername">Spielername</string>
     <string name="max_text_length">Der Spielername darf maximal 8 Zeichen lang sein.</string>
-
 </resources>
